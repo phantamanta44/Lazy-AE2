@@ -1,0 +1,23 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [{
+    "type": "forge:ore_dict",
+    "ore": "dustFluix"
+  }, {
+    "type": "forge:ore_dict",
+    "ore": "dustFluix"
+  }, {
+    "type": "forge:ore_dict",
+    "ore": "dustCoal"
+  }, {
+    "type": "forge:ore_dict",
+    "ore": "dustCoal"
+  }, {
+    "type": "forge:ore_dict",
+    "ore": "itemSilicon"
+  }],
+  "result": {
+    "item": "threng:material",
+    "data": 1
+  }
+}

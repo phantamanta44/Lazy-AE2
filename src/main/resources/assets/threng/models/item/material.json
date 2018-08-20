@@ -1,0 +1,30 @@
+{
+  "9s": "pi",
+  "archetype": {
+    "parent": "item/generated"
+  },
+  "mutations": {
+    "type": {
+      "fluix_steel": {
+        "textures": {
+          "layer0": "threng:items/fluix_steel"
+        }
+      },
+      "steel_process_dust": {
+        "textures": {
+          "layer0": "threng:items/steel_process_dust"
+        }
+      },
+      "steel_process_ingot": {
+        "textures": {
+          "layer0": "threng:items/steel_process_ingot"
+        }
+      },
+      "coal_dust": {
+        "textures": {
+          "layer0": "threng:items/coal_dust"
+        }
+      }
+    }
+  }
+}

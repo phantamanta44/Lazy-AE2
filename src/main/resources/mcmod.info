@@ -1,0 +1,17 @@
+[
+{
+  "modid": "threng",
+  "name": "Theoretical Energistics",
+  "description": "The stuff you wish was in AE2",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["phantamanta44"],
+  "logoFile": "",
+  "screenshots": [],
+  "useDepdencyInformation": true,
+  "dependencies": ["libnine", "appliedenergistics2"],
+  "requiredMods": ["libnine", "appliedenergistics2"]
+}
+]
