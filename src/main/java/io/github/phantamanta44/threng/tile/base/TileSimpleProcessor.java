@@ -108,7 +108,7 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
         }
 
         @Override
-        public int getSlotLimit(int slot) {
+        public int getSlotLimit() {
             return 8;
         }
 
