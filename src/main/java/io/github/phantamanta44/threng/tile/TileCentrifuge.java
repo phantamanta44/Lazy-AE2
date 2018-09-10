@@ -1,15 +1,14 @@
 package io.github.phantamanta44.threng.tile;
 
-import io.github.phantamanta44.libnine.capability.impl.L9AspectInventory;
 import io.github.phantamanta44.libnine.capability.impl.L9AspectSlot;
 import io.github.phantamanta44.libnine.capability.provider.CapabilityBrokerDirPredicated;
+import io.github.phantamanta44.libnine.recipe.input.ItemStackInput;
 import io.github.phantamanta44.libnine.recipe.output.ItemStackOutput;
 import io.github.phantamanta44.libnine.tile.RegisterTile;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
-import io.github.phantamanta44.libnine.util.tuple.ITriple;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
-import io.github.phantamanta44.threng.recipe.AggRecipe;
+import io.github.phantamanta44.threng.recipe.PurifyRecipe;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
@@ -17,33 +16,32 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 @RegisterTile(ThrEngConst.MOD_ID)
-public class TileAggregator
-        extends TileSimpleProcessor<ITriple<ItemStack, ItemStack, ItemStack>, ItemStack, AggRecipe.Input, ItemStackOutput, AggRecipe> {
+public class TileCentrifuge extends TileSimpleProcessor<ItemStack, ItemStack, ItemStackInput, ItemStackOutput, PurifyRecipe> {
 
     private static final int ENERGY_MAX = 100000;
 
     @AutoSerialize
-    private final L9AspectInventory invInput = new L9AspectInventory.Observable(3, (s, o, n) -> markWorkStateDirty());
+    private final L9AspectSlot slotInput = new L9AspectSlot.Observable((s, o, n) -> markWorkStateDirty());
     @AutoSerialize
     private final L9AspectSlot slotOutput = new L9AspectSlot.Observable(is -> false, (s, o, n) -> markWorkStateDirty());
     @AutoSerialize
     private final SideAlloc<SlotType.BasicIO> sides = new SideAlloc<>(SlotType.BasicIO.NONE, this::getFrontFace);
 
-    public TileAggregator() {
-        super(AggRecipe.class, ENERGY_MAX);
+    public TileCentrifuge() {
+        super(PurifyRecipe.class, ENERGY_MAX);
         setInitialized();
     }
 
     @Override
     protected CapabilityBrokerDirPredicated initCapabilities() {
         return super.initCapabilities()
-                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, invInput, sides.getPredicate(SlotType.BasicIO.INPUT))
+                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, slotInput, sides.getPredicate(SlotType.BasicIO.INPUT))
                 .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, slotOutput, sides.getPredicate(SlotType.BasicIO.OUTPUT));
     }
 
     @Override
-    protected ITriple<ItemStack, ItemStack, ItemStack> getInput() {
-        return ITriple.of(invInput.getStackInSlot(0), invInput.getStackInSlot(1), invInput.getStackInSlot(2));
+    protected ItemStack getInput() {
+        return slotInput.getStackInSlot();
     }
 
     @Override
@@ -52,10 +50,8 @@ public class TileAggregator
     }
 
     @Override
-    protected void acceptOutput(ITriple<ItemStack, ItemStack, ItemStack> newInputs, ItemStackOutput output) {
-        invInput.setStackInSlot(0, newInputs.getA());
-        invInput.setStackInSlot(1, newInputs.getB());
-        invInput.setStackInSlot(2, newInputs.getC());
+    protected void acceptOutput(ItemStack newInputs, ItemStackOutput output) {
+        slotInput.setStackInSlot(newInputs);
         if (slotOutput.getStackInSlot().isEmpty()) {
             slotOutput.setStackInSlot(output.getOutput().copy());
         } else {
@@ -63,8 +59,8 @@ public class TileAggregator
         }
     }
 
-    public IItemHandler getInputSlots() {
-        return invInput;
+    public IItemHandler getInputSlot() {
+        return slotInput;
     }
 
     public IItemHandler getOutputSlot() {

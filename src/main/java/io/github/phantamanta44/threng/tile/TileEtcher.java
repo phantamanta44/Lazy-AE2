@@ -6,10 +6,11 @@ import io.github.phantamanta44.libnine.capability.provider.CapabilityBrokerDirPr
 import io.github.phantamanta44.libnine.recipe.output.ItemStackOutput;
 import io.github.phantamanta44.libnine.tile.RegisterTile;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
+import io.github.phantamanta44.libnine.util.helper.OreDictUtils;
 import io.github.phantamanta44.libnine.util.tuple.ITriple;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
-import io.github.phantamanta44.threng.recipe.AggRecipe;
+import io.github.phantamanta44.threng.recipe.EtchRecipe;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
@@ -17,20 +18,22 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 @RegisterTile(ThrEngConst.MOD_ID)
-public class TileAggregator
-        extends TileSimpleProcessor<ITriple<ItemStack, ItemStack, ItemStack>, ItemStack, AggRecipe.Input, ItemStackOutput, AggRecipe> {
+public class TileEtcher
+        extends TileSimpleProcessor<ITriple<ItemStack, ItemStack, ItemStack>, ItemStack, EtchRecipe.Input, ItemStackOutput, EtchRecipe> {
 
     private static final int ENERGY_MAX = 100000;
 
     @AutoSerialize
-    private final L9AspectInventory invInput = new L9AspectInventory.Observable(3, (s, o, n) -> markWorkStateDirty());
+    private final L9AspectInventory invInput = new L9AspectInventory.Observable(3, (s, o, n) -> markWorkStateDirty())
+            .withPredicate(0, OreDictUtils.matchesOredict("dustRedstone"))
+            .withPredicate(1, OreDictUtils.matchesOredict("itemSilicon"));
     @AutoSerialize
     private final L9AspectSlot slotOutput = new L9AspectSlot.Observable(is -> false, (s, o, n) -> markWorkStateDirty());
     @AutoSerialize
     private final SideAlloc<SlotType.BasicIO> sides = new SideAlloc<>(SlotType.BasicIO.NONE, this::getFrontFace);
 
-    public TileAggregator() {
-        super(AggRecipe.class, ENERGY_MAX);
+    public TileEtcher() {
+        super(EtchRecipe.class, ENERGY_MAX);
         setInitialized();
     }
 

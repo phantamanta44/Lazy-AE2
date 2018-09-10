@@ -1,0 +1,40 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "threng:machine"
+  },
+  "variants": {
+    "type": {
+      "aggregator": {
+        "textures": {
+          "face": "threng:blocks/machine/aggregator",
+          "face_active": "threng:blocks/machine/aggregator_active"
+        }
+      },
+      "centrifuge": {
+        "textures": {
+          "face": "threng:blocks/machine/centrifuge",
+          "face_active": "threng:blocks/machine/centrifuge_active"
+        }
+      },
+      "etcher": {
+        "textures": {
+          "face": "threng:blocks/machine/etcher",
+          "face_active": "threng:blocks/machine/etcher_active"
+        }
+      }
+    },
+    "rotation": {
+      "north": {},
+      "east": { "y": 90 },
+      "south": { "y": 180 },
+      "west": { "y": 270 }
+    },
+    "active": {
+      "true": {
+        "model": "threng:machine_active"
+      },
+      "false": {}
+    }
+  }
+}

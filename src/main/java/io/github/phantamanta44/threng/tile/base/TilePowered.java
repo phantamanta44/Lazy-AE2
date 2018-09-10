@@ -7,7 +7,6 @@ import io.github.phantamanta44.libnine.component.reservoir.RatedIntReservoir;
 import io.github.phantamanta44.libnine.component.reservoir.SimpleIntReservoir;
 import io.github.phantamanta44.libnine.tile.L9TileEntityTicking;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 public abstract class TilePowered extends L9TileEntityTicking {
@@ -17,10 +16,12 @@ public abstract class TilePowered extends L9TileEntityTicking {
 
     public TilePowered(int energyBuffer) {
         this.energy = new SimpleIntReservoir(energyBuffer);
+        this.energy.onQuantityChange((o, n) -> setDirty());
+        markRequiresSync();
     }
 
     @Override
-    protected ICapabilityProvider initCapabilities() {
+    protected CapabilityBrokerDirPredicated initCapabilities() {
         return new CapabilityBrokerDirPredicated()
                 .with(CapabilityEnergy.ENERGY, new L9AspectEnergy(new RatedIntReservoir(energy, -1, 0)));
     }

@@ -17,6 +17,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,6 +28,7 @@ public class ThrEngRecipes {
     public static void registerRecipeTypes() {
         LibNine.PROXY.getRecipeManager().addType(AggRecipe.class);
         LibNine.PROXY.getRecipeManager().addType(PurifyRecipe.class);
+        LibNine.PROXY.getRecipeManager().addType(EtchRecipe.class);
     }
 
     public static void addRecipes() {
@@ -34,6 +36,8 @@ public class ThrEngRecipes {
                 = LibNine.PROXY.getRecipeManager().getRecipeList(AggRecipe.class);
         IRecipeList<ItemStack, ItemStackInput, ItemStackOutput, PurifyRecipe> purifyRecipes
                 = LibNine.PROXY.getRecipeManager().getRecipeList(PurifyRecipe.class);
+        IRecipeList<ITriple<ItemStack, ItemStack, ItemStack>, EtchRecipe.Input, ItemStackOutput, EtchRecipe> etchRecipes
+                = LibNine.PROXY.getRecipeManager().getRecipeList(EtchRecipe.class);
         IInscriberRegistry inscriber = AEApi.instance().registries().inscriber();
         IDefinitions defs = AEApi.instance().definitions();
 
@@ -54,20 +58,30 @@ public class ThrEngRecipes {
                 ItemMaterial.Type.FLUIX_STEEL.newStack(1)));
 
         // fluix crystals
-        defs.materials().fluixCrystal().maybeStack(2).ifPresent(fc -> aggRecipes.add(new AggRecipe(
-                Stream.of("crystalNetherQuartz", "crystalCertusQuartz", "dustRedstone")
-                        .map(OreDictUtils::matchesOredict).collect(Collectors.toList()),
-                ItemMaterial.Type.FLUIX_STEEL.newStack(1))));
+        defs.materials().fluixCrystal().maybeStack(2).ifPresent(fc ->
+                defs.materials().certusQuartzCrystalCharged().maybeStack(1).ifPresent(ccq ->
+                        aggRecipes.add(new AggRecipe(
+                                Arrays.asList(OreDictUtils.matchesOredict("gemQuartz"),
+                                        OreDictUtils.matchesOredict("dustRedstone"),
+                                        ItemUtils.matchesWithWildcard(ccq)), fc))));
 
         // crystal purification
         defs.materials().purifiedCertusQuartzCrystal().maybeStack(2).ifPresent(pcq ->
-            defs.materials().certusQuartzCrystal().maybeStack(1).ifPresent(cq ->
-                    purifyRecipes.add(new PurifyRecipe(ItemUtils.matchesWithWildcard(cq), pcq))));
+                defs.materials().certusQuartzCrystal().maybeStack(1).ifPresent(cq ->
+                        purifyRecipes.add(new PurifyRecipe(ItemUtils.matchesWithWildcard(cq), pcq))));
         defs.materials().purifiedNetherQuartzCrystal().maybeStack(2).ifPresent(pnq ->
-                        purifyRecipes.add(new PurifyRecipe(ItemUtils.matchesWithWildcard(new ItemStack(Items.QUARTZ)), pnq)));
+                purifyRecipes.add(new PurifyRecipe(ItemUtils.matchesWithWildcard(new ItemStack(Items.QUARTZ)), pnq)));
         defs.materials().purifiedFluixCrystal().maybeStack(2).ifPresent(pfq ->
                 defs.materials().fluixCrystal().maybeStack(1).ifPresent(fq ->
                         purifyRecipes.add(new PurifyRecipe(ItemUtils.matchesWithWildcard(fq), pfq))));
+
+        // circuit etching
+        defs.materials().logicProcessor().maybeStack(1).ifPresent(lp ->
+                etchRecipes.add(new EtchRecipe(OreDictUtils.matchesOredict("ingotGold"), lp)));
+        defs.materials().calcProcessor().maybeStack(1).ifPresent(cp ->
+                etchRecipes.add(new EtchRecipe(OreDictUtils.matchesOredict("crystalPureCertusQuartz"), cp)));
+        defs.materials().engProcessor().maybeStack(1).ifPresent(ep ->
+                etchRecipes.add(new EtchRecipe(OreDictUtils.matchesOredict("gemDiamond"), ep)));
     }
 
 }

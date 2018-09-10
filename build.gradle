@@ -37,7 +37,7 @@ repositories {
 
 dependencies {
     compile 'io.github.phantamanta44.libnine:libnine-1.12.2:1.0.0'
-    deobfCompile "appeng:appliedenergistics2:rv5-stable-11"
+    deobfCompile "appeng:appliedenergistics2:rv6-alpha-4"
 }
 
 processResources {

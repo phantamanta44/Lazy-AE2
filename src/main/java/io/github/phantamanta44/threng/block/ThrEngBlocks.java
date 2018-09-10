@@ -6,11 +6,11 @@ import io.github.phantamanta44.threng.constant.ThrEngConst;
 @SuppressWarnings("NullableProblems")
 public class ThrEngBlocks {
 
-    public static BlockMachine machine;
+    public static BlockMachine MACHINE;
 
     @InitMe(ThrEngConst.MOD_ID)
     public static void init() {
-
+        MACHINE = new BlockMachine();
     }
 
 }

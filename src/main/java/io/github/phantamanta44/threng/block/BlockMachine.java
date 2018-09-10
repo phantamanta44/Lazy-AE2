@@ -1,17 +1,33 @@
 package io.github.phantamanta44.threng.block;
 
 import io.github.phantamanta44.libnine.block.L9BlockStated;
+import io.github.phantamanta44.libnine.gui.GuiIdentity;
+import io.github.phantamanta44.libnine.tile.L9TileEntity;
 import io.github.phantamanta44.libnine.util.collection.Accrue;
+import io.github.phantamanta44.libnine.util.world.WorldBlockPos;
+import io.github.phantamanta44.threng.ThrEng;
 import io.github.phantamanta44.threng.constant.LangConst;
+import io.github.phantamanta44.threng.inventory.ThrEngGuis;
+import io.github.phantamanta44.threng.tile.TileAggregator;
+import io.github.phantamanta44.threng.tile.TileCentrifuge;
+import io.github.phantamanta44.threng.tile.TileEtcher;
 import io.github.phantamanta44.threng.tile.base.IActivable;
+import io.github.phantamanta44.threng.tile.base.IDirectionable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+
+import java.util.Objects;
+import java.util.function.Supplier;
 
 public class BlockMachine extends L9BlockStated {
 
@@ -30,26 +46,44 @@ public class BlockMachine extends L9BlockStated {
 
     @Override
     protected void accrueVolatileProperties(Accrue<IProperty<?>> props) {
-        props.accept(ThrEngProps.ACTIVE);
+        props.acceptAll(ThrEngProps.ACTIVE, ThrEngProps.ROTATION);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tile = world.getTileEntity(pos);
-        return tile instanceof IActivable
-                ? state.withProperty(ThrEngProps.ACTIVE, ((IActivable)tile).isActive())
-                : state;
+        TileEntity tile = Objects.requireNonNull(world.getTileEntity(pos));
+        return state
+                .withProperty(ThrEngProps.ACTIVE, ((IActivable)tile).isActive())
+                .withProperty(ThrEngProps.ROTATION, ((IDirectionable)tile).getFrontFace());
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
+                                    EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (!world.isRemote) {
+            ThrEng.INSTANCE.getGuiHandler().openGui(player, state.getValue(TYPE).gui, new WorldBlockPos(world, pos));
+        }
+        return true;
     }
 
     public enum Type implements IStringSerializable {
 
-        AGGREGATOR,
-        CENTRIFUGE,
-        ETCHER;
+        AGGREGATOR(TileAggregator::new, ThrEngGuis.AGGREGATOR),
+        CENTRIFUGE(TileCentrifuge::new, ThrEngGuis.CENTRIFUGE),
+        ETCHER(TileEtcher::new, ThrEngGuis.ETCHER);
+
+        public final GuiIdentity<?, ?> gui;
+
+        private final Supplier<? extends L9TileEntity> factory;
+
+        Type(Supplier<? extends L9TileEntity> factory, GuiIdentity<?, ?> gui) {
+            this.factory = factory;
+            this.gui = gui;
+        }
 
         public TileEntity createTile() {
-
+            return factory.get();
         }
 
         @Override

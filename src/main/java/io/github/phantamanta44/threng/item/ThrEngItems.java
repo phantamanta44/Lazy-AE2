@@ -4,6 +4,7 @@ import io.github.phantamanta44.libnine.InitMe;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import net.minecraftforge.oredict.OreDictionary;
 
+@SuppressWarnings("NullableProblems")
 public class ThrEngItems {
 
     public static ItemMaterial MATERIAL;

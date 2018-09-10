@@ -1,0 +1,6 @@
+{
+  "parent": "threng:block/machine",
+  "textures": {
+    "front": "#face_active"
+  }
+}
