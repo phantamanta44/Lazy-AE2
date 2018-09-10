@@ -57,7 +57,7 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
     @Override
     protected int getMaxWork() {
         if (maxWork == -1) {
-            maxWork = 150 - 16 * getUpgradeCount();
+            maxWork = 150 - 18 * getUpgradeCount();
         }
         return maxWork;
     }
@@ -65,7 +65,7 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
     @Override
     protected int getEnergyCost() {
         if (energyCost == -1) {
-            energyCost = (int)Math.ceil(Math.pow(1.61616, getUpgradeCount())
+            energyCost = (int)Math.ceil(Math.pow(1.63, getUpgradeCount())
                     * getBaseEnergyPerOperation() / getMaxWork());
         }
         return energyCost;
