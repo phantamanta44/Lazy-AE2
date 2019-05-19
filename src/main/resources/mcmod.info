@@ -1,8 +1,8 @@
 [
 {
   "modid": "threng",
-  "name": "Theoretical Energistics",
-  "description": "The stuff you wish was in AE2",
+  "name": "Lazy AE2",
+  "description": "AE2 but with more magical boxes",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",

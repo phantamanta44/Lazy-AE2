@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "1.0.0"
 group = "io.github.phantamanta44.threng"
-archivesBaseName = "threng-ae2"
+archivesBaseName = "lazy-ae2-1.12"
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {

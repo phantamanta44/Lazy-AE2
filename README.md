@@ -1,5 +1,5 @@
-# Theoretical Energistics #
-the things you wish were in AE2 but aren't
+# Lazy AE2 #
+AE2 for people who hate microcrafting
 
 ## Dependencies ##
 * [LibNine](https://github.com/phantamanta44/libnine)
