@@ -18,7 +18,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -58,6 +60,12 @@ public class BlockMachine extends L9BlockStated {
         return state
                 .withProperty(ThrEngProps.ACTIVE, ((IActivable)tile).isActive())
                 .withProperty(ThrEngProps.ROTATION, ((IDirectionable)tile).getFrontFace());
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        Objects.requireNonNull(this.<TileMachine>getTileEntity(world, pos))
+                .setFrontFace(placer.getHorizontalFacing().getOpposite());
     }
 
     @Override
