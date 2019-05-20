@@ -78,6 +78,10 @@ public abstract class TileMachine extends TilePowered implements IActivable, IDi
         return frontFace.get();
     }
 
+    public void setFrontFace(EnumFacing face) {
+        frontFace.set(face);
+    }
+
     @Override
     public void deserBytes(ByteUtils.Reader data) {
         super.deserBytes(data);

@@ -13,6 +13,7 @@ import io.github.phantamanta44.threng.tile.TileCentrifuge;
 import io.github.phantamanta44.threng.tile.TileEtcher;
 import io.github.phantamanta44.threng.tile.base.IActivable;
 import io.github.phantamanta44.threng.tile.base.IDirectionable;
+import io.github.phantamanta44.threng.tile.base.TileMachine;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -26,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -65,6 +67,26 @@ public class BlockMachine extends L9BlockStated {
             ThrEng.INSTANCE.getGuiHandler().openGui(player, state.getValue(TYPE).gui, new WorldBlockPos(world, pos));
         }
         return true;
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+        TileMachine tile = Objects.requireNonNull(getTileEntity(world, pos));
+        if (axis == EnumFacing.UP) {
+            tile.setFrontFace(tile.getFrontFace().rotateY());
+        } else if (axis == EnumFacing.DOWN) {
+            tile.setFrontFace(tile.getFrontFace().rotateYCCW());
+        } else {
+            EnumFacing current = tile.getFrontFace();
+            tile.setFrontFace(axis == current ? current.getOpposite() : axis);
+        }
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public EnumFacing[] getValidRotations(World world, BlockPos pos) {
+        return EnumFacing.HORIZONTALS;
     }
 
     public enum Type implements IStringSerializable {
