@@ -1,9 +1,11 @@
 package io.github.phantamanta44.threng;
 
+import io.github.phantamanta44.threng.item.ItemMaterial;
 import io.github.phantamanta44.threng.recipe.ThrEngRecipes;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class CommonProxy {
 
@@ -12,6 +14,8 @@ public class CommonProxy {
     }
 
     public void onInit(FMLInitializationEvent event) {
+        OreDictionary.registerOre("ingotFluixSteel", ItemMaterial.Type.FLUIX_STEEL.newStack(1));
+        OreDictionary.registerOre("dustCoal", ItemMaterial.Type.COAL_DUST.newStack(1));
         ThrEngRecipes.addRecipes();
     }
 
