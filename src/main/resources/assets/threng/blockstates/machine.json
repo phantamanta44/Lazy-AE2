@@ -4,6 +4,21 @@
     "model": "threng:machine"
   },
   "variants": {
+    "inv_aggregator": [{
+      "textures": {
+        "face": "threng:blocks/machine/aggregator"
+      }
+    }],
+    "inv_centrifuge": [{
+      "textures": {
+        "face": "threng:blocks/machine/centrifuge"
+      }
+    }],
+    "inv_etcher": [{
+      "textures": {
+        "face": "threng:blocks/machine/etcher"
+      }
+    }],
     "type": {
       "aggregator": {
         "textures": {
