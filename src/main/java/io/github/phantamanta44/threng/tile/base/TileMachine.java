@@ -22,6 +22,7 @@ public abstract class TileMachine extends TilePowered implements IActivable, IDi
 
     @Override
     protected void tick() {
+        boolean wasWorking = working;
         if (canWork()) {
             int energyCost = getEnergyCost();
             if (energy.getQuantity() > energyCost) {
@@ -43,6 +44,9 @@ public abstract class TileMachine extends TilePowered implements IActivable, IDi
             if (!world.isRemote) work.setInt(0);
             working = false;
             setDirty();
+        }
+        if (working != wasWorking) {
+            world.markBlockRangeForRenderUpdate(pos, pos);
         }
     }
 
