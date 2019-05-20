@@ -5,13 +5,13 @@ item.threng:material1.name=Carbonic Fluix Complex
 item.threng:material2.name=Fluix-Plated Iron
 item.threng:material3.name=Coal Dust
 
-tile.threng:machine0.name=Magic Aggregator Thing
-tile.threng:machine1.name=Magic Centrifuge Thing
-tile.threng:machine2.name=Magic Etcher Thing
+tile.threng:machine0.name=Fluix Aggregator
+tile.threng:machine1.name=Pulse Centrifuge
+tile.threng:machine2.name=ME Circuit Etcher
 
-threng.container.aggregator=Magic Aggregator Thing
-threng.container.centrifuge=Magic Centrifuge Thing
-threng.container.etcher=Magic Etcher Thing
+threng.container.aggregator=Fluix Aggregator
+threng.container.centrifuge=Pulse Centrifuge
+threng.container.etcher=ME Circuit Etcher
 
 threng.misc.side.up=Up
 threng.misc.side.left=Left
