@@ -12,3 +12,14 @@ tile.threng:machine2.name=Magic Etcher Thing
 threng.container.aggregator=Magic Aggregator Thing
 threng.container.centrifuge=Magic Centrifuge Thing
 threng.container.etcher=Magic Etcher Thing
+
+threng.misc.side.up=Up
+threng.misc.side.left=Left
+threng.misc.side.front=Front
+threng.misc.side.right=Right
+threng.misc.side.down=Down
+threng.misc.side.back=Back
+
+threng.misc.io.input=Input
+threng.misc.io.output=Output
+threng.misc.io.none=None

@@ -7,14 +7,17 @@ import io.github.phantamanta44.libnine.recipe.input.IRcpIn;
 import io.github.phantamanta44.libnine.recipe.output.IRcpOut;
 import io.github.phantamanta44.libnine.util.TriBool;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
+import io.github.phantamanta44.libnine.util.world.BlockSide;
+import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.threng.util.AppEngUtils;
+import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extends IRcpOut<OT>, R extends IRcp<IT, I, O>>
-        extends TileMachine {
+        extends TileMachine implements IAllocableSides<SlotType.BasicIO> {
 
     private final Class<R> recipeType;
 
@@ -32,6 +35,19 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
     public TileSimpleProcessor(Class<R> recipeType, int energyBuffer) {
         super(energyBuffer);
         this.recipeType = recipeType;
+    }
+
+    protected abstract IAllocableSides<SlotType.BasicIO> getSidedIo();
+
+    @Override
+    public void setFace(BlockSide face, SlotType.BasicIO state) {
+        getSidedIo().setFace(face, state);
+        setDirty();
+    }
+
+    @Override
+    public SlotType.BasicIO getFace(BlockSide face) {
+        return getSidedIo().getFace(face);
     }
 
     @Override

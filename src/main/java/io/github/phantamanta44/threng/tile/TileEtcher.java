@@ -8,6 +8,7 @@ import io.github.phantamanta44.libnine.tile.RegisterTile;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
 import io.github.phantamanta44.libnine.util.helper.OreDictUtils;
 import io.github.phantamanta44.libnine.util.tuple.ITriple;
+import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.recipe.EtchRecipe;
@@ -42,6 +43,11 @@ public class TileEtcher
         return super.initCapabilities()
                 .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, invInput, sides.getPredicate(SlotType.BasicIO.INPUT))
                 .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, slotOutput, sides.getPredicate(SlotType.BasicIO.OUTPUT));
+    }
+
+    @Override
+    public IAllocableSides<SlotType.BasicIO> getSidedIo() {
+        return sides;
     }
 
     @Override

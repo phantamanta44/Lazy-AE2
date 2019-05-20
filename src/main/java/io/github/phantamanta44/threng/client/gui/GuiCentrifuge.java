@@ -1,12 +1,12 @@
 package io.github.phantamanta44.threng.client.gui;
 
-import io.github.phantamanta44.threng.client.gui.base.GuiEnergized;
+import io.github.phantamanta44.threng.client.gui.base.GuiSimpleProcessor;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ResConst;
 import io.github.phantamanta44.threng.inventory.ContainerCentrifuge;
 import net.minecraft.client.resources.I18n;
 
-public class GuiCentrifuge extends GuiEnergized<ContainerCentrifuge> {
+public class GuiCentrifuge extends GuiSimpleProcessor<ContainerCentrifuge> {
 
     public GuiCentrifuge(ContainerCentrifuge cont) {
         super(cont, ResConst.GUI_CENTRIFUGE.getTexture());

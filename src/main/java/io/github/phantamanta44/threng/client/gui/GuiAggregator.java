@@ -1,12 +1,12 @@
 package io.github.phantamanta44.threng.client.gui;
 
-import io.github.phantamanta44.threng.client.gui.base.GuiEnergized;
+import io.github.phantamanta44.threng.client.gui.base.GuiSimpleProcessor;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ResConst;
 import io.github.phantamanta44.threng.inventory.ContainerAggregator;
 import net.minecraft.client.resources.I18n;
 
-public class GuiAggregator extends GuiEnergized<ContainerAggregator> {
+public class GuiAggregator extends GuiSimpleProcessor<ContainerAggregator> {
 
     public GuiAggregator(ContainerAggregator cont) {
         super(cont, ResConst.GUI_AGGREGATOR.getTexture());

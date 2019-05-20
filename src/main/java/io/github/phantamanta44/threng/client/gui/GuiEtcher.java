@@ -1,12 +1,12 @@
 package io.github.phantamanta44.threng.client.gui;
 
-import io.github.phantamanta44.threng.client.gui.base.GuiEnergized;
+import io.github.phantamanta44.threng.client.gui.base.GuiSimpleProcessor;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ResConst;
 import io.github.phantamanta44.threng.inventory.ContainerEtcher;
 import net.minecraft.client.resources.I18n;
 
-public class GuiEtcher extends GuiEnergized<ContainerEtcher> {
+public class GuiEtcher extends GuiSimpleProcessor<ContainerEtcher> {
 
     public GuiEtcher(ContainerEtcher cont) {
         super(cont, ResConst.GUI_ETCHER.getTexture());
