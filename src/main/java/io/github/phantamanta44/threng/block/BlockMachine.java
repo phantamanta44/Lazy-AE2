@@ -2,12 +2,14 @@ package io.github.phantamanta44.threng.block;
 
 import io.github.phantamanta44.libnine.block.L9BlockStated;
 import io.github.phantamanta44.libnine.gui.GuiIdentity;
+import io.github.phantamanta44.libnine.item.L9ItemBlock;
 import io.github.phantamanta44.libnine.tile.L9TileEntity;
 import io.github.phantamanta44.libnine.util.collection.Accrue;
 import io.github.phantamanta44.libnine.util.world.WorldBlockPos;
 import io.github.phantamanta44.threng.ThrEng;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.inventory.ThrEngGuis;
+import io.github.phantamanta44.threng.item.block.ItemBlockMachine;
 import io.github.phantamanta44.threng.tile.TileAggregator;
 import io.github.phantamanta44.threng.tile.TileCentrifuge;
 import io.github.phantamanta44.threng.tile.TileEtcher;
@@ -41,6 +43,11 @@ public class BlockMachine extends L9BlockStated {
         super(LangConst.BLOCK_MACHINE, Material.IRON);
         setHardness(6.0F);
         setTileFactory((w, m) -> Type.fromMeta(m).createTile());
+    }
+
+    @Override
+    protected L9ItemBlock initItemBlock() {
+        return new ItemBlockMachine(this);
     }
 
     @Override

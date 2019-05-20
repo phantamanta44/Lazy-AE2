@@ -1,0 +1,25 @@
+{
+  "9s": "pi",
+  "archetype": {
+    "parent": "threng:block/machine"
+  },
+  "mutations": {
+    "type": {
+      "aggregator": {
+        "textures": {
+          "face": "threng:blocks/machine/aggregator"
+        }
+      },
+      "centrifuge": {
+        "textures": {
+          "face": "threng:blocks/machine/centrifuge"
+        }
+      },
+      "etcher": {
+        "textures": {
+          "face": "threng:blocks/machine/etcher"
+        }
+      }
+    }
+  }
+}
