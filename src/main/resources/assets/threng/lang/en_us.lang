@@ -25,3 +25,7 @@ threng.misc.side.back=Back
 threng.misc.io.input=Input
 threng.misc.io.output=Output
 threng.misc.io.none=None
+
+threng.int.jei.category.aggregator=Fluix Aggregation
+threng.int.jei.category.centrifuge=Pulse Centrifuge
+threng.int.jei.category.etcher=ME Circuit Etching

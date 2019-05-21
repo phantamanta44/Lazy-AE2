@@ -31,4 +31,12 @@ public class LangConst {
         return I18n.format(MISC_KEY + "io." + io.name().toLowerCase());
     }
 
+    public static final String INT_KEY = ThrEngConst.MOD_ID + ".int.";
+
+    public static final String INT_JEI_KEY = INT_KEY + "jei.";
+    public static final String INT_JEI_CAT_KEY = INT_JEI_KEY + "category.";
+    public static final String INT_JEI_CAT_AGG = INT_JEI_CAT_KEY + "aggregator";
+    public static final String INT_JEI_CAT_PURIFY = INT_JEI_CAT_KEY + "centrifuge";
+    public static final String INT_JEI_CAT_ETCH = INT_JEI_CAT_KEY + "etcher";
+
 }

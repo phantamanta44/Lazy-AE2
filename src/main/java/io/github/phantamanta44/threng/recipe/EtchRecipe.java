@@ -3,20 +3,23 @@ package io.github.phantamanta44.threng.recipe;
 import io.github.phantamanta44.libnine.recipe.IRcp;
 import io.github.phantamanta44.libnine.recipe.input.IRcpIn;
 import io.github.phantamanta44.libnine.recipe.output.ItemStackOutput;
+import io.github.phantamanta44.libnine.util.IDisplayableMatcher;
 import io.github.phantamanta44.libnine.util.helper.OreDictUtils;
 import io.github.phantamanta44.libnine.util.tuple.ITriple;
 import net.minecraft.item.ItemStack;
-
-import java.util.function.Predicate;
 
 public class EtchRecipe implements IRcp<ITriple<ItemStack, ItemStack, ItemStack>, EtchRecipe.Input, ItemStackOutput> {
 
     private final Input input;
     private final ItemStackOutput output;
 
-    public EtchRecipe(Predicate<ItemStack> input, ItemStack output) {
+    public EtchRecipe(IDisplayableMatcher<ItemStack> input, ItemStack output) {
         this.input = new Input(input);
         this.output = new ItemStackOutput(output);
+    }
+
+    public ItemStackOutput getOutput() {
+        return output;
     }
 
     @Override
@@ -31,10 +34,14 @@ public class EtchRecipe implements IRcp<ITriple<ItemStack, ItemStack, ItemStack>
 
     public static class Input implements IRcpIn<ITriple<ItemStack, ItemStack, ItemStack>> {
 
-        private final Predicate<ItemStack> inputPredicate;
+        private final IDisplayableMatcher<ItemStack> inputPredicate;
 
-        public Input(Predicate<ItemStack> input) {
+        public Input(IDisplayableMatcher<ItemStack> input) {
             this.inputPredicate = input;
+        }
+
+        public IDisplayableMatcher<ItemStack> getEtchingMatcher() {
+            return inputPredicate;
         }
 
         @Override

@@ -3,6 +3,7 @@ package io.github.phantamanta44.threng.recipe;
 import io.github.phantamanta44.libnine.recipe.IRcp;
 import io.github.phantamanta44.libnine.recipe.input.IRcpIn;
 import io.github.phantamanta44.libnine.recipe.output.ItemStackOutput;
+import io.github.phantamanta44.libnine.util.IDisplayableMatcher;
 import io.github.phantamanta44.libnine.util.collection.ISieve;
 import io.github.phantamanta44.libnine.util.tuple.ITriple;
 import net.minecraft.item.ItemStack;
@@ -11,16 +12,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class AggRecipe implements IRcp<ITriple<ItemStack, ItemStack, ItemStack>, AggRecipe.Input, ItemStackOutput> {
 
     private final Input input;
     private final ItemStackOutput output;
 
-    public AggRecipe(Collection<Predicate<ItemStack>> input, ItemStack output) {
+    public AggRecipe(Collection<IDisplayableMatcher<ItemStack>> input, ItemStack output) {
         this.input = new Input(input);
         this.output = new ItemStackOutput(output);
+    }
+
+    public ItemStackOutput getOutput() {
+        return output;
     }
 
     @Override
@@ -35,10 +39,14 @@ public class AggRecipe implements IRcp<ITriple<ItemStack, ItemStack, ItemStack>,
 
     public static class Input implements IRcpIn<ITriple<ItemStack, ItemStack, ItemStack>> {
 
-        private final List<Predicate<ItemStack>> inputs;
+        private final List<IDisplayableMatcher<ItemStack>> inputs;
 
-        public Input(Collection<Predicate<ItemStack>> inputs) {
+        public Input(Collection<IDisplayableMatcher<ItemStack>> inputs) {
             this.inputs = new ArrayList<>(inputs);
+        }
+
+        public List<IDisplayableMatcher<ItemStack>> getInputs() {
+            return inputs;
         }
 
         @Override

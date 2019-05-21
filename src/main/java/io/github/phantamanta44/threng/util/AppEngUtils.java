@@ -10,26 +10,27 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.crafting.MECraftingInventory;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
+import io.github.phantamanta44.libnine.util.IDisplayableMatcher;
 import io.github.phantamanta44.libnine.util.ImpossibilityRealizedException;
 import io.github.phantamanta44.libnine.util.helper.ItemUtils;
 import io.github.phantamanta44.libnine.util.helper.MirrorUtils;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class AppEngUtils {
 
-    public static final Predicate<ItemStack> IS_UPGRADE_ACCEL = genItemPredicate(defs -> defs.materials().cardSpeed());
+    public static final IDisplayableMatcher<ItemStack> IS_UPGRADE_ACCEL = genItemPredicate(defs -> defs.materials().cardSpeed());
 
-    private static Predicate<ItemStack> genItemPredicate(Function<IDefinitions, IItemDefinition> item) {
+    private static IDisplayableMatcher<ItemStack> genItemPredicate(Function<IDefinitions, IItemDefinition> item) {
         return item.apply(AEApi.instance().definitions()).maybeStack(1)
                 .map(ItemUtils::matchesWithWildcard)
-                .orElse(is -> false);
+                .orElse(IDisplayableMatcher.of(() -> new ItemStack(Blocks.BARRIER), s -> false));
     }
 
     private static final MirrorUtils.IField<Map> fTasks = MirrorUtils.reflectField(CraftingCPUCluster.class, "tasks");

@@ -31,7 +31,6 @@ import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
 import io.github.phantamanta44.libnine.util.world.WorldUtils;
 import io.github.phantamanta44.threng.block.BlockMachine;
-import io.github.phantamanta44.threng.block.ThrEngBlocks;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.tile.base.IActivable;
 import io.github.phantamanta44.threng.tile.base.IDirectionable;
@@ -103,7 +102,7 @@ public class TileFastCraftingBus extends TileAENetworked
     @Nullable
     @Override
     protected ItemStack getNetworkRepresentation() {
-        return new ItemStack(ThrEngBlocks.MACHINE, 1, BlockMachine.Type.FAST_CRAFTER.ordinal());
+        return BlockMachine.Type.FAST_CRAFTER.newStack(1);
     }
 
     @Override
@@ -227,6 +226,7 @@ public class TileFastCraftingBus extends TileAENetworked
                                         break cpuIter;
                                     }
                                 }
+                                cachedExportInvState.clear();
                                 --invocations;
                                 task.decrement(cpu.getActionSource());
                             }

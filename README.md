@@ -12,4 +12,4 @@ AE2 for people who hate microcrafting
 * ~~some kind of mechanism for making "fluix steel"~~
 * ~~a faster processing provider since interfaces have an export rate limit~~
 * some kind of cluster crafting mechanism for launching multiple crafting ops simultaneously
-* jei integration
+* ~~jei integration~~

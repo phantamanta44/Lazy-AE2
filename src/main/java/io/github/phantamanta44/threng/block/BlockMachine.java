@@ -134,6 +134,10 @@ public class BlockMachine extends L9BlockStated {
             return values()[meta];
         }
 
+        public ItemStack newStack(int count) {
+            return new ItemStack(ThrEngBlocks.MACHINE, count, ordinal());
+        }
+
     }
 
 }
