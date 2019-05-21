@@ -1,8 +1,6 @@
 package io.github.phantamanta44.threng.block;
 
 import io.github.phantamanta44.libnine.InitMe;
-import io.github.phantamanta44.libnine.LibNine;
-import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 
 @SuppressWarnings("NullableProblems")
