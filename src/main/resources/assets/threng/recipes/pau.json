@@ -1,0 +1,32 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "sis",
+    "xcx",
+    "sps"
+  ],
+  "key": {
+    "s": {
+      "type": "forge:ore_dict",
+      "ore": "ingotFluixSteel"
+    },
+    "i": {
+      "item": "appliedenergistics2:interface"
+    },
+    "x": {
+      "item": "appliedenergistics2:crafting_accelerator"
+    },
+    "c": {
+      "item": "threng:material",
+      "data": 4
+    },
+    "p": {
+      "item": "threng:material",
+      "data": 14
+    }
+  },
+  "result": {
+    "item": "threng:machine",
+    "data": 3
+  }
+}

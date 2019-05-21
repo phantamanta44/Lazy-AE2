@@ -1,0 +1,29 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "igi",
+    "dpd",
+    "igi"
+  ],
+  "key": {
+    "i": {
+      "type": "forge:ore_dict",
+      "ore": "ingotFluixSteel"
+    },
+    "g": {
+      "item": "appliedenergistics2:quartz_glass"
+    },
+    "d": {
+      "item": "threng:material",
+      "data": 1
+    },
+    "p": {
+      "item": "appliedenergistics2:material",
+      "data": 24
+    }
+  },
+  "result": {
+    "item": "threng:material",
+    "data": 4
+  }
+}

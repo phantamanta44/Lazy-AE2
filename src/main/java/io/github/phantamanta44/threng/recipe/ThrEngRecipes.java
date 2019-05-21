@@ -56,14 +56,32 @@ public class ThrEngRecipes {
                 Stream.of("dustCoal", "dustFluix", "ingotIron")
                         .map(OreDictUtils::matchesOredict).collect(Collectors.toList()),
                 ItemMaterial.Type.FLUIX_STEEL.newStack(1)));
+        aggRecipes.add(new AggRecipe(
+                Stream.of("dustCoal", "dustFluix", "itemSilicon")
+                        .map(OreDictUtils::matchesOredict).collect(Collectors.toList()),
+                ItemMaterial.Type.STEEL_PROCESS_DUST.newStack(1)));
 
-        // fluix crystals
+        // aggregation
         defs.materials().fluixCrystal().maybeStack(2).ifPresent(fc ->
                 defs.materials().certusQuartzCrystalCharged().maybeStack(1).ifPresent(ccq ->
                         aggRecipes.add(new AggRecipe(
                                 Arrays.asList(OreDictUtils.matchesOredict("gemQuartz"),
                                         OreDictUtils.matchesOredict("dustRedstone"),
                                         ItemUtils.matchesWithWildcard(ccq)), fc))));
+        defs.materials().skyDust().maybeStack(1).ifPresent(sd ->
+                aggRecipes.add(new AggRecipe(
+                        Arrays.asList(OreDictUtils.matchesOredict("gemDiamond"),
+                                ItemUtils.matchesWithWildcard(sd),
+                                OreDictUtils.matchesOredict("dustEnderPearl")),
+                        ItemMaterial.Type.SPACE_GEM.newStack(1))));
+        defs.materials().skyDust().maybeStack(1).ifPresent(sd ->
+                defs.materials().matterBall().maybeStack(1).ifPresent(mb ->
+                        aggRecipes.add(new AggRecipe(
+                                Arrays.asList(
+                                        ItemUtils.matchesWithWildcard(sd),
+                                        ItemUtils.matchesWithWildcard(mb),
+                                        ItemUtils.matchesWithWildcard(ItemMaterial.Type.STEEL_PROCESS_DUST.newStack(1))),
+                                ItemMaterial.Type.SPEC_CORE.newStack(1)))));
 
         // crystal purification
         defs.materials().purifiedCertusQuartzCrystal().maybeStack(2).ifPresent(pcq ->
@@ -82,6 +100,21 @@ public class ThrEngRecipes {
                 etchRecipes.add(new EtchRecipe(OreDictUtils.matchesOredict("crystalPureCertusQuartz"), cp)));
         defs.materials().engProcessor().maybeStack(1).ifPresent(ep ->
                 etchRecipes.add(new EtchRecipe(OreDictUtils.matchesOredict("gemDiamond"), ep)));
+        etchRecipes.add(new EtchRecipe(
+                ItemUtils.matchesWithWildcard(ItemMaterial.Type.SPACE_GEM.newStack(1)),
+                ItemMaterial.Type.PARALLEL_PROCESSOR.newStack(1)));
+        etchRecipes.add(new EtchRecipe(
+                ItemUtils.matchesWithWildcard(ItemMaterial.Type.SPEC_CORE_64.newStack(1)),
+                ItemMaterial.Type.SPEC_PROCESSOR.newStack(1)));
+
+        // misc recipes
+        defs.materials().skyDust().maybeStack(1).ifPresent(sd ->
+                defs.blocks().skyStoneBlock().maybeStack(1).ifPresent(ss ->
+                        purifyRecipes.add(new PurifyRecipe(ItemUtils.matchesWithWildcard(ss), sd))));
+        defs.materials().enderDust().maybeStack(1).ifPresent(ed ->
+                purifyRecipes.add(new PurifyRecipe(OreDictUtils.matchesOredict("enderpearl"), ed)));
+        defs.materials().flour().maybeStack(1).ifPresent(f ->
+                purifyRecipes.add(new PurifyRecipe(OreDictUtils.matchesOredict("cropWheat"), f)));
     }
 
 }

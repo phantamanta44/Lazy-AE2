@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "cpc"
+  ],
+  "key": {
+    "c": {
+      "item": "threng:material",
+      "data": 10
+    },
+    "p": {
+      "item": "appliedenergistics2:material",
+      "data": 23
+    }
+  },
+  "result": {
+    "item": "threng:material",
+    "data": 11
+  }
+}

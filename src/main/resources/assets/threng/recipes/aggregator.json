@@ -1,0 +1,32 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "hhh",
+    "rcr",
+    "lxl"
+  ],
+  "key": {
+    "h": {
+      "item": "minecraft:hopper"
+    },
+    "r": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    },
+    "c": {
+      "item": "threng:material",
+      "data": 4
+    },
+    "l": {
+      "item": "appliedenergistics2:material",
+      "data": 22
+    },
+    "x": {
+      "item": "appliedenergistics2:condenser"
+    }
+  },
+  "result": {
+    "item": "threng:machine",
+    "data": 0
+  }
+}

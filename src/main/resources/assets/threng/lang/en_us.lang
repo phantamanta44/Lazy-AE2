@@ -4,6 +4,17 @@ item.threng:material0.name=Fluix Steel
 item.threng:material1.name=Carbonic Fluix Complex
 item.threng:material2.name=Fluix-Plated Iron
 item.threng:material3.name=Coal Dust
+item.threng:material4.name=Fluix Logic Unit
+item.threng:material5.name=Resonating Crystal
+item.threng:material6.name=Massively Parallel Processor
+item.threng:material7.name=Speculation Core (1x)
+item.threng:material8.name=Speculation Core (2x)
+item.threng:material9.name=Speculation Core (4x)
+item.threng:material10.name=Speculation Core (8x)
+item.threng:material11.name=Speculation Core (16x)
+item.threng:material12.name=Speculation Core (32x)
+item.threng:material13.name=Speculation Core (64x)
+item.threng:material14.name=Speculative Processor
 
 tile.threng:machine0.name=Fluix Aggregator
 tile.threng:machine1.name=Pulse Centrifuge

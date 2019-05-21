@@ -1,0 +1,44 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "xiy",
+    "gcg",
+    "zfw"
+  ],
+  "key": {
+    "i": {
+      "item": "appliedenergistics2:inscriber"
+    },
+    "g": {
+      "item": "appliedenergistics2:quartz_glass"
+    },
+    "c": {
+      "item": "threng:material",
+      "data": 4
+    },
+    "f": {
+      "item": "appliedenergistics2:material",
+      "data": 43
+    },
+    "x": {
+      "item": "appliedenergistics2:material",
+      "data": 19
+    },
+    "y": {
+      "item": "appliedenergistics2:material",
+      "data": 13
+    },
+    "z": {
+      "item": "appliedenergistics2:material",
+      "data": 15
+    },
+    "w": {
+      "item": "appliedenergistics2:material",
+      "data": 14
+    }
+  },
+  "result": {
+    "item": "threng:machine",
+    "data": 2
+  }
+}

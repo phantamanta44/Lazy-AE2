@@ -1,0 +1,33 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "sas",
+    "lcl",
+    "sps"
+  ],
+  "key": {
+    "s": {
+      "type": "forge:ore_dict",
+      "ore": "ingotFluixSteel"
+    },
+    "a": {
+      "item": "appliedenergistics2:molecular_assembler"
+    },
+    "l": {
+      "item": "appliedenergistics2:material",
+      "data": 22
+    },
+    "c": {
+      "item": "threng:material",
+      "data": 4
+    },
+    "p": {
+      "item": "threng:material",
+      "data": 6
+    }
+  },
+  "result": {
+    "item": "threng:machine",
+    "data": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "cpc"
+  ],
+  "key": {
+    "c": {
+      "item": "threng:material",
+      "data": 12
+    },
+    "p": {
+      "item": "threng:material",
+      "data": 6
+    }
+  },
+  "result": {
+    "item": "threng:material",
+    "data": 13
+  }
+}

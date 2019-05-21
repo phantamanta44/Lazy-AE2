@@ -18,7 +18,8 @@ public class ItemMaterial extends L9ItemSubs implements ParameterizedItemModel.I
 
     public enum Type {
 
-        FLUIX_STEEL, STEEL_PROCESS_DUST, STEEL_PROCESS_INGOT, COAL_DUST;
+        FLUIX_STEEL, STEEL_PROCESS_DUST, STEEL_PROCESS_INGOT, COAL_DUST, MACHINE_CORE, SPACE_GEM, PARALLEL_PROCESSOR,
+        SPEC_CORE, SPEC_CORE_2, SPEC_CORE_4, SPEC_CORE_8, SPEC_CORE_16, SPEC_CORE_32, SPEC_CORE_64, SPEC_PROCESSOR;
 
         public static Type fromStack(ItemStack stack) {
             return fromMeta(stack.getMetadata());

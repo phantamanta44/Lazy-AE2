@@ -24,6 +24,61 @@
         "textures": {
           "layer0": "threng:items/coal_dust"
         }
+      },
+      "machine_core": {
+        "textures": {
+          "layer0": "threng:items/machine_core"
+        }
+      },
+      "space_gem": {
+        "textures": {
+          "layer0": "threng:items/space_gem"
+        }
+      },
+      "parallel_processor": {
+        "textures": {
+          "layer0": "threng:items/parallel_processor"
+        }
+      },
+      "spec_core": {
+        "textures": {
+          "layer0": "threng:items/spec_core/1"
+        }
+      },
+      "spec_core_2": {
+        "textures": {
+          "layer0": "threng:items/spec_core/2"
+        }
+      },
+      "spec_core_4": {
+        "textures": {
+          "layer0": "threng:items/spec_core/4"
+        }
+      },
+      "spec_core_8": {
+        "textures": {
+          "layer0": "threng:items/spec_core/8"
+        }
+      },
+      "spec_core_16": {
+        "textures": {
+          "layer0": "threng:items/spec_core/16"
+        }
+      },
+      "spec_core_32": {
+        "textures": {
+          "layer0": "threng:items/spec_core/32"
+        }
+      },
+      "spec_core_64": {
+        "textures": {
+          "layer0": "threng:items/spec_core/64"
+        }
+      },
+      "spec_processor": {
+        "textures": {
+          "layer0": "threng:items/spec_processor"
+        }
       }
     }
   }
