@@ -1,5 +1,7 @@
 package io.github.phantamanta44.threng;
 
+import appeng.api.config.Upgrades;
+import io.github.phantamanta44.threng.block.BlockMachine;
 import io.github.phantamanta44.threng.item.ItemMaterial;
 import io.github.phantamanta44.threng.recipe.ThrEngRecipes;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -17,6 +19,10 @@ public class CommonProxy {
         OreDictionary.registerOre("ingotFluixSteel", ItemMaterial.Type.FLUIX_STEEL.newStack(1));
         OreDictionary.registerOre("dustCoal", ItemMaterial.Type.COAL_DUST.newStack(1));
         ThrEngRecipes.addRecipes();
+
+        Upgrades.SPEED.registerItem(BlockMachine.Type.AGGREGATOR.newStack(1), 8);
+        Upgrades.SPEED.registerItem(BlockMachine.Type.CENTRIFUGE.newStack(1), 8);
+        Upgrades.SPEED.registerItem(BlockMachine.Type.ETCHER.newStack(1), 8);
     }
 
     public void onPostInit(FMLPostInitializationEvent event) {
