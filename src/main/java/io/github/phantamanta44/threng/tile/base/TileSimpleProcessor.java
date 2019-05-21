@@ -54,11 +54,16 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
     protected boolean canWork() {
         if (canWork == TriBool.NONE) {
             IT input = getInput();
-            activeRecipe = LibNine.PROXY.getRecipeManager().getRecipeList(recipeType).findRecipe(input);
-            if (activeRecipe != null) {
+            R newRecipe = LibNine.PROXY.getRecipeManager().getRecipeList(recipeType).findRecipe(input);
+            if (newRecipe != null) {
+                if (newRecipe != activeRecipe) {
+                    activeRecipe = newRecipe;
+                    resetWork();
+                }
                 activeRecipeOutput = activeRecipe.mapToOutput(input);
                 canWork = TriBool.wrap(activeRecipeOutput.isAcceptable(getOutputEnvironment()));
             } else {
+                activeRecipe = null;
                 canWork = TriBool.FALSE;
             }
         }

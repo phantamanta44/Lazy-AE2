@@ -64,6 +64,10 @@ public abstract class TileMachine extends TilePowered implements IActivable, IDi
         return work.getInt();
     }
 
+    protected void resetWork() {
+        work.setInt(0);
+    }
+
     public float getWorkFraction() {
         return Math.min((float)getWork() / getMaxWork(), 1F);
     }
