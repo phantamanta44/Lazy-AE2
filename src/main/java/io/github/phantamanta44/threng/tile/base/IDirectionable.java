@@ -6,4 +6,6 @@ public interface IDirectionable {
 
     EnumFacing getFrontFace();
 
+    void setFrontFace(EnumFacing face);
+
 }

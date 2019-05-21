@@ -19,6 +19,11 @@
         "textures": {
           "face": "threng:blocks/machine/etcher"
         }
+      },
+      "fast_crafter": {
+        "textures": {
+          "face": "threng:blocks/machine/fast_crafter"
+        }
       }
     }
   }

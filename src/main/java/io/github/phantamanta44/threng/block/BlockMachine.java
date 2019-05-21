@@ -13,6 +13,7 @@ import io.github.phantamanta44.threng.item.block.ItemBlockMachine;
 import io.github.phantamanta44.threng.tile.TileAggregator;
 import io.github.phantamanta44.threng.tile.TileCentrifuge;
 import io.github.phantamanta44.threng.tile.TileEtcher;
+import io.github.phantamanta44.threng.tile.TileFastCraftingBus;
 import io.github.phantamanta44.threng.tile.base.IActivable;
 import io.github.phantamanta44.threng.tile.base.IDirectionable;
 import io.github.phantamanta44.threng.tile.base.TileMachine;
@@ -71,7 +72,7 @@ public class BlockMachine extends L9BlockStated {
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        Objects.requireNonNull(this.<TileMachine>getTileEntity(world, pos))
+        Objects.requireNonNull((IDirectionable)this.getTileEntity(world, pos))
                 .setFrontFace(placer.getHorizontalFacing().getOpposite());
     }
 
@@ -108,7 +109,8 @@ public class BlockMachine extends L9BlockStated {
 
         AGGREGATOR(TileAggregator::new, ThrEngGuis.AGGREGATOR),
         CENTRIFUGE(TileCentrifuge::new, ThrEngGuis.CENTRIFUGE),
-        ETCHER(TileEtcher::new, ThrEngGuis.ETCHER);
+        ETCHER(TileEtcher::new, ThrEngGuis.ETCHER),
+        FAST_CRAFTER(TileFastCraftingBus::new, ThrEngGuis.FAST_CRAFTER);
 
         public final GuiIdentity<?, ?> gui;
 

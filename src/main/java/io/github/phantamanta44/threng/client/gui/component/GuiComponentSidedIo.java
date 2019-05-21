@@ -21,9 +21,13 @@ public class GuiComponentSidedIo extends GuiComponent {
 
     private final IAllocableSides<SlotType.BasicIO> sides;
 
-    public GuiComponentSidedIo(IAllocableSides<SlotType.BasicIO> sides) {
-        super(146, 7, 17, 17);
+    public GuiComponentSidedIo(IAllocableSides<SlotType.BasicIO> sides, int x, int y) {
+        super(x, y, 17, 17);
         this.sides = sides;
+    }
+
+    public GuiComponentSidedIo(IAllocableSides<SlotType.BasicIO> sides) {
+        this(sides, 146, 7);
     }
 
     @Override

@@ -37,6 +37,12 @@
           "face": "threng:blocks/machine/etcher",
           "face_active": "threng:blocks/machine/etcher_active"
         }
+      },
+      "fast_crafter": {
+        "textures": {
+          "face": "threng:blocks/machine/fast_crafter",
+          "face_active": "threng:blocks/machine/fast_crafter_active"
+        }
       }
     },
     "rotation": {

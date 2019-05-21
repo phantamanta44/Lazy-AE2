@@ -21,6 +21,8 @@ public class ResConst {
     public static final TextureRegion GUI_ETCHER_PRESS_TOP = GUI_ETCHER.getRegion(198, 0, 22, 11);
     public static final TextureRegion GUI_ETCHER_PRESS_BOTTOM = GUI_ETCHER.getRegion(220, 0, 22, 11);
 
+    public static final TextureResource GUI_FAST_CRAFTER = getTextureGui("fast_crafter", 256, 256);
+
     private static TextureResource getTextureGui(String path, int width, int height) {
         return getTexture("gui/" + path, width, height);
     }
