@@ -10,7 +10,7 @@
   "authorList": ["phantamanta44"],
   "logoFile": "",
   "screenshots": [],
-  "useDepdencyInformation": true,
+  "useDependencyInformation": true,
   "dependencies": ["libnine", "appliedenergistics2"],
   "requiredMods": ["libnine", "appliedenergistics2"]
 }
