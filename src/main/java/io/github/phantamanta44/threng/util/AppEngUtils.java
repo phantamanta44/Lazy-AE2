@@ -18,6 +18,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -79,15 +81,28 @@ public class AppEngUtils {
             }
         }
 
-        public void decrement(IActionSource actionSource) {
+        public boolean tryExtractItems(IActionSource actionSource) {
+            MECraftingInventory inv = fInventory.get(cpu);
+            List<IAEItemStack> extracted = new ArrayList<>();
+            for (IAEItemStack input : getPattern().getCondensedInputs()) {
+                IAEItemStack stack = inv.extractItems(input, Actionable.MODULATE, actionSource);
+                extracted.add(stack);
+                if (stack == null || stack.getStackSize() != input.getStackSize()) {
+                    for (IAEItemStack extractedStack : extracted) {
+                        inv.injectItems(extractedStack, Actionable.MODULATE, actionSource);
+                    }
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public void decrement() {
             try {
                 fValue.setLong(entry.getValue(), getInvocations() - 1);
                 IItemList<IAEItemStack> waitingFor = fWaitingFor.get(cpu);
                 for (IAEItemStack output : getPattern().getCondensedOutputs()) {
                     waitingFor.add(output.copy());
-                }
-                for (IAEItemStack input : getPattern().getCondensedInputs()) {
-                    fInventory.get(cpu).extractItems(input, Actionable.MODULATE, actionSource);
                 }
             } catch (IllegalAccessException e) {
                 throw new ImpossibilityRealizedException(e);

@@ -226,9 +226,17 @@ public class TileFastCraftingBus extends TileAENetworked
                                         break cpuIter;
                                     }
                                 }
-                                cachedExportInvState.clear();
-                                --invocations;
-                                task.decrement(cpu.getActionSource());
+                                if (task.tryExtractItems(cpu.getActionSource())) {
+                                    cachedExportInvState.clear();
+                                    --invocations;
+                                    task.decrement();
+                                } else {
+                                    for (int i = 0; i < cachedExportInvState.size(); i++) {
+                                        exportInventory.setStackInSlot(i, cachedExportInvState.get(i));
+                                    }
+                                    cachedExportInvState.clear();
+                                    continue cpuIter;
+                                }
                             }
                             break;
                         }
