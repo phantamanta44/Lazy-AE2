@@ -1,5 +1,6 @@
 package io.github.phantamanta44.threng.integration.jei;
 
+import crafttweaker.annotations.ModOnly;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ResConst;
 import io.github.phantamanta44.threng.integration.jei.base.ThrEngJeiCategory;
@@ -12,6 +13,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Arrays;
 
+@ModOnly("jei")
 class JeiRecipeTypeEtch extends ThrEngJeiCategory<EtchRecipe, JeiRecipeTypeEtch.Recipe> {
 
     JeiRecipeTypeEtch() {

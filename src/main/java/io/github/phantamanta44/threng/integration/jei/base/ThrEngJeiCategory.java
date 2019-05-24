@@ -1,5 +1,6 @@
 package io.github.phantamanta44.threng.integration.jei.base;
 
+import crafttweaker.annotations.ModOnly;
 import io.github.phantamanta44.libnine.recipe.IRcp;
 import io.github.phantamanta44.libnine.util.render.TextureRegion;
 import io.github.phantamanta44.threng.integration.jei.ThrEngJei;
@@ -11,6 +12,7 @@ import net.minecraft.client.resources.I18n;
 
 import javax.annotation.Nullable;
 
+@ModOnly("jei")
 public abstract class ThrEngJeiCategory<R extends IRcp<?, ?, ?>, W extends IRecipeWrapper> implements IRecipeCategory<W> {
 
     private final Class<R> type;

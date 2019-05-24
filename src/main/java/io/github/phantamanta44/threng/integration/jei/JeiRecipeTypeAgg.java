@@ -1,5 +1,6 @@
 package io.github.phantamanta44.threng.integration.jei;
 
+import crafttweaker.annotations.ModOnly;
 import io.github.phantamanta44.libnine.util.IDisplayableMatcher;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ResConst;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.stream.Collectors;
 
+@ModOnly("jei")
 class JeiRecipeTypeAgg extends ThrEngJeiCategory<AggRecipe, JeiRecipeTypeAgg.Recipe> {
 
     JeiRecipeTypeAgg() {

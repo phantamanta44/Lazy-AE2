@@ -1,5 +1,6 @@
 package io.github.phantamanta44.threng.integration.jei;
 
+import crafttweaker.annotations.ModOnly;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ResConst;
 import io.github.phantamanta44.threng.integration.jei.base.ThrEngJeiCategory;
@@ -9,6 +10,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
+@ModOnly("jei")
 class JeiRecipeTypePurify extends ThrEngJeiCategory<PurifyRecipe, JeiRecipeTypePurify.Recipe> {
 
     JeiRecipeTypePurify() {

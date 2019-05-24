@@ -1,5 +1,6 @@
 package io.github.phantamanta44.threng.integration.jei;
 
+import crafttweaker.annotations.ModOnly;
 import io.github.phantamanta44.libnine.LibNine;
 import io.github.phantamanta44.libnine.util.render.TextureRegion;
 import io.github.phantamanta44.threng.block.BlockMachine;
@@ -21,6 +22,7 @@ import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 
+@ModOnly("jei")
 @JEIPlugin
 public class ThrEngJei implements IModPlugin {
 
