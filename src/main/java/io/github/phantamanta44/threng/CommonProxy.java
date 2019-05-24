@@ -9,7 +9,13 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 public class CommonProxy {
+
+    private final List<Runnable> postInitTasks = new LinkedList<>();
 
     public void onPreInit(FMLPreInitializationEvent event) {
         ThrEngRecipes.registerRecipeTypes();
@@ -26,7 +32,11 @@ public class CommonProxy {
     }
 
     public void onPostInit(FMLPostInitializationEvent event) {
-        // NO-OP
+        postInitTasks.forEach(Runnable::run);
+    }
+
+    public void registerPostInitTask(Runnable task) {
+        postInitTasks.add(task);
     }
 
 }

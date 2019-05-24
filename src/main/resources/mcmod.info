@@ -11,7 +11,7 @@
   "logoFile": "",
   "screenshots": [],
   "useDependencyInformation": true,
-  "dependencies": ["libnine", "appliedenergistics2"],
+  "dependencies": ["libnine", "appliedenergistics2", "jei", "crafttweaker"],
   "requiredMods": ["libnine", "appliedenergistics2"]
 }
 ]
