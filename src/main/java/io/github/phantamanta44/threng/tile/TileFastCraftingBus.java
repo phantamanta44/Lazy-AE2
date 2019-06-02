@@ -262,7 +262,6 @@ public class TileFastCraftingBus extends TileAENetworked
     @MENetworkEventSubscribe
     public void onPowerStatusChange(final MENetworkPowerStatusChange event) {
         boolean nowActive = getProxy().isActive();
-        System.out.println(nowActive);
         if (active.isTrue() != nowActive) {
             active.setBool(nowActive);
             setDirty();
