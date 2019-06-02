@@ -10,6 +10,7 @@ import io.github.phantamanta44.threng.client.gui.GuiFastCraftingBus;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ThrEngGuis {
 
@@ -30,6 +31,7 @@ public class ThrEngGuis {
         LibNine.PROXY.getRegistrar().queueGuiServerReg(FAST_CRAFTER, ContainerFastCraftingBus::new);
     }
 
+    @SideOnly(Side.CLIENT)
     @InitMe(value = ThrEngConst.MOD_ID, sides = { Side.CLIENT })
     public static void registerClient() {
         LibNine.PROXY.getRegistrar().queueGuiClientReg(AGGREGATOR, (c, w, p, x, y, z) -> new GuiAggregator(c));
