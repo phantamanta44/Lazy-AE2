@@ -4,7 +4,7 @@
 
 **Lazy AE2** adds a few more Applied Energistics machines that help speed up certain operations. It was designed with the intent of creating alternate channels for automating AE2's in-world crafting mechanisms, which had a tendency to clash with lag-clearing tools.
 
-![](https://media.forgecdn.net/attachments/252/927/2019-05-22_01.png)
+![](show.png)
 
 ## New Features
 
