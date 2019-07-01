@@ -10,10 +10,7 @@ import io.github.phantamanta44.threng.ThrEng;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.inventory.ThrEngGuis;
 import io.github.phantamanta44.threng.item.block.ItemBlockMachine;
-import io.github.phantamanta44.threng.tile.TileAggregator;
-import io.github.phantamanta44.threng.tile.TileCentrifuge;
-import io.github.phantamanta44.threng.tile.TileEtcher;
-import io.github.phantamanta44.threng.tile.TileFastCraftingBus;
+import io.github.phantamanta44.threng.tile.*;
 import io.github.phantamanta44.threng.tile.base.IActivable;
 import io.github.phantamanta44.threng.tile.base.IDirectionable;
 import io.github.phantamanta44.threng.tile.base.TileMachine;
@@ -110,7 +107,8 @@ public class BlockMachine extends L9BlockStated {
         AGGREGATOR(TileAggregator::new, ThrEngGuis.AGGREGATOR),
         CENTRIFUGE(TileCentrifuge::new, ThrEngGuis.CENTRIFUGE),
         ETCHER(TileEtcher::new, ThrEngGuis.ETCHER),
-        FAST_CRAFTER(TileFastCraftingBus::new, ThrEngGuis.FAST_CRAFTER);
+        FAST_CRAFTER(TileFastCraftingBus::new, ThrEngGuis.FAST_CRAFTER),
+        LEVEL_MAINTAINER(TileLevelMaintainer::new, ThrEngGuis.LEVEL_MAINTAINER);
 
         public final GuiIdentity<?, ?> gui;
 

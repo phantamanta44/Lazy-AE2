@@ -1,0 +1,34 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "ses",
+    "pcp",
+    "sks"
+  ],
+  "key": {
+    "s": {
+      "type": "forge:ore_dict",
+      "ore": "ingotFluixSteel"
+    },
+    "e": {
+      "item": "appliedenergistics2:part",
+      "data": 280
+    },
+    "p": {
+      "item": "appliedenergistics2:material",
+      "data": 22
+    },
+    "c": {
+      "item": "threng:material",
+      "data": 4
+    },
+    "k": {
+      "item": "appliedenergistics2:material",
+      "data": 53
+    }
+  },
+  "result": {
+    "item": "threng:machine",
+    "data": 4
+  }
+}

@@ -3,10 +3,7 @@ package io.github.phantamanta44.threng.inventory;
 import io.github.phantamanta44.libnine.InitMe;
 import io.github.phantamanta44.libnine.LibNine;
 import io.github.phantamanta44.libnine.gui.GuiIdentity;
-import io.github.phantamanta44.threng.client.gui.GuiAggregator;
-import io.github.phantamanta44.threng.client.gui.GuiCentrifuge;
-import io.github.phantamanta44.threng.client.gui.GuiEtcher;
-import io.github.phantamanta44.threng.client.gui.GuiFastCraftingBus;
+import io.github.phantamanta44.threng.client.gui.*;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,6 +19,8 @@ public class ThrEngGuis {
             = new GuiIdentity<>(LangConst.GUI_ETCHER, ContainerEtcher.class);
     public static final GuiIdentity<ContainerFastCraftingBus, GuiFastCraftingBus> FAST_CRAFTER
             = new GuiIdentity<>(LangConst.GUI_FAST_CRAFTER, ContainerFastCraftingBus.class);
+    public static final GuiIdentity<ContainerLevelMaintainer, GuiLevelMaintainer> LEVEL_MAINTAINER
+            = new GuiIdentity<>(LangConst.GUI_LEVEL_MAINTAINER, ContainerLevelMaintainer.class);
 
     @InitMe(ThrEngConst.MOD_ID)
     public static void registerCommon() {
@@ -29,6 +28,7 @@ public class ThrEngGuis {
         LibNine.PROXY.getRegistrar().queueGuiServerReg(CENTRIFUGE, ContainerCentrifuge::new);
         LibNine.PROXY.getRegistrar().queueGuiServerReg(ETCHER, ContainerEtcher::new);
         LibNine.PROXY.getRegistrar().queueGuiServerReg(FAST_CRAFTER, ContainerFastCraftingBus::new);
+        LibNine.PROXY.getRegistrar().queueGuiServerReg(LEVEL_MAINTAINER, ContainerLevelMaintainer::new);
     }
 
     @SideOnly(Side.CLIENT)
@@ -38,6 +38,7 @@ public class ThrEngGuis {
         LibNine.PROXY.getRegistrar().queueGuiClientReg(CENTRIFUGE, (c, w, p, x, y, z) -> new GuiCentrifuge(c));
         LibNine.PROXY.getRegistrar().queueGuiClientReg(ETCHER, (c, w, p, x, y, z) -> new GuiEtcher(c));
         LibNine.PROXY.getRegistrar().queueGuiClientReg(FAST_CRAFTER, (c, w, p, x, y, z) -> new GuiFastCraftingBus(c));
+        LibNine.PROXY.getRegistrar().queueGuiClientReg(LEVEL_MAINTAINER, (c, w, p, x, y, z) -> new GuiLevelMaintainer(c));
     }
 
 }

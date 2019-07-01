@@ -24,6 +24,11 @@
         "textures": {
           "face": "threng:blocks/machine/fast_crafter"
         }
+      },
+      "level_maintainer": {
+        "textures": {
+          "face": "threng:blocks/machine/level_maintainer"
+        }
       }
     }
   }

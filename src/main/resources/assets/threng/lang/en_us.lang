@@ -20,11 +20,16 @@ tile.threng:machine0.name=Fluix Aggregator
 tile.threng:machine1.name=Pulse Centrifuge
 tile.threng:machine2.name=ME Circuit Etcher
 tile.threng:machine3.name=Preemptive Assembly Unit
+tile.threng:machine4.name=ME Level Maintainer
 
 threng.container.aggregator=Fluix Aggregator
 threng.container.centrifuge=Pulse Centrifuge
 threng.container.etcher=ME Circuit Etcher
 threng.container.fast_crafter=PA Unit
+threng.container.level_maintainer=ME Level Maintainer
+
+threng.misc.tooltip.request_size=Amount to Maintain
+threng.misc.tooltip.batch_size=Crafting Batch Size
 
 threng.misc.side.up=Up
 threng.misc.side.left=Left

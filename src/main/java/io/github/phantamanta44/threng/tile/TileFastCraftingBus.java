@@ -35,6 +35,7 @@ import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.tile.base.IActivable;
 import io.github.phantamanta44.threng.tile.base.IDirectionable;
 import io.github.phantamanta44.threng.tile.base.TileAENetworked;
+import io.github.phantamanta44.threng.tile.base.TileNetworkDevice;
 import io.github.phantamanta44.threng.util.AppEngUtils;
 import io.github.phantamanta44.threng.util.ConjoinedItemHandler;
 import io.github.phantamanta44.threng.util.SlotType;
@@ -55,11 +56,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 @RegisterTile(ThrEngConst.MOD_ID)
-public class TileFastCraftingBus extends TileAENetworked
-        implements ICraftingProvider, IDirectionable, IActivable, IAllocableSides<SlotType.BasicIO> {
+public class TileFastCraftingBus extends TileNetworkDevice implements ICraftingProvider, IAllocableSides<SlotType.BasicIO> {
 
-    @AutoSerialize
-    private final IDatum<EnumFacing> frontFace = IDatum.of(EnumFacing.NORTH);
     @AutoSerialize
     private final L9AspectInventory patternInventory = new L9AspectInventory.Observable(9, (i, o, n) -> {
         if (world != null && !world.isRemote) {
@@ -76,13 +74,9 @@ public class TileFastCraftingBus extends TileAENetworked
     @AutoSerialize
     private final L9AspectInventory exportInventory = new L9AspectInventory.Observable(9, (i, o, n) -> setDirty());
     @AutoSerialize
-    private final SideAlloc<SlotType.BasicIO> sides = new SideAlloc<>(SlotType.BasicIO.OUTPUT, frontFace::get);
-    @AutoSerialize
-    private final IDatum.OfBool active = IDatum.ofBool(false);
+    private final SideAlloc<SlotType.BasicIO> sides = new SideAlloc<>(SlotType.BasicIO.OUTPUT, this::getFrontFace);
 
     private final List<ItemStack> cachedExportInvState = new ArrayList<>();
-    private EnumFacing clientFace = EnumFacing.NORTH;
-    private boolean clientActive = false;
 
     public TileFastCraftingBus() {
         markRequiresSync();
@@ -120,22 +114,6 @@ public class TileFastCraftingBus extends TileAENetworked
 
     public IItemHandlerModifiable getExportInventory() {
         return exportInventory;
-    }
-
-    @Override
-    public boolean isActive() {
-        return active.isTrue();
-    }
-
-    @Override
-    public EnumFacing getFrontFace() {
-        return frontFace.get();
-    }
-
-    @Override
-    public void setFrontFace(EnumFacing face) {
-        frontFace.set(face);
-        setDirty();
     }
 
     @Override
@@ -259,20 +237,11 @@ public class TileFastCraftingBus extends TileAENetworked
         return false;
     }
 
-    @MENetworkEventSubscribe
-    public void onPowerStatusChange(final MENetworkPowerStatusChange event) {
-        boolean nowActive = getProxy().isActive();
-        if (active.isTrue() != nowActive) {
-            active.setBool(nowActive);
-            setDirty();
-        }
-    }
-
     private IItemHandler computeAdjInvs() {
         List<IItemHandler> adjInvs = new ArrayList<>();
         for (BlockSide side : BlockSide.values()) {
             if (sides.getFace(side) == SlotType.BasicIO.OUTPUT) {
-                EnumFacing dir = side.getDirection(frontFace.get());
+                EnumFacing dir = side.getDirection(getFrontFace());
                 EnumFacing fromDir = dir.getOpposite();
                 TileEntity adj = WorldUtils.getAdjacentTile(this, dir);
                 if (adj != null && adj.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, fromDir)) {
@@ -281,21 +250,6 @@ public class TileFastCraftingBus extends TileAENetworked
             }
         }
         return new ConjoinedItemHandler(adjInvs);
-    }
-
-    @Override
-    public void deserBytes(ByteUtils.Reader data) {
-        super.deserBytes(data);
-        EnumFacing front = frontFace.get();
-        if (clientFace != front) {
-            world.markBlockRangeForRenderUpdate(pos, pos);
-            clientFace = front;
-        }
-        boolean isActive = active.isTrue();
-        if (clientActive != isActive) {
-            world.markBlockRangeForRenderUpdate(pos, pos);
-            clientActive = isActive;
-        }
     }
 
 }

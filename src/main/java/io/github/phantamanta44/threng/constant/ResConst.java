@@ -23,6 +23,8 @@ public class ResConst {
 
     public static final TextureResource GUI_FAST_CRAFTER = getTextureGui("fast_crafter", 256, 256);
 
+    public static final TextureResource GUI_LEVEL_MAINTAINER = getTextureGui("level_maintainer", 256, 256);
+
     private static TextureResource getTextureGui(String path, int width, int height) {
         return getTexture("gui/" + path, width, height);
     }
@@ -35,6 +37,11 @@ public class ResConst {
     public static final TextureRegion GUI_COMP_SIDE_IO_BG = GUI_COMP_SIDE_IO.getRegion(0, 0, 17, 17);
     public static final TextureRegion GUI_COMP_SIDE_IO_IN = GUI_COMP_SIDE_IO.getRegion(17, 0, 5, 5);
     public static final TextureRegion GUI_COMP_SIDE_IO_OUT = GUI_COMP_SIDE_IO.getRegion(17, 5, 5, 5);
+
+    private static final TextureResource GUI_COMP_SUBMIT = getTextureGuiComp("submit", 39, 13);
+    public static final TextureRegion GUI_COMP_SUBMIT_NORMAL = GUI_COMP_SUBMIT.getRegion(0, 0, 13, 13);
+    public static final TextureRegion GUI_COMP_SUBMIT_DISABLED = GUI_COMP_SUBMIT.getRegion(13, 0, 13, 13);
+    public static final TextureRegion GUI_COMP_SUBMIT_HOVERED = GUI_COMP_SUBMIT.getRegion(26, 0, 13, 13);
 
     private static TextureResource getTextureGuiComp(String path, int width, int height) {
         return getTextureGui("component/" + path, width, height);
