@@ -1,7 +1,7 @@
 package io.github.phantamanta44.threng.client.gui.component;
 
 import io.github.phantamanta44.libnine.client.gui.component.impl.GuiComponentVerticalBar;
-import io.github.phantamanta44.libnine.util.helper.FormatUtils;
+import io.github.phantamanta44.libnine.util.format.FormatUtils;
 import io.github.phantamanta44.threng.constant.ResConst;
 import net.minecraftforge.energy.IEnergyStorage;
 

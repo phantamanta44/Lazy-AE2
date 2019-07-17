@@ -11,6 +11,7 @@ import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.recipe.AggRecipe;
+import io.github.phantamanta44.threng.recipe.component.TriItemInput;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
@@ -19,7 +20,7 @@ import net.minecraftforge.items.IItemHandler;
 
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileAggregator
-        extends TileSimpleProcessor<ITriple<ItemStack, ItemStack, ItemStack>, ItemStack, AggRecipe.Input, ItemStackOutput, AggRecipe> {
+        extends TileSimpleProcessor<ITriple<ItemStack, ItemStack, ItemStack>, ItemStack, TriItemInput, ItemStackOutput, AggRecipe> {
 
     private static final int ENERGY_MAX = 100000;
 

@@ -12,6 +12,7 @@ import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.recipe.EtchRecipe;
+import io.github.phantamanta44.threng.recipe.component.TriItemInput;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
@@ -20,7 +21,7 @@ import net.minecraftforge.items.IItemHandler;
 
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileEtcher
-        extends TileSimpleProcessor<ITriple<ItemStack, ItemStack, ItemStack>, ItemStack, EtchRecipe.Input, ItemStackOutput, EtchRecipe> {
+        extends TileSimpleProcessor<ITriple<ItemStack, ItemStack, ItemStack>, ItemStack, TriItemInput, ItemStackOutput, EtchRecipe> {
 
     private static final int ENERGY_MAX = 100000;
 

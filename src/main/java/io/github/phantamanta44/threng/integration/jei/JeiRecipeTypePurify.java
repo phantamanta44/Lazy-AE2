@@ -7,8 +7,8 @@ import io.github.phantamanta44.threng.integration.jei.base.ThrEngJeiCategory;
 import io.github.phantamanta44.threng.recipe.PurifyRecipe;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.item.ItemStack;
 
 @ModOnly("jei")
 class JeiRecipeTypePurify extends ThrEngJeiCategory<PurifyRecipe, JeiRecipeTypePurify.Recipe> {
@@ -39,8 +39,8 @@ class JeiRecipeTypePurify extends ThrEngJeiCategory<PurifyRecipe, JeiRecipeTypeP
 
         @Override
         public void getIngredients(IIngredients ingredients) {
-            ingredients.setInputs(ItemStack.class, recipe.input().getMatcher().getVisuals());
-            ingredients.setOutput(ItemStack.class, recipe.getOutput().getOutput());
+            ingredients.setInputs(VanillaTypes.ITEM, recipe.input().getMatcher().getVisuals());
+            ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutput().getOutput());
         }
 
     }

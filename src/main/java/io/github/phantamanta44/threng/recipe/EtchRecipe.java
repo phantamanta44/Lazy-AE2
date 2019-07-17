@@ -1,69 +1,45 @@
 package io.github.phantamanta44.threng.recipe;
 
-import io.github.phantamanta44.libnine.recipe.IRcp;
-import io.github.phantamanta44.libnine.recipe.input.IRcpIn;
-import io.github.phantamanta44.libnine.recipe.output.ItemStackOutput;
 import io.github.phantamanta44.libnine.util.IDisplayableMatcher;
 import io.github.phantamanta44.libnine.util.helper.OreDictUtils;
 import io.github.phantamanta44.libnine.util.tuple.ITriple;
+import io.github.phantamanta44.threng.recipe.base.component.TriItemRecipe;
+import io.github.phantamanta44.threng.recipe.component.TriItemInput;
 import net.minecraft.item.ItemStack;
 
-public class EtchRecipe implements IRcp<ITriple<ItemStack, ItemStack, ItemStack>, EtchRecipe.Input, ItemStackOutput> {
+import java.util.Arrays;
+import java.util.Collection;
 
-    private final Input input;
-    private final ItemStackOutput output;
+public class EtchRecipe extends TriItemRecipe {
 
-    public EtchRecipe(IDisplayableMatcher<ItemStack> input, ItemStack output) {
-        this.input = new Input(input);
-        this.output = new ItemStackOutput(output);
+    private static final IDisplayableMatcher<ItemStack> MATCH_REDSTONE = OreDictUtils.matchesOredict("dustRedstone");
+    private static final IDisplayableMatcher<ItemStack> MATCH_SILICON = OreDictUtils.matchesOredict("itemSilicon");
+
+    public EtchRecipe(IDisplayableMatcher<ItemStack> top, IDisplayableMatcher<ItemStack> bottom,
+                      IDisplayableMatcher<ItemStack> middle, ItemStack output) {
+        super(Arrays.asList(top, bottom, middle), output);
     }
 
-    public ItemStackOutput getOutput() {
-        return output;
+    public EtchRecipe(IDisplayableMatcher<ItemStack> middle, ItemStack output) {
+        this(MATCH_REDSTONE, MATCH_SILICON, middle, output);
     }
 
     @Override
-    public Input input() {
-        return input;
+    protected TriItemInput createInput(Collection<IDisplayableMatcher<ItemStack>> input) {
+        return new Input(input);
     }
 
-    @Override
-    public ItemStackOutput mapToOutput(ITriple<ItemStack, ItemStack, ItemStack> input) {
-        return output;
-    }
+    public static class Input extends TriItemInput {
 
-    public static class Input implements IRcpIn<ITriple<ItemStack, ItemStack, ItemStack>> {
-
-        private final IDisplayableMatcher<ItemStack> inputPredicate;
-
-        public Input(IDisplayableMatcher<ItemStack> input) {
-            this.inputPredicate = input;
-        }
-
-        public IDisplayableMatcher<ItemStack> getEtchingMatcher() {
-            return inputPredicate;
+        public Input(Collection<IDisplayableMatcher<ItemStack>> inputs) {
+            super(inputs);
         }
 
         @Override
         public boolean matches(ITriple<ItemStack, ItemStack, ItemStack> input) {
-            return OreDictUtils.matchesOredict(input.getA(), "dustRedstone")
-                    && OreDictUtils.matchesOredict(input.getB(), "itemSilicon")
-                    && inputPredicate.test(input.getC());
-        }
-
-        @Override
-        public ITriple<ItemStack, ItemStack, ItemStack> consume(ITriple<ItemStack, ItemStack, ItemStack> input) {
-            ItemStack[] stacks = new ItemStack[] { input.getA(), input.getB(), input.getC() };
-            for (int i = 0; i < stacks.length; i++) {
-                if (!stacks[i].isEmpty()) {
-                    if (stacks[i].getCount() > 1) {
-                        stacks[i].shrink(1);
-                    } else {
-                        stacks[i] = ItemStack.EMPTY;
-                    }
-                }
-            }
-            return ITriple.of(stacks[0], stacks[1], stacks[2]);
+            return inputs.get(0).test(input.getA())
+                    && inputs.get(1).test(input.getB())
+                    && inputs.get(2).test(input.getC());
         }
 
     }

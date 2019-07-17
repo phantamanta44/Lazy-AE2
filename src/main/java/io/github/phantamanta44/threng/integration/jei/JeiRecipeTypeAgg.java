@@ -8,8 +8,8 @@ import io.github.phantamanta44.threng.integration.jei.base.ThrEngJeiCategory;
 import io.github.phantamanta44.threng.recipe.AggRecipe;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.item.ItemStack;
 
 import java.util.stream.Collectors;
 
@@ -44,9 +44,9 @@ class JeiRecipeTypeAgg extends ThrEngJeiCategory<AggRecipe, JeiRecipeTypeAgg.Rec
 
         @Override
         public void getIngredients(IIngredients ingredients) {
-            ingredients.setInputLists(ItemStack.class, recipe.input().getInputs().stream()
+            ingredients.setInputLists(VanillaTypes.ITEM, recipe.input().getInputs().stream()
                     .map(IDisplayableMatcher::getVisuals).collect(Collectors.toList()));
-            ingredients.setOutput(ItemStack.class, recipe.getOutput().getOutput());
+            ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutput().getOutput());
         }
 
     }

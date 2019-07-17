@@ -1,17 +1,17 @@
 package io.github.phantamanta44.threng.integration.jei;
 
 import crafttweaker.annotations.ModOnly;
+import io.github.phantamanta44.libnine.util.IDisplayableMatcher;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ResConst;
 import io.github.phantamanta44.threng.integration.jei.base.ThrEngJeiCategory;
 import io.github.phantamanta44.threng.recipe.EtchRecipe;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @ModOnly("jei")
 class JeiRecipeTypeEtch extends ThrEngJeiCategory<EtchRecipe, JeiRecipeTypeEtch.Recipe> {
@@ -44,12 +44,10 @@ class JeiRecipeTypeEtch extends ThrEngJeiCategory<EtchRecipe, JeiRecipeTypeEtch.
 
         @Override
         public void getIngredients(IIngredients ingredients) {
-            ingredients.setInputLists(ItemStack.class, Arrays.asList(
-                    OreDictionary.getOres("dustRedstone"),
-                    OreDictionary.getOres("itemSilicon"),
-                    recipe.input().getEtchingMatcher().getVisuals()
-            ));
-            ingredients.setOutput(ItemStack.class, recipe.getOutput().getOutput());
+            ingredients.setInputLists(VanillaTypes.ITEM, recipe.input().getInputs().stream()
+                    .map(IDisplayableMatcher::getVisuals)
+                    .collect(Collectors.toList()));
+            ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutput().getOutput());
         }
 
     }

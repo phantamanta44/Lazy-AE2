@@ -13,6 +13,7 @@ import io.github.phantamanta44.libnine.util.helper.ItemUtils;
 import io.github.phantamanta44.libnine.util.helper.OreDictUtils;
 import io.github.phantamanta44.libnine.util.tuple.ITriple;
 import io.github.phantamanta44.threng.item.ItemMaterial;
+import io.github.phantamanta44.threng.recipe.component.TriItemInput;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -32,11 +33,11 @@ public class ThrEngRecipes {
     }
 
     public static void addRecipes() {
-        IRecipeList<ITriple<ItemStack, ItemStack, ItemStack>, AggRecipe.Input, ItemStackOutput, AggRecipe> aggRecipes
+        IRecipeList<ITriple<ItemStack, ItemStack, ItemStack>, TriItemInput, ItemStackOutput, AggRecipe> aggRecipes
                 = LibNine.PROXY.getRecipeManager().getRecipeList(AggRecipe.class);
         IRecipeList<ItemStack, ItemStackInput, ItemStackOutput, PurifyRecipe> purifyRecipes
                 = LibNine.PROXY.getRecipeManager().getRecipeList(PurifyRecipe.class);
-        IRecipeList<ITriple<ItemStack, ItemStack, ItemStack>, EtchRecipe.Input, ItemStackOutput, EtchRecipe> etchRecipes
+        IRecipeList<ITriple<ItemStack, ItemStack, ItemStack>, TriItemInput, ItemStackOutput, EtchRecipe> etchRecipes
                 = LibNine.PROXY.getRecipeManager().getRecipeList(EtchRecipe.class);
         IInscriberRegistry inscriber = AEApi.instance().registries().inscriber();
         IDefinitions defs = AEApi.instance().definitions();

@@ -141,10 +141,10 @@ public class ThrEngCraftingTracker implements ISerializable {
         NBTTagList linksDto = tag.getTagList("Links", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < links.length; i++) {
             NBTTagCompound linkDto = linksDto.getCompoundTagAt(i);
-            if (!linkDto.hasNoTags()) {
-                links[i] = AEApi.instance().storage().loadCraftingLink(linkDto, owner);
-            } else {
+            if (linkDto.isEmpty()) {
                 links[i] = null;
+            } else {
+                links[i] = AEApi.instance().storage().loadCraftingLink(linkDto, owner);
             }
         }
     }

@@ -12,6 +12,6 @@
   "screenshots": [],
   "useDependencyInformation": true,
   "dependencies": ["libnine", "appliedenergistics2", "jei", "crafttweaker"],
-  "requiredMods": ["libnine@[1.0.5,)", "appliedenergistics2"]
+  "requiredMods": ["libnine@[1.1.0,)", "appliedenergistics2"]
 }
 ]
