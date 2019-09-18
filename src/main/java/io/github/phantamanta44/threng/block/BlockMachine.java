@@ -1,5 +1,6 @@
 package io.github.phantamanta44.threng.block;
 
+import appeng.util.Platform;
 import io.github.phantamanta44.libnine.block.L9BlockStated;
 import io.github.phantamanta44.libnine.gui.GuiIdentity;
 import io.github.phantamanta44.libnine.item.L9ItemBlock;
@@ -80,6 +81,14 @@ public class BlockMachine extends L9BlockStated {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
                                     EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
+            if (player.isSneaking()) {
+                ItemStack held = player.getHeldItem(hand);
+                if (Platform.isWrench(player, held, pos)) {
+                    dropBlockAsItem(world, pos, state, 0);
+                    world.setBlockToAir(pos);
+                    return true;
+                }
+            }
             ThrEng.INSTANCE.getGuiHandler().openGui(player, state.getValue(TYPE).gui, new WorldBlockPos(world, pos));
         }
         return true;
