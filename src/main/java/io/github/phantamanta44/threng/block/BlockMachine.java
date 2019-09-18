@@ -6,6 +6,7 @@ import io.github.phantamanta44.libnine.item.L9ItemBlock;
 import io.github.phantamanta44.libnine.tile.L9TileEntity;
 import io.github.phantamanta44.libnine.util.collection.Accrue;
 import io.github.phantamanta44.libnine.util.world.WorldBlockPos;
+import io.github.phantamanta44.libnine.util.world.WorldUtils;
 import io.github.phantamanta44.threng.ThrEng;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.inventory.ThrEngGuis;
@@ -13,6 +14,7 @@ import io.github.phantamanta44.threng.item.block.ItemBlockMachine;
 import io.github.phantamanta44.threng.tile.*;
 import io.github.phantamanta44.threng.tile.base.IActivable;
 import io.github.phantamanta44.threng.tile.base.IDirectionable;
+import io.github.phantamanta44.threng.tile.base.IDroppableInventory;
 import io.github.phantamanta44.threng.tile.base.TileMachine;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -30,6 +32,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -100,6 +103,17 @@ public class BlockMachine extends L9BlockStated {
     @Override
     public EnumFacing[] getValidRotations(World world, BlockPos pos) {
         return EnumFacing.HORIZONTALS;
+    }
+
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity tile = getTileEntity(world, pos);
+        if (tile instanceof IDroppableInventory) {
+            ArrayList<ItemStack> drops = new ArrayList<>();
+            ((IDroppableInventory)tile).collectDrops(new Accrue<>(drops));
+            drops.forEach(stack -> WorldUtils.dropItem(world, pos, stack));
+        }
+        super.breakBlock(world, pos, state);
     }
 
     public enum Type implements IStringSerializable {

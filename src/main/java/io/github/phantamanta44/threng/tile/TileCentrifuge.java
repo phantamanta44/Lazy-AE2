@@ -5,12 +5,14 @@ import io.github.phantamanta44.libnine.capability.provider.CapabilityBrokerDirPr
 import io.github.phantamanta44.libnine.recipe.input.ItemStackInput;
 import io.github.phantamanta44.libnine.recipe.output.ItemStackOutput;
 import io.github.phantamanta44.libnine.tile.RegisterTile;
+import io.github.phantamanta44.libnine.util.collection.Accrue;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.recipe.PurifyRecipe;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
+import io.github.phantamanta44.threng.util.InvUtils;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -71,6 +73,12 @@ public class TileCentrifuge extends TileSimpleProcessor<ItemStack, ItemStack, It
 
     public IItemHandler getOutputSlot() {
         return slotOutput;
+    }
+
+    @Override
+    public void collectDrops(Accrue<ItemStack> drops) {
+        super.collectDrops(drops);
+        InvUtils.accrue(drops, slotInput, slotOutput);
     }
 
 }

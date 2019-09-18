@@ -9,8 +9,6 @@ import appeng.api.networking.crafting.ICraftingProvider;
 import appeng.api.networking.crafting.ICraftingProviderHelper;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.events.MENetworkCraftingPatternChange;
-import appeng.api.networking.events.MENetworkEventSubscribe;
-import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
@@ -23,21 +21,19 @@ import appeng.util.item.AEItemStack;
 import io.github.phantamanta44.libnine.capability.impl.L9AspectInventory;
 import io.github.phantamanta44.libnine.capability.provider.CapabilityBrokerDirPredicated;
 import io.github.phantamanta44.libnine.tile.RegisterTile;
-import io.github.phantamanta44.libnine.util.data.ByteUtils;
+import io.github.phantamanta44.libnine.util.collection.Accrue;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
-import io.github.phantamanta44.libnine.util.data.serialization.IDatum;
 import io.github.phantamanta44.libnine.util.world.BlockSide;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
 import io.github.phantamanta44.libnine.util.world.WorldUtils;
 import io.github.phantamanta44.threng.block.BlockMachine;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
-import io.github.phantamanta44.threng.tile.base.IActivable;
-import io.github.phantamanta44.threng.tile.base.IDirectionable;
-import io.github.phantamanta44.threng.tile.base.TileAENetworked;
+import io.github.phantamanta44.threng.tile.base.IDroppableInventory;
 import io.github.phantamanta44.threng.tile.base.TileNetworkDevice;
 import io.github.phantamanta44.threng.util.AppEngUtils;
 import io.github.phantamanta44.threng.util.ConjoinedItemHandler;
+import io.github.phantamanta44.threng.util.InvUtils;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -56,7 +52,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 @RegisterTile(ThrEngConst.MOD_ID)
-public class TileFastCraftingBus extends TileNetworkDevice implements ICraftingProvider, IAllocableSides<SlotType.BasicIO> {
+public class TileFastCraftingBus extends TileNetworkDevice
+        implements ICraftingProvider, IAllocableSides<SlotType.BasicIO>, IDroppableInventory {
 
     @AutoSerialize
     private final L9AspectInventory patternInventory = new L9AspectInventory.Observable(9, (i, o, n) -> {
@@ -114,6 +111,11 @@ public class TileFastCraftingBus extends TileNetworkDevice implements ICraftingP
 
     public IItemHandlerModifiable getExportInventory() {
         return exportInventory;
+    }
+
+    @Override
+    public void collectDrops(Accrue<ItemStack> drops) {
+        InvUtils.accrue(drops, importInventory, exportInventory, patternInventory);
     }
 
     @Override
