@@ -1,0 +1,47 @@
+itemGroup.threng=Lazy AE2
+
+item.threng:material0.name=Изменчивое железо
+item.threng:material1.name=Карбоновый изменчивый сплав
+item.threng:material2.name=Изменчивая железная пластина
+item.threng:material3.name=Угольная пыль
+item.threng:material4.name=Изменчивая логическая единица
+item.threng:material5.name=Резонирующий кристалл
+item.threng:material6.name=Массивный параллельный процессор
+item.threng:material7.name= Ядро (1x)
+item.threng:material8.name=Спекулятивное ядро (2x)
+item.threng:material9.name=Спекулятивное ядро (4x)
+item.threng:material10.name=Спекулятивное ядро (8x)
+item.threng:material11.name=Спекулятивное ядро (16x)
+item.threng:material12.name=Спекулятивное ядро (32x)
+item.threng:material13.name=Спекулятивное ядро (64x)
+item.threng:material14.name=Спекулятивный процессор
+
+tile.threng:machine0.name=Изменчивый агрегатор
+tile.threng:machine1.name=Пульсирующая центрифуга
+tile.threng:machine2.name=МЭ Сдавливатель схем
+tile.threng:machine3.name=Вытяжная сборочная единица
+tile.threng:machine4.name=МЭ Поддерживатель уровня
+
+threng.container.aggregator=Изменчивый агрегатор
+threng.container.centrifuge=Пульсирующая центрифуга
+threng.container.etcher=МЭ Сдавливатель схем
+threng.container.fast_crafter=Вытяжная сборочная единица
+threng.container.level_maintainer=МЭ Поддерживатель уровня
+
+threng.misc.tooltip.request_size=Поддерживаемое число
+threng.misc.tooltip.batch_size=Размер партии крафта 
+
+threng.misc.side.up=Вверх
+threng.misc.side.left=Влево
+threng.misc.side.front=Вперёд
+threng.misc.side.right=Вправо
+threng.misc.side.down=Вниз
+threng.misc.side.back=Назад
+
+threng.misc.io.input=Вход
+threng.misc.io.output=Выход
+threng.misc.io.none=Ничего
+
+threng.int.jei.category.aggregator=Изменчивое объединение
+threng.int.jei.category.centrifuge=Импульсная центрифуга
+threng.int.jei.category.etcher=МЭ Схема травления
