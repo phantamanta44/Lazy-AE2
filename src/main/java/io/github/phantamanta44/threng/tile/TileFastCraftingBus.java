@@ -2,6 +2,7 @@ package io.github.phantamanta44.threng.tile;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.ICraftingPatternItem;
+import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
@@ -81,6 +82,7 @@ public class TileFastCraftingBus extends TileNetworkDevice
         for (int i = 0; i < 9; i++) {
             patternInventory.withPredicate(i, patternPred);
         }
+        getProxy().setFlags(GridFlags.REQUIRE_CHANNEL);
     }
 
     @Override

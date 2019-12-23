@@ -2,6 +2,7 @@ package io.github.phantamanta44.threng.tile;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
+import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingGrid;
 import appeng.api.networking.crafting.ICraftingLink;
@@ -59,6 +60,7 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
     public TileLevelMaintainer() {
         markRequiresSync();
         Arrays.fill(knownCounts, -1);
+        getProxy().setFlags(GridFlags.REQUIRE_CHANNEL);
     }
 
     public InventoryRequest getRequestInventory() {

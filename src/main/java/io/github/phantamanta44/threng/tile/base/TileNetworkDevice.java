@@ -1,5 +1,6 @@
 package io.github.phantamanta44.threng.tile.base;
 
+import appeng.api.networking.events.MENetworkChannelsChanged;
 import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.api.networking.events.MENetworkPowerStatusChange;
 import io.github.phantamanta44.libnine.util.data.ByteUtils;
@@ -35,6 +36,15 @@ public abstract class TileNetworkDevice extends TileAENetworked implements IDire
 
     @MENetworkEventSubscribe
     public void onPowerStatusChange(final MENetworkPowerStatusChange event) {
+        updateActiveState();
+    }
+
+    @MENetworkEventSubscribe
+    public void onNetworkChannelsChange(final MENetworkChannelsChanged event) {
+        updateActiveState();
+    }
+
+    private void updateActiveState() {
         boolean nowActive = getProxy().isActive();
         if (active.isTrue() != nowActive) {
             active.setBool(nowActive);
