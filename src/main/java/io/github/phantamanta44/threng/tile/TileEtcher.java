@@ -21,16 +21,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import java.util.function.Predicate;
+
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileEtcher
         extends TileSimpleProcessor<ITriple<ItemStack, ItemStack, ItemStack>, ItemStack, TriItemInput, ItemStackOutput, EtchRecipe> {
 
     private static final int ENERGY_MAX = 100000;
+    private static final Predicate<ItemStack> MATCH_REDSTONE = OreDictUtils.matchesOredict("dustRedstone");
+    private static final Predicate<ItemStack> MATCH_SILICON = OreDictUtils.matchesOredict("itemSilicon");
 
     @AutoSerialize
     private final L9AspectInventory invInput = new L9AspectInventory.Observable(3, (s, o, n) -> markWorkStateDirty())
-            .withPredicate(0, OreDictUtils.matchesOredict("dustRedstone"))
-            .withPredicate(1, OreDictUtils.matchesOredict("itemSilicon"));
+            .withPredicate(0, MATCH_REDSTONE)
+            .withPredicate(1, MATCH_SILICON)
+            .withPredicate(2, MATCH_REDSTONE.or(MATCH_SILICON).negate());
     @AutoSerialize
     private final L9AspectSlot slotOutput = new L9AspectSlot.Observable(is -> false, (s, o, n) -> markWorkStateDirty());
     @AutoSerialize
