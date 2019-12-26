@@ -3,7 +3,7 @@ package io.github.phantamanta44.threng.block;
 import io.github.phantamanta44.libnine.InitMe;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 
-@SuppressWarnings("NullableProblems")
+@SuppressWarnings("NotNullFieldNotInitialized")
 public class ThrEngBlocks {
 
     public static BlockMachine MACHINE;

@@ -3,7 +3,7 @@ package io.github.phantamanta44.threng.item;
 import io.github.phantamanta44.libnine.InitMe;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 
-@SuppressWarnings("NullableProblems")
+@SuppressWarnings("NotNullFieldNotInitialized")
 public class ThrEngItems {
 
     public static ItemMaterial MATERIAL;
