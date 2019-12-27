@@ -94,6 +94,7 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
             } else {
                 cpuCount.setInt(0);
             }
+            notifyPatternUpdate();
             setDirty();
         });
     }
