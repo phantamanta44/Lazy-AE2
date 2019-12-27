@@ -33,25 +33,25 @@ Recipes for the processing machines can be modified as follows:
 ```zenscript
 // add aggregator recipe
 // addRecipe(ItemStack output, ItemMatcher input1, ItemMatcher input2, [ItemMatcher input3])
-mods.threng.Aggregator.addRecipe(, , , );
+mods.threng.Aggregator.addRecipe(<minecraft:diamond>, <minecraft:dirt>, <ore:dustGlowstone>, <minecraft:coal:1>);
 
 // remove aggregator recipe
 // removeRecipe(ItemStack output)
-mods.threng.Aggregator.removeRecipe();
+mods.threng.Aggregator.removeRecipe(<threng:material:0>);
 
 // add centrifuge recipe
 // addRecipe(ItemStack output, ItemMatcher input)
-mods.threng.Centrifuge.addRecipe(, );
+mods.threng.Centrifuge.addRecipe(<minecraft:diamond>, <minecraft:diamond_ore>);
 
 // remove centrifuge recipe
 // removeRecipe(ItemStack output)
-mods.threng.Centrifuge.removeRecipe();
+mods.threng.Centrifuge.removeRecipe(<appliedenergistics2:material:10>);
 
 // add etcher recipe; redstone and silicon ingredients are fixed
 // addRecipe(ItemStack output, ItemMatcher input)
-mods.threng.Etcher.addRecipe(, );
+mods.threng.Etcher.addRecipe(<minecraft:diamond>, <minecraft:dirt>);
 
 // remove etcher recipe
 // removeRecipe(ItemStack output)
-mods.threng.Etcher.removeRecipe();
+mods.threng.Etcher.removeRecipe(<appliedenergistics2:material:22>);
 ```
