@@ -19,6 +19,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileBigAssemblerPatternStore extends TileBigAssemblerPart implements IDroppableInventory {
@@ -38,6 +39,13 @@ public class TileBigAssemblerPatternStore extends TileBigAssemblerPart implement
     });
     @Nullable
     private List<ICraftingPatternDetails> patternCache = null;
+
+    public TileBigAssemblerPatternStore() {
+        Predicate<ItemStack> patternPred = stack -> stack.getItem() instanceof ICraftingPatternItem;
+        for (int i = 0; i < patternInv.getSlots(); i++) {
+            patternInv.withPredicate(i, patternPred);
+        }
+    }
 
     public IItemHandlerModifiable getPatternInventory() {
         return patternInv;
