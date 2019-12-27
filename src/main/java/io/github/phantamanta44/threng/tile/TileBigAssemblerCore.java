@@ -77,6 +77,9 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
     private final IDatum.OfInt work = IDatum.ofInt(0);
 
     private TriBool clientCachedFormStatus = TriBool.NONE;
+    private boolean patternsDirty = false;
+    @Nullable
+    private List<TileBigAssemblerPatternStore> patternStoreCache = null;
 
     public TileBigAssemblerCore() {
         markRequiresSync();
@@ -94,6 +97,7 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
             } else {
                 cpuCount.setInt(0);
             }
+            patternStoreCache = null;
             notifyPatternUpdate();
             setDirty();
         });
@@ -134,15 +138,19 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
         return craftingBuffer;
     }
 
-    public List<TileBigAssemblerPatternStore> collectPatternStores() {
-        List<TileBigAssemblerPatternStore> units = new ArrayList<>();
-        for (MultiBlockConnectable<IBigAssemblerUnit> comp : multiBlock) {
-            IBigAssemblerUnit unit = comp.getUnit();
-            if (unit instanceof TileBigAssemblerPatternStore) {
-                units.add((TileBigAssemblerPatternStore)unit);
+    public List<TileBigAssemblerPatternStore> getPatternStores() {
+        if (patternStoreCache == null) {
+            patternStoreCache = new ArrayList<>();
+            if (multiBlock.isFormed()) {
+                for (MultiBlockConnectable<IBigAssemblerUnit> comp : multiBlock) {
+                    IBigAssemblerUnit unit = comp.getUnit();
+                    if (unit instanceof TileBigAssemblerPatternStore) {
+                        patternStoreCache.add((TileBigAssemblerPatternStore)unit);
+                    }
+                }
             }
         }
-        return units;
+        return patternStoreCache;
     }
 
     @Override
@@ -219,6 +227,11 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
                     }
                 }
 
+                if (patternsDirty) {
+                    grid.postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
+                    patternsDirty = false;
+                }
+
                 if (multiBlock.isFormed()) {
                     int jobs = jobQueue.getOutstandingJobCount();
                     if (jobs > 0) {
@@ -247,20 +260,13 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
     }
 
     public void notifyPatternUpdate() {
-        IGrid grid = getProxy().getNode().getGrid();
-        //noinspection ConstantConditions
-        if (grid != null) {
-            grid.postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
-        }
+        patternsDirty = true;
     }
 
     @Override
     public void provideCrafting(ICraftingProviderHelper helper) {
-        for (MultiBlockConnectable<IBigAssemblerUnit> comp : multiBlock) {
-            IBigAssemblerUnit unit = comp.getUnit();
-            if (unit instanceof TileBigAssemblerPatternStore) {
-                ((TileBigAssemblerPatternStore)unit).providePatterns(this, helper);
-            }
+        for (TileBigAssemblerPatternStore patternStore : getPatternStores()) {
+            patternStore.providePatterns(this, helper);
         }
     }
 

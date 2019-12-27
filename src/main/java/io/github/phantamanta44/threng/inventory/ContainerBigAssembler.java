@@ -25,7 +25,7 @@ public class ContainerBigAssembler extends L9Container {
     public ContainerBigAssembler(InventoryPlayer ipl, TileBigAssemblerCore tile) {
         super(ipl, 217);
         this.tile = tile;
-        List<TileBigAssemblerPatternStore> patternStores = tile.collectPatternStores();
+        List<TileBigAssemblerPatternStore> patternStores = tile.getPatternStores();
         this.pages = new Page[patternStores.size()];
         for (int i = 0; i < pages.length; i++) {
             pages[i] = new Page(patternStores.get(i).getPatternInventory());
