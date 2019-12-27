@@ -17,7 +17,7 @@ import java.util.Iterator;
 public class ThrEngMultiBlocks {
 
     public static final MultiBlockType<IBigAssemblerUnit> BIG_ASSEMBLER
-            = ThrEng.INSTANCE.newMultiBlockType("big_assembler", 12, IBigAssemblerUnit.class);
+            = ThrEng.INSTANCE.newMultiBlockType("big_assembler", 64, IBigAssemblerUnit.class);
 
     @InitMe
     public static void init() {
