@@ -1,0 +1,26 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "FSF",
+    "STS",
+    "FSF"
+  ],
+  "key": {
+    "F": {
+      "type": "forge:ore_dict",
+      "ore": "ingotFluixSteel"
+    },
+    "S": {
+      "item": "appliedenergistics2:smooth_sky_stone_block"
+    },
+    "T": {
+      "type": "forge:ore_dict",
+      "ore": "workbench"
+    }
+  },
+  "result": {
+    "item": "threng:big_assembler",
+    "count": 4,
+    "data": 0
+  }
+}

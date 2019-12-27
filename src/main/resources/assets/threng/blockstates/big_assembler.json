@@ -1,0 +1,46 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "threng:big_assembler"
+  },
+  "variants": {
+    "type": {
+      "frame": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/frame",
+          "face_active": "threng:blocks/big_assembler/frame_active"
+        }
+      },
+      "vent": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/vent",
+          "face_active": "threng:blocks/big_assembler/vent_active"
+        }
+      },
+      "controller": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/controller",
+          "face_active": "threng:blocks/big_assembler/controller_active"
+        }
+      },
+      "module_pattern": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/module_pattern",
+          "face_active": "threng:blocks/big_assembler/module_pattern_active"
+        }
+      },
+      "module_cpu": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/module_cpu",
+          "face_active": "threng:blocks/big_assembler/module_cpu_active"
+        }
+      }
+    },
+    "active": {
+      "true": {
+        "model": "threng:big_assembler_active"
+      },
+      "false": {}
+    }
+  }
+}

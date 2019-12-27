@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " B ",
+    "BFB",
+    " B "
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:iron_bars"
+    },
+    "F": {
+      "item": "threng:big_assembler",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "threng:big_assembler",
+    "count": 1,
+    "data": 1
+  }
+}

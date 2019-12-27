@@ -21,15 +21,29 @@ tile.threng:machine1.name=Pulse Centrifuge
 tile.threng:machine2.name=ME Circuit Etcher
 tile.threng:machine3.name=Preemptive Assembly Unit
 tile.threng:machine4.name=ME Level Maintainer
+tile.threng:big_assembler0.name=Mass Assembler Frame
+tile.threng:big_assembler1.name=Mass Assembler Vent
+tile.threng:big_assembler2.name=Mass Assembler Controller
+tile.threng:big_assembler3.name=MA Pattern Provider
+tile.threng:big_assembler4.name=MA Crafting Coprocessor
 
 threng.container.aggregator=Fluix Aggregator
 threng.container.centrifuge=Pulse Centrifuge
 threng.container.etcher=ME Circuit Etcher
 threng.container.fast_crafter=PA Unit
 threng.container.level_maintainer=ME Level Maintainer
+threng.container.big_assembler=Mass Assembly Chamber
 
 threng.misc.tooltip.request_size=Amount to Maintain
 threng.misc.tooltip.batch_size=Crafting Batch Size
+threng.misc.tooltip.work_fraction=%d/%d work
+threng.misc.tooltip.job_count=%d/%d queued tasks
+threng.misc.tooltip.cpu_count=%d coprocessors
+threng.misc.tooltip.work_rate=%d work/tick
+
+threng.misc.notif.multiblock_formed=Multi-block assembled.
+threng.misc.notif.multiblock_failed=Could not assemble multi-block!
+threng.misc.notif.multiblock_unformed=Multi-block disassembled.
 
 threng.misc.side.up=Up
 threng.misc.side.left=Left

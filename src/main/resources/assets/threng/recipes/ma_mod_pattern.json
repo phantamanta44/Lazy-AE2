@@ -1,0 +1,34 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "FSF",
+    "CPC",
+    "FIF"
+  ],
+  "key": {
+    "F": {
+      "item": "big_assembler",
+      "data": 0
+    },
+    "S": {
+      "item": "appliedenergistics2:material",
+      "data": 35
+    },
+    "C": {
+      "item": "appliedenergistics2:part",
+      "data": 16
+    },
+    "P": {
+      "item": "appliedenergistics2:material",
+      "data": 24
+    },
+    "I": {
+      "item": "appliedenergistics2:interface"
+    }
+  },
+  "result": {
+    "item": "threng:big_assembler",
+    "count": 1,
+    "data": 3
+  }
+}

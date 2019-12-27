@@ -25,6 +25,11 @@ public class ResConst {
 
     public static final TextureResource GUI_LEVEL_MAINTAINER = getTextureGui("level_maintainer", 256, 256);
 
+    public static final TextureResource GUI_BIG_ASSEMBLER = getTextureGui("big_assembler", 256, 256);
+    public static final TextureRegion GUI_BIG_ASSEMBLER_QUEUE = GUI_BIG_ASSEMBLER.getRegion(176, 0, 3, 25);
+    public static final TextureRegion GUI_BIG_ASSEMBLER_CPUS = GUI_BIG_ASSEMBLER.getRegion(179, 0, 3, 25);
+    public static final TextureRegion GUI_BIG_ASSEMBLER_PROGRESS = GUI_BIG_ASSEMBLER.getRegion(182, 0, 16, 2);
+
     private static TextureResource getTextureGui(String path, int width, int height) {
         return getTexture("gui/" + path, width, height);
     }
@@ -42,6 +47,14 @@ public class ResConst {
     public static final TextureRegion GUI_COMP_SUBMIT_NORMAL = GUI_COMP_SUBMIT.getRegion(0, 0, 13, 13);
     public static final TextureRegion GUI_COMP_SUBMIT_DISABLED = GUI_COMP_SUBMIT.getRegion(13, 0, 13, 13);
     public static final TextureRegion GUI_COMP_SUBMIT_HOVERED = GUI_COMP_SUBMIT.getRegion(26, 0, 13, 13);
+
+    private static final TextureResource GUI_COMP_NEXT_PREV = getTextureGuiComp("next_prev", 36, 33);
+    public static final TextureRegion GUI_COMP_NEXT_PREV_PREV_NORMAL = GUI_COMP_NEXT_PREV.getRegion(0, 0, 18, 11);
+    public static final TextureRegion GUI_COMP_NEXT_PREV_PREV_DISABLED = GUI_COMP_NEXT_PREV.getRegion(0, 11, 18, 11);
+    public static final TextureRegion GUI_COMP_NEXT_PREV_PREV_HOVERED = GUI_COMP_NEXT_PREV.getRegion(0, 22, 18, 11);
+    public static final TextureRegion GUI_COMP_NEXT_PREV_NEXT_NORMAL = GUI_COMP_NEXT_PREV.getRegion(18, 0, 18, 11);
+    public static final TextureRegion GUI_COMP_NEXT_PREV_NEXT_DISABLED = GUI_COMP_NEXT_PREV.getRegion(18, 11, 18, 11);
+    public static final TextureRegion GUI_COMP_NEXT_PREV_NEXT_HOVERED = GUI_COMP_NEXT_PREV.getRegion(18, 22, 18, 11);
 
     private static TextureResource getTextureGuiComp(String path, int width, int height) {
         return getTextureGui("component/" + path, width, height);

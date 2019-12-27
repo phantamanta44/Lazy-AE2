@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 
-public abstract class GuiEnergized<T extends ContainerEnergized> extends L9GuiContainer {
+public abstract class GuiEnergized<T extends ContainerEnergized<?>> extends L9GuiContainer {
 
     protected final T cont;
 

@@ -21,6 +21,8 @@ public class ThrEngGuis {
             = new GuiIdentity<>(LangConst.GUI_FAST_CRAFTER, ContainerFastCraftingBus.class);
     public static final GuiIdentity<ContainerLevelMaintainer, GuiLevelMaintainer> LEVEL_MAINTAINER
             = new GuiIdentity<>(LangConst.GUI_LEVEL_MAINTAINER, ContainerLevelMaintainer.class);
+    public static final GuiIdentity<ContainerBigAssembler, GuiBigAssembler> BIG_ASSEMBLER
+            = new GuiIdentity<>(LangConst.GUI_BIG_ASSEMBLER, ContainerBigAssembler.class);
 
     @InitMe(ThrEngConst.MOD_ID)
     public static void registerCommon() {
@@ -29,6 +31,7 @@ public class ThrEngGuis {
         LibNine.PROXY.getRegistrar().queueGuiServerReg(ETCHER, ContainerEtcher::new);
         LibNine.PROXY.getRegistrar().queueGuiServerReg(FAST_CRAFTER, ContainerFastCraftingBus::new);
         LibNine.PROXY.getRegistrar().queueGuiServerReg(LEVEL_MAINTAINER, ContainerLevelMaintainer::new);
+        LibNine.PROXY.getRegistrar().queueGuiServerReg(BIG_ASSEMBLER, ContainerBigAssembler::new);
     }
 
     @SideOnly(Side.CLIENT)
@@ -39,6 +42,7 @@ public class ThrEngGuis {
         LibNine.PROXY.getRegistrar().queueGuiClientReg(ETCHER, (c, w, p, x, y, z) -> new GuiEtcher(c));
         LibNine.PROXY.getRegistrar().queueGuiClientReg(FAST_CRAFTER, (c, w, p, x, y, z) -> new GuiFastCraftingBus(c));
         LibNine.PROXY.getRegistrar().queueGuiClientReg(LEVEL_MAINTAINER, (c, w, p, x, y, z) -> new GuiLevelMaintainer(c));
+        LibNine.PROXY.getRegistrar().queueGuiClientReg(BIG_ASSEMBLER, (c, w, p, x, y, z) -> new GuiBigAssembler(c));
     }
 
 }

@@ -1,0 +1,35 @@
+{
+  "9s": "pi",
+  "archetype": {
+    "parent": "threng:block/big_assembler"
+  },
+  "mutations": {
+    "type": {
+      "frame": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/frame"
+        }
+      },
+      "vent": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/vent"
+        }
+      },
+      "controller": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/controller"
+        }
+      },
+      "module_pattern": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/module_pattern"
+        }
+      },
+      "module_cpu": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/module_cpu"
+        }
+      }
+    }
+  }
+}
