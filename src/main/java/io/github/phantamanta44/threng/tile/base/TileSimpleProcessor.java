@@ -88,8 +88,7 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
     @Override
     protected int getEnergyCost() {
         if (energyCost == -1) {
-            energyCost = (int)Math.ceil(Math.pow(1.63, getUpgradeCount())
-                    * getBaseEnergyPerOperation() / getMaxWork());
+            energyCost = (getBaseEnergyPerOperation() + getUpgradeEnergyCost()) / getMaxWork();
         }
         return energyCost;
     }
@@ -112,6 +111,10 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
 
     protected int getBaseEnergyPerOperation() {
         return 8100;
+    }
+
+    protected int getUpgradeEnergyCost() {
+        return 863 * getUpgradeCount();
     }
 
     protected abstract IT getInput();
