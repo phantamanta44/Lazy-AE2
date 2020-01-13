@@ -15,17 +15,17 @@ import org.apache.logging.log4j.Logger;
 @Mod(modid = ThrEngConst.MOD_ID, version = ThrEngConst.VERSION, useMetadata = true)
 public class ThrEng extends Virtue {
 
-    @SuppressWarnings("NullableProblems")
+    @SuppressWarnings("NotNullFieldNotInitialized")
     @Mod.Instance(ThrEngConst.MOD_ID)
     public static ThrEng INSTANCE;
 
-    @SuppressWarnings("NullableProblems")
+    @SuppressWarnings("NotNullFieldNotInitialized")
     @SidedProxy(
             clientSide = "io.github.phantamanta44.threng.client.ClientProxy",
             serverSide = "io.github.phantamanta44.threng.CommonProxy")
     public static CommonProxy PROXY;
 
-    @SuppressWarnings("NullableProblems")
+    @SuppressWarnings("NotNullFieldNotInitialized")
     public static Logger LOGGER;
 
     public ThrEng() {
