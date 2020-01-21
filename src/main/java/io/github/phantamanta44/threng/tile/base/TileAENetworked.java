@@ -1,5 +1,6 @@
 package io.github.phantamanta44.threng.tile.base;
 
+import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public abstract class TileAENetworked extends L9TileEntityTicking implements IActionHost, IGridProxyable {
 
@@ -42,6 +44,10 @@ public abstract class TileAENetworked extends L9TileEntityTicking implements IAc
     @Override
     public IGridNode getGridNode(@Nonnull AEPartLocation aePartLocation) {
         return getProxy().getNode();
+    }
+
+    public Optional<IGrid> aeGrid() {
+        return Optional.ofNullable(getProxy().getNode()).map(IGridNode::getGrid);
     }
 
     @Nonnull
@@ -77,7 +83,7 @@ public abstract class TileAENetworked extends L9TileEntityTicking implements IAc
 
     @Override
     public IGridNode getActionableNode() {
-        return aeProxy.getNode();
+        return getProxy().getNode();
     }
 
     @Override

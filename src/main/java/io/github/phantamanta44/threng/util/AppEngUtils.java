@@ -5,23 +5,25 @@ import appeng.api.config.Actionable;
 import appeng.api.definitions.IDefinitions;
 import appeng.api.definitions.IItemDefinition;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
+import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.security.IActionSource;
+import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.crafting.MECraftingInventory;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
+import appeng.util.Platform;
+import appeng.util.item.AEItemStack;
 import io.github.phantamanta44.libnine.util.IDisplayableMatcher;
 import io.github.phantamanta44.libnine.util.ImpossibilityRealizedException;
 import io.github.phantamanta44.libnine.util.helper.ItemUtils;
 import io.github.phantamanta44.libnine.util.helper.MirrorUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,7 +37,7 @@ public class AppEngUtils {
                 .orElse(IDisplayableMatcher.of(() -> new ItemStack(Blocks.BARRIER), s -> false));
     }
 
-    private static final MirrorUtils.IField<Map> fTasks = MirrorUtils.reflectField(CraftingCPUCluster.class, "tasks");
+    private static final MirrorUtils.IField<Map<?, ?>> fTasks = MirrorUtils.reflectField(CraftingCPUCluster.class, "tasks");
     private static final MirrorUtils.IField<MECraftingInventory> fInventory
             = MirrorUtils.reflectField(CraftingCPUCluster.class, "inventory");
     private static final MirrorUtils.IField<IItemList<IAEItemStack>> fWaitingFor
@@ -52,19 +54,30 @@ public class AppEngUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static Set<CraftingTask> getTasks(CraftingCPUCluster cpu) {
-        return (Set<CraftingTask>)fTasks.get(cpu).entrySet().stream()
-                .map(t -> new CraftingTask(cpu, (Map.Entry)t))
+        return fTasks.get(cpu).entrySet().stream()
+                .map(t -> new CraftingTask(cpu, t))
                 .collect(Collectors.toSet());
+    }
+
+    public static void importItems(IItemHandlerModifiable inventory,
+                                   IMEMonitor<IAEItemStack> storage, IEnergyGrid energy, IActionSource actionSource) {
+        for (int i = 0; i < inventory.getSlots(); i++) {
+            ItemStack stack = inventory.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                IAEItemStack remaining = Platform.poweredInsert(energy, storage,
+                        Objects.requireNonNull(AEItemStack.fromItemStack(stack)), actionSource);
+                inventory.setStackInSlot(i, remaining != null ? remaining.createItemStack() : ItemStack.EMPTY);
+            }
+        }
     }
 
     public static class CraftingTask {
 
         private final CraftingCPUCluster cpu;
-        private final Map.Entry entry;
+        private final Map.Entry<?, ?> entry;
 
-        CraftingTask(CraftingCPUCluster cpu, Map.Entry entry) {
+        CraftingTask(CraftingCPUCluster cpu, Map.Entry<?, ?> entry) {
             this.cpu = cpu;
             this.entry = entry;
         }

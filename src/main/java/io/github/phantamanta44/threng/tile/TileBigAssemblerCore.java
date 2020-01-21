@@ -4,7 +4,6 @@ import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.networking.GridFlags;
-import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.networking.crafting.ICraftingProvider;
 import appeng.api.networking.crafting.ICraftingProviderHelper;
@@ -18,8 +17,6 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.me.helpers.AENetworkProxy;
-import appeng.util.Platform;
-import appeng.util.item.AEItemStack;
 import io.github.phantamanta44.libnine.capability.impl.L9AspectInventory;
 import io.github.phantamanta44.libnine.component.multiblock.MultiBlockConnectable;
 import io.github.phantamanta44.libnine.component.multiblock.MultiBlockCore;
@@ -39,6 +36,7 @@ import io.github.phantamanta44.threng.multiblock.ThrEngMultiBlocks;
 import io.github.phantamanta44.threng.tile.base.IBigAssemblerUnit;
 import io.github.phantamanta44.threng.tile.base.IDroppableInventory;
 import io.github.phantamanta44.threng.tile.base.TileAENetworked;
+import io.github.phantamanta44.threng.util.AppEngUtils;
 import io.github.phantamanta44.threng.util.InvUtils;
 import io.github.phantamanta44.threng.util.ThrEngTextStyles;
 import net.minecraft.entity.player.EntityPlayer;
@@ -211,21 +209,12 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
     protected void tick() {
         super.tick();
         if (!world.isRemote) {
-            IGrid grid = getProxy().getNode().getGrid();
-            //noinspection ConstantConditions
-            if (grid != null) {
+            aeGrid().ifPresent(grid -> {
                 IEnergyGrid energy = grid.getCache(IEnergyGrid.class);
-
                 IMEMonitor<IAEItemStack> storage = grid.<IStorageGrid>getCache(IStorageGrid.class)
                         .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
-                for (int i = 0; i < outputBuffer.getSlots(); i++) {
-                    ItemStack stack = outputBuffer.getStackInSlot(i);
-                    if (!stack.isEmpty()) {
-                        IAEItemStack remaining = Platform.poweredInsert(energy, storage,
-                                Objects.requireNonNull(AEItemStack.fromItemStack(stack)), actionSource);
-                        outputBuffer.setStackInSlot(i, remaining != null ? remaining.createItemStack() : ItemStack.EMPTY);
-                    }
-                }
+
+                AppEngUtils.importItems(outputBuffer, storage, energy, actionSource);
 
                 if (patternsDirty) {
                     grid.postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
@@ -255,7 +244,7 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
                         setDirty();
                     }
                 }
-            }
+            });
         }
     }
 

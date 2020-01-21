@@ -3,7 +3,6 @@ package io.github.phantamanta44.threng.tile;
 import appeng.api.AEApi;
 import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.networking.GridFlags;
-import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.networking.crafting.ICraftingProvider;
@@ -17,8 +16,6 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.me.GridAccessException;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
 import appeng.me.helpers.AENetworkProxy;
-import appeng.util.Platform;
-import appeng.util.item.AEItemStack;
 import io.github.phantamanta44.libnine.capability.impl.L9AspectInventory;
 import io.github.phantamanta44.libnine.capability.provider.CapabilityBrokerDirPredicated;
 import io.github.phantamanta44.libnine.tile.RegisterTile;
@@ -49,7 +46,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 @RegisterTile(ThrEngConst.MOD_ID)
@@ -59,11 +55,7 @@ public class TileFastCraftingBus extends TileNetworkDevice
     @AutoSerialize
     private final L9AspectInventory patternInventory = new L9AspectInventory.Observable(9, (i, o, n) -> {
         if (world != null && !world.isRemote) {
-            IGrid grid = getProxy().getNode().getGrid();
-            //noinspection ConstantConditions
-            if (grid != null) {
-                grid.postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
-            }
+            aeGrid().ifPresent(grid -> grid.postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode())));
         }
         setDirty();
     });
@@ -135,21 +127,12 @@ public class TileFastCraftingBus extends TileNetworkDevice
     public void tick() {
         super.tick();
         if (!world.isRemote) {
-            IGrid grid = getProxy().getNode().getGrid();
-            //noinspection ConstantConditions
-            if (grid != null) { // have to check because ae2 violates its own method contracts
+            aeGrid().ifPresent(grid -> {
                 IMEMonitor<IAEItemStack> storage = grid.<IStorageGrid>getCache(IStorageGrid.class)
                         .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
                 IEnergyGrid energy = grid.getCache(IEnergyGrid.class);
-                for (int i = 0; i < importInventory.getSlots(); i++) {
-                    ItemStack stack = importInventory.getStackInSlot(i);
-                    if (!stack.isEmpty()) {
-                        IAEItemStack remaining = Platform.poweredInsert(energy, storage,
-                                Objects.requireNonNull(AEItemStack.fromItemStack(stack)), actionSource);
-                        importInventory.setStackInSlot(i, remaining != null ? remaining.createItemStack() : ItemStack.EMPTY);
-                    }
-                }
-            }
+                AppEngUtils.importItems(importInventory, storage, energy, actionSource);
+            });
 
             if (isBusy()) { // check if items are in the export buffer
                 IItemHandler conjItemHandler = computeAdjInvs();

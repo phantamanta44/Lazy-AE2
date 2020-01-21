@@ -3,7 +3,6 @@ package io.github.phantamanta44.threng.tile;
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.networking.GridFlags;
-import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingGrid;
 import appeng.api.networking.crafting.ICraftingLink;
 import appeng.api.networking.crafting.ICraftingRequester;
@@ -77,9 +76,7 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
     protected void tick() {
         super.tick();
         if (!world.isRemote) {
-            IGrid grid = getProxy().getNode().getGrid();
-            //noinspection ConstantConditions
-            if (grid != null) { // have to check because ae2 violates its own method contracts
+            aeGrid().ifPresent(grid -> {
                 ICraftingGrid crafting = grid.getCache(ICraftingGrid.class);
                 for (int i = 0; i < REQ_COUNT; i++) {
                     if (requests.isRequesting(i)) {
@@ -100,7 +97,7 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
                         }
                     }
                 }
-            }
+            });
         }
     }
 
@@ -139,18 +136,14 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
 
     @Override
     public IAEItemStack injectCraftedItems(ICraftingLink link, IAEItemStack stack, Actionable mode) {
-        IGrid grid = getProxy().getNode().getGrid();
-        //noinspection ConstantConditions
-        if (grid != null) {
-            return Platform.poweredInsert(
-                    grid.getCache(IEnergyGrid.class),
-                    grid.<IStorageGrid>getCache(IStorageGrid.class)
-                            .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)),
-                    stack,
-                    actionSource
-            );
-        }
-        return stack;
+        return aeGrid()
+                .map(grid -> Platform.poweredInsert(
+                        grid.getCache(IEnergyGrid.class),
+                        grid.<IStorageGrid>getCache(IStorageGrid.class)
+                                .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)),
+                        stack,
+                        actionSource))
+                .orElse(stack);
     }
 
     @Override
