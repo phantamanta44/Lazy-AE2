@@ -42,6 +42,8 @@ import io.github.phantamanta44.threng.util.ThrEngTextStyles;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -52,6 +54,8 @@ import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileBigAssemblerCore extends TileAENetworked implements IBigAssemblerUnit, ICraftingProvider, IDroppableInventory {
@@ -68,7 +72,7 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
     @AutoSerialize
     private final L9AspectInventory craftingBuffer = new L9AspectInventory.Observable(MAX_JOB_QUEUE * 9, (i, o, n) -> setDirty());
     @AutoSerialize
-    private final L9AspectInventory outputBuffer = new L9AspectInventory.Observable(MAX_JOB_QUEUE, (i, o, n) -> setDirty());
+    private final L9AspectInventory outputBuffer = new L9AspectInventory.Observable(MAX_JOB_QUEUE * 10, (i, o, n) -> setDirty());
     @AutoSerialize
     private final JobQueue jobQueue = new JobQueue();
     @AutoSerialize
@@ -262,7 +266,15 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
     @Override
     public boolean pushPattern(ICraftingPatternDetails pattern, InventoryCrafting inv) {
         if (pattern.isCraftable() && !jobQueue.isFull()) {
-            jobQueue.pushJob(inv, pattern.getOutput(inv, world));
+            IRecipe recipe = CraftingManager.findMatchingRecipe(inv, world);
+            if (recipe != null) {
+                ItemStack[] remaining = new ItemStack[9];
+                Iterator<ItemStack> remIter = recipe.getRemainingItems(inv).iterator();
+                for (int i = 0; i < 9 && remIter.hasNext(); i++) { // ignore any more than 9 remaining items
+                    remaining[i] = remIter.next();
+                }
+                jobQueue.pushJob(inv, remaining, recipe.getCraftingResult(inv));
+            }
             return true;
         }
         return false;
@@ -301,8 +313,8 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
             return queue.peek();
         }
 
-        void pushJob(InventoryCrafting input, ItemStack output) {
-            CraftingJob job = new CraftingJob(jobSlots.nextClearBit(0), output);
+        void pushJob(InventoryCrafting input, ItemStack[] remaining, ItemStack output) {
+            CraftingJob job = new CraftingJob(jobSlots.nextClearBit(0), remaining, output);
             queue.offer(job);
             jobSlots.set(job.index);
             for (int i = 0; i < 9; i++) {
@@ -313,14 +325,21 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
         void dispatchJob() {
             CraftingJob job = queue.peek();
             if (job != null) {
-                if (outputBuffer.getStackInSlot(job.index).isEmpty()) {
-                    for (int i = 0; i < 9; i++) {
-                        craftingBuffer.setStackInSlot(job.index * 9 + i, ItemStack.EMPTY);
+                for (int i = 0; i < 10; i++) {
+                    if (!outputBuffer.getStackInSlot(job.index * 10 + i).isEmpty()) {
+                        return;
                     }
-                    outputBuffer.setStackInSlot(job.index, job.result);
-                    queue.pop();
-                    jobSlots.clear(job.index);
                 }
+                for (int i = 0; i < 9; i++) {
+                    ItemStack stack = job.remaining[i];
+                    if (!stack.isEmpty()) {
+                        outputBuffer.setStackInSlot(job.index * 10 + i, stack);
+                    }
+                    craftingBuffer.setStackInSlot(job.index * 9 + i, ItemStack.EMPTY);
+                }
+                outputBuffer.setStackInSlot(job.index * 10 + 9, job.result);
+                queue.pop();
+                jobSlots.clear(job.index);
             }
         }
 
@@ -329,7 +348,11 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
             byte[] jobSlotData = jobSlots.toByteArray();
             data.writeInt(jobSlotData.length).writeBytes(jobSlotData).writeInt(queue.size());
             for (CraftingJob job : queue) {
-                data.writeInt(job.index).writeItemStack(job.result);
+                data.writeInt(job.index);
+                for (ItemStack remStack : job.remaining) {
+                    data.writeItemStack(remStack);
+                }
+                data.writeItemStack(job.result);
             }
         }
 
@@ -339,7 +362,10 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
             queue.clear();
             int jobCount = data.readInt();
             while (jobCount > 0) {
-                queue.offer(new CraftingJob(data.readInt(), data.readItemStack()));
+                queue.offer(new CraftingJob(
+                        data.readInt(),
+                        IntStream.range(0, 9).mapToObj(i -> data.readItemStack()).toArray(ItemStack[]::new),
+                        data.readItemStack()));
                 --jobCount;
             }
         }
@@ -351,6 +377,9 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
             for (CraftingJob job : queue) {
                 queueTag.appendTag(new ChainingTagCompound()
                         .withInt("Index", job.index)
+                        .withList("Remaining", Arrays.stream(job.remaining)
+                                .map(ItemStack::serializeNBT)
+                                .collect(Collectors.toList()))
                         .withItemStack("Result", job.result));
             }
             tag.setTag("Queue", queueTag);
@@ -362,17 +391,24 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
             queue.clear();
             for (NBTBase jobTag0 : tag.getTagList("Queue", Constants.NBT.TAG_COMPOUND)) {
                 NBTTagCompound jobTag = (NBTTagCompound)jobTag0;
-                queue.offer(new CraftingJob(jobTag.getInteger("Index"), new ItemStack(jobTag.getCompoundTag("Result"))));
+                NBTTagList remTag = jobTag.getTagList("Remaining", Constants.NBT.TAG_COMPOUND);
+                ItemStack[] rem = new ItemStack[9];
+                for (int i = 0; i < remTag.tagCount(); i++) {
+                    rem[i] = new ItemStack(remTag.getCompoundTagAt(i));
+                }
+                queue.offer(new CraftingJob(jobTag.getInteger("Index"), rem, new ItemStack(jobTag.getCompoundTag("Result"))));
             }
         }
 
         private class CraftingJob implements IAssemblyJob {
 
             final int index;
+            final ItemStack[] remaining;
             final ItemStack result;
 
-            CraftingJob(int index, ItemStack result) {
+            CraftingJob(int index, ItemStack[] remaining, ItemStack result) {
                 this.index = index;
+                this.remaining = remaining;
                 this.result = result;
             }
 
