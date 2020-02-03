@@ -152,7 +152,10 @@ public class TileFastCraftingBus extends TileNetworkDevice
             ItemStack stack = patternInventory.getStackInSlot(i);
             if (!stack.isEmpty() && stack.getItem() instanceof ICraftingPatternItem) {
                 ICraftingPatternItem item = ((ICraftingPatternItem)stack.getItem());
-                helper.addCraftingOption(this, item.getPatternForItem(stack, world));
+                ICraftingPatternDetails pattern = item.getPatternForItem(stack, world);
+                if (pattern != null) {
+                    helper.addCraftingOption(this, pattern);
+                }
             }
         }
     }

@@ -58,7 +58,7 @@ public class TileBigAssemblerPatternStore extends TileBigAssemblerPart implement
                 ItemStack stack = patternInv.getStackInSlot(i);
                 if (!stack.isEmpty() && stack.getItem() instanceof ICraftingPatternItem) {
                     ICraftingPatternDetails pattern = ((ICraftingPatternItem)stack.getItem()).getPatternForItem(stack, world);
-                    if (pattern.isCraftable()) {
+                    if (pattern != null && pattern.isCraftable()) {
                         patternCache.add(pattern);
                     }
                 }
