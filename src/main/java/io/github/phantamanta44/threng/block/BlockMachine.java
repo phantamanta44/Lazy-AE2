@@ -13,10 +13,7 @@ import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.inventory.ThrEngGuis;
 import io.github.phantamanta44.threng.item.block.ItemBlockMachine;
 import io.github.phantamanta44.threng.tile.*;
-import io.github.phantamanta44.threng.tile.base.IActivable;
-import io.github.phantamanta44.threng.tile.base.IDirectionable;
-import io.github.phantamanta44.threng.tile.base.IDroppableInventory;
-import io.github.phantamanta44.threng.tile.base.TileMachine;
+import io.github.phantamanta44.threng.tile.base.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -73,8 +70,13 @@ public class BlockMachine extends L9BlockStated {
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        Objects.requireNonNull((IDirectionable)this.getTileEntity(world, pos))
-                .setFrontFace(placer.getHorizontalFacing().getOpposite());
+        TileEntity tile = Objects.requireNonNull(getTileEntity(world, pos));
+        if (tile instanceof IDirectionable) {
+            ((IDirectionable)tile).setFrontFace(placer.getHorizontalFacing().getOpposite());
+        }
+        if (tile instanceof TileAENetworked && placer instanceof EntityPlayer) {
+            ((TileAENetworked)tile).getProxy().setOwner((EntityPlayer)placer);
+        }
     }
 
     @Override

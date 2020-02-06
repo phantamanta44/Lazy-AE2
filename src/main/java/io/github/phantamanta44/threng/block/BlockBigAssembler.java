@@ -16,10 +16,12 @@ import io.github.phantamanta44.threng.tile.TileBigAssemblerPatternStore;
 import io.github.phantamanta44.threng.tile.base.IActivable;
 import io.github.phantamanta44.threng.tile.base.IBigAssemblerUnit;
 import io.github.phantamanta44.threng.tile.base.IDroppableInventory;
+import io.github.phantamanta44.threng.tile.base.TileAENetworked;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -63,6 +65,14 @@ public class BlockBigAssembler extends L9BlockStated {
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         return state.withProperty(ThrEngProps.ACTIVE, Objects.<IActivable>requireNonNull(getTileEntity(world, pos)).isActive());
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        TileEntity tile = Objects.requireNonNull(getTileEntity(world, pos));
+        if (tile instanceof TileAENetworked && placer instanceof EntityPlayer) {
+            ((TileAENetworked)tile).getProxy().setOwner((EntityPlayer)placer);
+        }
     }
 
     @Override
