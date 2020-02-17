@@ -42,6 +42,7 @@ public class ThrEngMultiBlocks {
                     }
                 }));
         mBigAssembler.setMinVolume(1);
+        mBigAssembler.setMaxVolume(512);
         mBigAssembler.setWallEdgeMatcher(
                 new StructureMatcherBlockState(s -> s.getValue(BlockBigAssembler.TYPE) == BlockBigAssembler.Type.FRAME));
         mBigAssembler.setPostTest((w, min, max) -> {
