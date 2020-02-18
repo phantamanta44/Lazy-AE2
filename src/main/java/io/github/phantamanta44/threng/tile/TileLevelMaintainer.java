@@ -206,7 +206,7 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
             }
         }
 
-        boolean isRequesting(int index) {
+        public boolean isRequesting(int index) {
             return !requestStacks[index].isEmpty();
         }
 

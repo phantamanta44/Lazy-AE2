@@ -2,6 +2,7 @@ package io.github.phantamanta44.threng;
 
 import appeng.api.config.Upgrades;
 import io.github.phantamanta44.threng.block.BlockMachine;
+import io.github.phantamanta44.threng.integration.IntegrationManager;
 import io.github.phantamanta44.threng.item.ItemMaterial;
 import io.github.phantamanta44.threng.recipe.ThrEngRecipes;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -14,11 +15,13 @@ import java.util.LinkedList;
 
 public class CommonProxy {
 
+    private final IntegrationManager intManager = new IntegrationManager();
     private final Deque<Runnable> postInitTasks = new LinkedList<>();
     private boolean postPostInit = false;
 
     public void onPreInit(FMLPreInitializationEvent event) {
         ThrEngRecipes.registerRecipeTypes();
+        intManager.load(event.getAsmData());
     }
 
     public void onInit(FMLInitializationEvent event) {
@@ -29,6 +32,8 @@ public class CommonProxy {
         Upgrades.SPEED.registerItem(BlockMachine.Type.AGGREGATOR.newStack(1), 8);
         Upgrades.SPEED.registerItem(BlockMachine.Type.CENTRIFUGE.newStack(1), 8);
         Upgrades.SPEED.registerItem(BlockMachine.Type.ETCHER.newStack(1), 8);
+
+        intManager.init();
     }
 
     public void onPostInit(FMLPostInitializationEvent event) {
