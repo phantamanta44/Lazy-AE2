@@ -56,6 +56,8 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
     private IStackWatcher watcher;
     private long[] knownCounts = new long[REQ_COUNT];
 
+    private int sleepTicks = 0;
+
     public TileLevelMaintainer() {
         markRequiresSync();
         Arrays.fill(knownCounts, -1);
@@ -77,25 +79,36 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
         super.tick();
         if (!world.isRemote) {
             aeGrid().ifPresent(grid -> {
-                ICraftingGrid crafting = grid.getCache(ICraftingGrid.class);
-                for (int i = 0; i < REQ_COUNT; i++) {
-                    if (requests.isRequesting(i)) {
-                        if (knownCounts[i] == -1) {
-                            IAEItemStack stack = grid.<IStorageGrid>getCache(IStorageGrid.class)
-                                    .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class))
-                                    .getStorageList()
-                                    .findPrecise(AEItemStack.fromItemStack(requests.getStackInSlot(i)));
-                            knownCounts[i] = stack == null ? 0 : stack.getStackSize();
-                            setDirty();
-                        }
-                        if (crafter.isSlotOpen(i)) {
-                            long toCraft = requests.computeDelta(i, knownCounts[i]);
-                            if (toCraft > 0 && crafter.requestCrafting(
-                                    i, requests.request(i, toCraft), getWorld(), grid, crafting, actionSource)) {
-                                setDirty();
+                if (sleepTicks <= 0) {
+                    boolean workDone = false;
+                    ICraftingGrid crafting = grid.getCache(ICraftingGrid.class);
+                    for (int i = 0; i < REQ_COUNT; i++) {
+                        if (requests.isRequesting(i)) {
+                            if (knownCounts[i] == -1) {
+                                IAEItemStack stack = grid.<IStorageGrid>getCache(IStorageGrid.class)
+                                        .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class))
+                                        .getStorageList()
+                                        .findPrecise(AEItemStack.fromItemStack(requests.getStackInSlot(i)));
+                                knownCounts[i] = stack == null ? 0 : stack.getStackSize();
+                                workDone = true;
+                            }
+                            if (crafter.isSlotOpen(i)) {
+                                long toCraft = requests.computeDelta(i, knownCounts[i]);
+                                if (toCraft > 0 && crafter.requestCrafting(
+                                        i, requests.request(i, toCraft), getWorld(), grid, crafting, actionSource)) {
+                                    workDone = true;
+                                }
                             }
                         }
                     }
+                    if (workDone) {
+                        setDirty();
+                        sleepTicks = 16;
+                    } else {
+                        sleepTicks = 64;
+                    }
+                } else {
+                    --sleepTicks;
                 }
             });
         }

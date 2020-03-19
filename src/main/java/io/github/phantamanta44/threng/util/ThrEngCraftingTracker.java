@@ -45,22 +45,20 @@ public class ThrEngCraftingTracker implements ISerializable {
         Future<ICraftingJob> jobTask = jobs[slot];
         if (jobTask == null) {
             jobs[slot] = crafting.beginCraftingJob(world, grid, actionSrc, item.copy(), null);
-        } else {
-            if (jobTask.isDone()) {
-                try {
-                    ICraftingJob job = jobTask.get();
-                    if (job != null) {
-                        ICraftingLink link = crafting.submitJob(job, owner, null, false, actionSrc);
-                        jobs[slot] = null;
-                        if (link != null) {
-                            links[slot] = link;
-                            updateLinks();
-                            return true;
-                        }
+        } else if (jobTask.isDone()) {
+            try {
+                ICraftingJob job = jobTask.get();
+                if (job != null) {
+                    ICraftingLink link = crafting.submitJob(job, owner, null, false, actionSrc);
+                    jobs[slot] = null;
+                    if (link != null) {
+                        links[slot] = link;
+                        updateLinks();
+                        return true;
                     }
-                } catch (InterruptedException | ExecutionException e) {
-                    throw new ImpossibilityRealizedException(e);
                 }
+            } catch (InterruptedException | ExecutionException e) {
+                throw new ImpossibilityRealizedException(e);
             }
         }
         return false;
