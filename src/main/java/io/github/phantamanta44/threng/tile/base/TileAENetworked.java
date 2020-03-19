@@ -10,6 +10,7 @@ import appeng.api.util.DimensionalCoord;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.me.helpers.MachineSource;
+import appeng.util.Platform;
 import io.github.phantamanta44.libnine.tile.L9TileEntityTicking;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -68,6 +69,7 @@ public abstract class TileAENetworked extends L9TileEntityTicking implements IAc
             proxyReadied = true;
             getProxy().onReady();
             initProxy(getProxy());
+            Platform.notifyBlocksOfNeighbors(world, pos);
         }
     }
 
