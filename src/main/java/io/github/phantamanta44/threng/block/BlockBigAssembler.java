@@ -67,6 +67,18 @@ public class BlockBigAssembler extends L9BlockStated {
         return state.withProperty(ThrEngProps.ACTIVE, Objects.<IActivable>requireNonNull(getTileEntity(world, pos)).isActive());
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public int getLightValue(IBlockState state) {
+        switch (state.getValue(TYPE)) {
+            case MODULE_CPU:
+            case MODULE_PATTERN:
+                return 10;
+            default:
+                return 0;
+        }
+    }
+
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         TileEntity tile = Objects.requireNonNull(getTileEntity(world, pos));
