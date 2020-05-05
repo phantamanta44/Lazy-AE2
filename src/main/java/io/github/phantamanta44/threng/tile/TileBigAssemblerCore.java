@@ -291,6 +291,7 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
         if (clientCachedFormStatus != formStatus) {
             clientCachedFormStatus = formStatus;
             world.markBlockRangeForRenderUpdate(pos, pos);
+            patternStoreCache = null;
         }
     }
 
