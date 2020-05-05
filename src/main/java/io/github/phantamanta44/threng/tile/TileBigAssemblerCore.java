@@ -17,6 +17,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.me.helpers.AENetworkProxy;
+import appeng.util.Platform;
 import io.github.phantamanta44.libnine.capability.impl.L9AspectInventory;
 import io.github.phantamanta44.libnine.component.multiblock.MultiBlockConnectable;
 import io.github.phantamanta44.libnine.component.multiblock.MultiBlockCore;
@@ -42,8 +43,6 @@ import io.github.phantamanta44.threng.util.ThrEngTextStyles;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -266,14 +265,14 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
     @Override
     public boolean pushPattern(ICraftingPatternDetails pattern, InventoryCrafting inv) {
         if (pattern.isCraftable() && !jobQueue.isFull()) {
-            IRecipe recipe = CraftingManager.findMatchingRecipe(inv, world);
-            if (recipe != null) {
+            ItemStack output = pattern.getOutput(inv, getWorld());
+            if (!output.isEmpty()) {
                 ItemStack[] remaining = new ItemStack[9];
-                Iterator<ItemStack> remIter = recipe.getRemainingItems(inv).iterator();
-                for (int i = 0; i < 9 && remIter.hasNext(); i++) { // ignore any more than 9 remaining items
-                    remaining[i] = remIter.next();
+                int remMax = Math.min(inv.getSizeInventory(), 9); // only care about at most 9 remaining items
+                for (int i = 0; i < remMax; i++) {
+                    remaining[i] = Platform.getContainerItem(inv.getStackInSlot(i));
                 }
-                jobQueue.pushJob(inv, remaining, recipe.getCraftingResult(inv));
+                jobQueue.pushJob(inv, remaining, output);
             }
             return true;
         }
