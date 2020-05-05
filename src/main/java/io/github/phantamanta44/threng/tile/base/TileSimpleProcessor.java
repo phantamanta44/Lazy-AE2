@@ -23,7 +23,7 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
 
     private final Class<R> recipeType;
 
-    @AutoSerialize
+    @AutoSerialize(sync = false)
     private final L9AspectSlot slotUpgrade = new TileSimpleProcessor.UpgradeSlot(this);
 
     private TriBool canWork = TriBool.NONE;

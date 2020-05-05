@@ -59,10 +59,10 @@ import java.util.stream.IntStream;
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileBigAssemblerCore extends TileAENetworked implements IBigAssemblerUnit, ICraftingProvider, IDroppableInventory {
 
-    public static final int MAX_JOB_QUEUE = 16;
+    public static final int MAX_JOB_QUEUE = 64;
     private static final double ENERGY_PER_WORK = 16D;
     public static final int WORK_PER_JOB = 16;
-    public static final int MAX_EFFECTIVE_CPUS = MAX_JOB_QUEUE * WORK_PER_JOB - 1;
+    public static final int MAX_EFFECTIVE_CPUS = (MAX_JOB_QUEUE * WORK_PER_JOB - 1) / 3;
 
     @AutoSerialize
     private final MultiBlockCore<IBigAssemblerUnit> multiBlock = new MultiBlockCore<>(this, ThrEngMultiBlocks.BIG_ASSEMBLER);
@@ -70,7 +70,7 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
     private final IDatum.OfInt cpuCount = IDatum.ofInt(0);
     @AutoSerialize
     private final L9AspectInventory craftingBuffer = new L9AspectInventory.Observable(MAX_JOB_QUEUE * 9, (i, o, n) -> setDirty());
-    @AutoSerialize
+    @AutoSerialize(sync = false)
     private final L9AspectInventory outputBuffer = new L9AspectInventory.Observable(MAX_JOB_QUEUE * 10, (i, o, n) -> setDirty());
     @AutoSerialize
     private final JobQueue jobQueue = new JobQueue();
@@ -127,7 +127,7 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
     }
 
     public int getWorkRate() {
-        return cpuCount.getInt() + 1;
+        return cpuCount.getInt() * 3 + 1;
     }
 
     @Nullable

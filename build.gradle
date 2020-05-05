@@ -41,7 +41,7 @@ repositories {
 }
 
 dependencies {
-    compile 'io.github.phantamanta44.libnine:libnine-1.12.2:1.1.7'
+    compile 'io.github.phantamanta44.libnine:libnine-1.12.2:1.1.8'
     deobfCompile "appeng:appliedenergistics2:rv6-stable-7"
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.14.519"
     deobfCompile "mezz.jei:jei_1.12.2:4.15.0.291:api"

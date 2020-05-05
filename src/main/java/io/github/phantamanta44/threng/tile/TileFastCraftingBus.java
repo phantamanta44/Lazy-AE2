@@ -52,16 +52,16 @@ import java.util.function.Predicate;
 public class TileFastCraftingBus extends TileNetworkDevice
         implements ICraftingProvider, IAllocableSides<SlotType.BasicIO>, IDroppableInventory {
 
-    @AutoSerialize
+    @AutoSerialize(sync = false)
     private final L9AspectInventory patternInventory = new L9AspectInventory.Observable(9, (i, o, n) -> {
         if (world != null && !world.isRemote) {
             aeGrid().ifPresent(grid -> grid.postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode())));
         }
         setDirty();
     });
-    @AutoSerialize
+    @AutoSerialize(sync = false)
     private final L9AspectInventory importInventory = new L9AspectInventory.Observable(9, (i, o, n) -> setDirty());
-    @AutoSerialize
+    @AutoSerialize(sync = false)
     private final L9AspectInventory exportInventory = new L9AspectInventory.Observable(9, (i, o, n) -> setDirty());
     @AutoSerialize
     private final SideAlloc<SlotType.BasicIO> sides = new SideAlloc<>(SlotType.BasicIO.OUTPUT, this::getFrontFace);

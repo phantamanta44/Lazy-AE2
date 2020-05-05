@@ -24,7 +24,7 @@ import java.util.function.Predicate;
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileBigAssemblerPatternStore extends TileBigAssemblerPart implements IDroppableInventory {
 
-    @AutoSerialize
+    @AutoSerialize(sync = false)
     private final L9AspectInventory patternInv = new L9AspectInventory.Observable(36, (i, o, n) -> {
         if (world != null) {
             patternCache = null;

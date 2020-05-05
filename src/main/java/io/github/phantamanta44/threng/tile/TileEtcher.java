@@ -31,12 +31,12 @@ public class TileEtcher
     private static final Predicate<ItemStack> MATCH_REDSTONE = OreDictUtils.matchesOredict("dustRedstone");
     private static final Predicate<ItemStack> MATCH_SILICON = OreDictUtils.matchesOredict("itemSilicon");
 
-    @AutoSerialize
+    @AutoSerialize(sync = false)
     private final L9AspectInventory invInput = new L9AspectInventory.Observable(3, (s, o, n) -> markWorkStateDirty())
             .withPredicate(0, MATCH_REDSTONE)
             .withPredicate(1, MATCH_SILICON)
             .withPredicate(2, MATCH_REDSTONE.or(MATCH_SILICON).negate());
-    @AutoSerialize
+    @AutoSerialize(sync = false)
     private final L9AspectSlot slotOutput = new L9AspectSlot.Observable(is -> false, (s, o, n) -> markWorkStateDirty());
     @AutoSerialize
     private final SideAlloc<SlotType.BasicIO> sides = new SideAlloc<>(SlotType.BasicIO.NONE, this::getFrontFace);

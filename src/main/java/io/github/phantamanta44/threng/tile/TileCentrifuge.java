@@ -23,9 +23,9 @@ public class TileCentrifuge extends TileSimpleProcessor<ItemStack, ItemStack, It
 
     private static final int ENERGY_MAX = 100000;
 
-    @AutoSerialize
+    @AutoSerialize(sync = false)
     private final L9AspectSlot slotInput = new L9AspectSlot.Observable((s, o, n) -> markWorkStateDirty());
-    @AutoSerialize
+    @AutoSerialize(sync = false)
     private final L9AspectSlot slotOutput = new L9AspectSlot.Observable(is -> false, (s, o, n) -> markWorkStateDirty());
     @AutoSerialize
     private final SideAlloc<SlotType.BasicIO> sides = new SideAlloc<>(SlotType.BasicIO.NONE, this::getFrontFace);
