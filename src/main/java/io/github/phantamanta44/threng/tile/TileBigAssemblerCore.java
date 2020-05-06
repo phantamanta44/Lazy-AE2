@@ -210,7 +210,6 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
 
     @Override
     protected void tick() {
-        super.tick();
         if (!world.isRemote) {
             aeGrid().ifPresent(grid -> {
                 IEnergyGrid energy = grid.getCache(IEnergyGrid.class);

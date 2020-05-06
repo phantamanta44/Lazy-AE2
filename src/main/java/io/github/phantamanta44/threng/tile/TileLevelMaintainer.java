@@ -76,7 +76,6 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
 
     @Override
     protected void tick() {
-        super.tick();
         if (!world.isRemote) {
             aeGrid().ifPresent(grid -> {
                 if (sleepTicks <= 0) {

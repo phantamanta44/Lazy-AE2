@@ -125,7 +125,6 @@ public class TileFastCraftingBus extends TileNetworkDevice
 
     @Override
     public void tick() {
-        super.tick();
         if (!world.isRemote) {
             aeGrid().ifPresent(grid -> {
                 IMEMonitor<IAEItemStack> storage = grid.<IStorageGrid>getCache(IStorageGrid.class)

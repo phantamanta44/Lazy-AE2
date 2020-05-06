@@ -2,9 +2,11 @@ package io.github.phantamanta44.threng;
 
 import appeng.api.config.Upgrades;
 import io.github.phantamanta44.threng.block.BlockMachine;
+import io.github.phantamanta44.threng.event.TileReadyHandler;
 import io.github.phantamanta44.threng.integration.IntegrationManager;
 import io.github.phantamanta44.threng.item.ItemMaterial;
 import io.github.phantamanta44.threng.recipe.ThrEngRecipes;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -19,7 +21,10 @@ public class CommonProxy {
     private final Deque<Runnable> postInitTasks = new LinkedList<>();
     private boolean postPostInit = false;
 
+    private final TileReadyHandler tileReadyer = new TileReadyHandler();
+
     public void onPreInit(FMLPreInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(tileReadyer);
         ThrEngRecipes.registerRecipeTypes();
         intManager.load(event.getAsmData());
     }
@@ -49,6 +54,10 @@ public class CommonProxy {
         } else {
             postInitTasks.add(task);
         }
+    }
+
+    public TileReadyHandler getTileReadyHandler() {
+        return tileReadyer;
     }
 
 }
