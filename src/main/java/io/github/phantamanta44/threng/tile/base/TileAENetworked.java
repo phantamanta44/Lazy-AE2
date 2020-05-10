@@ -31,9 +31,11 @@ public abstract class TileAENetworked extends L9TileEntityTicking implements IAc
 
     @Override
     public void onReady() {
-        getProxy().onReady();
-        initProxy(getProxy());
-        Platform.notifyBlocksOfNeighbors(world, pos);
+        if (!isInvalid()) {
+            getProxy().onReady();
+            initProxy(getProxy());
+            Platform.notifyBlocksOfNeighbors(world, pos);
+        }
     }
 
     @Nullable

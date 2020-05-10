@@ -25,10 +25,7 @@ public class TileReadyHandler {
     public void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             while (!readyQueue.isEmpty()) {
-                IReadyable tile = readyQueue.pop();
-                if (!tile.isInvalid()) {
-                    tile.onReady();
-                }
+                readyQueue.pop().onReady();
             }
         }
     }

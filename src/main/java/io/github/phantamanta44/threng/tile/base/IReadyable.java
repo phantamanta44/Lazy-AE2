@@ -4,6 +4,4 @@ public interface IReadyable {
 
     void onReady();
 
-    boolean isInvalid();
-
 }
