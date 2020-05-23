@@ -73,7 +73,7 @@ public class BlockBigAssembler extends L9BlockStated {
         switch (state.getValue(TYPE)) {
             case MODULE_CPU:
             case MODULE_PATTERN:
-                return 10;
+                return 11;
             default:
                 return 0;
         }
