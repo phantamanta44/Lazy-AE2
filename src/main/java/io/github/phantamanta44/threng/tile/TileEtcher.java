@@ -11,6 +11,7 @@ import io.github.phantamanta44.libnine.util.helper.OreDictUtils;
 import io.github.phantamanta44.libnine.util.tuple.ITriple;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
+import io.github.phantamanta44.threng.ThrEngConfig;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.recipe.EtchRecipe;
 import io.github.phantamanta44.threng.recipe.component.TriItemInput;
@@ -26,8 +27,7 @@ import java.util.function.Predicate;
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileEtcher
         extends TileSimpleProcessor<ITriple<ItemStack, ItemStack, ItemStack>, ItemStack, TriItemInput, ItemStackOutput, EtchRecipe> {
-
-    private static final int ENERGY_MAX = 100000;
+    
     private static final Predicate<ItemStack> MATCH_REDSTONE = OreDictUtils.matchesOredict("dustRedstone");
     private static final Predicate<ItemStack> MATCH_SILICON = OreDictUtils.matchesOredict("itemSilicon");
 
@@ -42,7 +42,7 @@ public class TileEtcher
     private final SideAlloc<SlotType.BasicIO> sides = new SideAlloc<>(SlotType.BasicIO.NONE, this::getFrontFace);
 
     public TileEtcher() {
-        super(EtchRecipe.class, ENERGY_MAX);
+        super(EtchRecipe.class, ThrEngConfig.processing.etcherEnergyBuffer);
         setInitialized();
     }
 
@@ -56,6 +56,26 @@ public class TileEtcher
     @Override
     public IAllocableSides<SlotType.BasicIO> getSidedIo() {
         return sides;
+    }
+
+    @Override
+    protected int getBaseEnergyPerOperation() {
+        return ThrEngConfig.processing.etcherEnergyCostBase;
+    }
+
+    @Override
+    protected int getUpgradeEnergyCost() {
+        return ThrEngConfig.processing.etcherEnergyCostUpgrade * getUpgradeCount();
+    }
+
+    @Override
+    protected int getBaseMaxWork() {
+        return ThrEngConfig.processing.etcherWorkTicksBase;
+    }
+
+    @Override
+    protected int getUpgradeReducedWork() {
+        return ThrEngConfig.processing.etcherWorkTicksUpgrade * getUpgradeCount();
     }
 
     @Override

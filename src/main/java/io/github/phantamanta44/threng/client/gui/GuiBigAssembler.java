@@ -2,6 +2,7 @@ package io.github.phantamanta44.threng.client.gui;
 
 import io.github.phantamanta44.libnine.client.gui.L9GuiContainer;
 import io.github.phantamanta44.libnine.util.render.GuiUtils;
+import io.github.phantamanta44.threng.ThrEngConfig;
 import io.github.phantamanta44.threng.client.gui.component.GuiComponentPageNav;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ResConst;
@@ -9,7 +10,6 @@ import io.github.phantamanta44.threng.inventory.ContainerBigAssembler;
 import io.github.phantamanta44.threng.tile.TileBigAssemblerCore;
 import io.github.phantamanta44.threng.util.IPaginated;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -63,20 +63,21 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated {
         int work = tile.getWork();
         if (work > 0) {
             ResConst.GUI_BIG_ASSEMBLER_PROGRESS
-                    .drawPartial(36, 113, 0F, 0F, work / (float)TileBigAssemblerCore.WORK_PER_JOB, 1F);
+                    .drawPartial(36, 113, 0F, 0F, work / (float)tile.getWorkPerJob(), 1F);
         }
         int jobCount = tile.getJobCount();
         if (jobCount > 0) {
             ResConst.GUI_BIG_ASSEMBLER_QUEUE
-                    .drawPartial(58, 94, 0F, 1F - jobCount / (float)TileBigAssemblerCore.MAX_JOB_QUEUE, 1F, 1F);
+                    .drawPartial(58, 94, 0F, 1F - jobCount / (float)ThrEngConfig.massAssembler.jobQueueSize, 1F, 1F);
         }
         int cpuCount = tile.getCpuCount();
         if (cpuCount > 0) {
+            int maxEffectiveCpus = tile.getMaxEffectiveCpus();
             float cpuBar;
-            if (cpuCount >= TileBigAssemblerCore.MAX_EFFECTIVE_CPUS) {
+            if (cpuCount >= maxEffectiveCpus) {
                 cpuBar = 1F;
             } else {
-                cpuBar = (float)(Math.log1p(cpuCount) / Math.log1p(TileBigAssemblerCore.MAX_EFFECTIVE_CPUS));
+                cpuBar = (float)(Math.log1p(cpuCount) / Math.log1p(maxEffectiveCpus));
             }
             ResConst.GUI_BIG_ASSEMBLER_CPUS.drawPartial(64, 94, 0F, 1F - cpuBar, 1F, 1F);
         }
@@ -112,9 +113,9 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated {
     public void drawOverlay(float partialTicks, int mX, int mY) {
         TileBigAssemblerCore tile = cont.getAssemblerCore();
         if (GuiUtils.isMouseOver(35, 112, 18, 4, mX, mY)) { // progress bar
-            drawTooltip(I18n.format(LangConst.TT_WORK_FRAC, tile.getWork(), TileBigAssemblerCore.WORK_PER_JOB), mX, mY);
+            drawTooltip(I18n.format(LangConst.TT_WORK_FRAC, tile.getWork(), tile.getWorkPerJob()), mX, mY);
         } else if (GuiUtils.isMouseOver(57, 93, 5, 27, mX, mY)) { // queue bar
-            drawTooltip(I18n.format(LangConst.TT_JOB_COUNT, tile.getJobCount(), TileBigAssemblerCore.MAX_JOB_QUEUE), mX, mY);
+            drawTooltip(I18n.format(LangConst.TT_JOB_COUNT, tile.getJobCount(), ThrEngConfig.massAssembler.jobQueueSize), mX, mY);
         } else if (GuiUtils.isMouseOver(63, 93, 5, 27, mX, mY)) { // cpu bar
             drawTooltip(Arrays.asList(
                     I18n.format(LangConst.TT_CPU_COUNT, tile.getCpuCount()), I18n.format(LangConst.TT_WORK_RATE, tile.getWorkRate())),

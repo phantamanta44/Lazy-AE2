@@ -10,6 +10,7 @@ import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
 import io.github.phantamanta44.libnine.util.tuple.ITriple;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
+import io.github.phantamanta44.threng.ThrEngConfig;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.recipe.AggRecipe;
 import io.github.phantamanta44.threng.recipe.component.TriItemInput;
@@ -24,8 +25,6 @@ import net.minecraftforge.items.IItemHandler;
 public class TileAggregator
         extends TileSimpleProcessor<ITriple<ItemStack, ItemStack, ItemStack>, ItemStack, TriItemInput, ItemStackOutput, AggRecipe> {
 
-    private static final int ENERGY_MAX = 100000;
-
     @AutoSerialize(sync = false)
     private final L9AspectInventory invInput = new L9AspectInventory.Observable(3, (s, o, n) -> markWorkStateDirty());
     @AutoSerialize(sync = false)
@@ -34,7 +33,7 @@ public class TileAggregator
     private final SideAlloc<SlotType.BasicIO> sides = new SideAlloc<>(SlotType.BasicIO.NONE, this::getFrontFace);
 
     public TileAggregator() {
-        super(AggRecipe.class, ENERGY_MAX);
+        super(AggRecipe.class, ThrEngConfig.processing.aggregatorEnergyBuffer);
         setInitialized();
     }
 
@@ -47,6 +46,26 @@ public class TileAggregator
 
     public IAllocableSides<SlotType.BasicIO> getSidedIo() {
         return sides;
+    }
+
+    @Override
+    protected int getBaseEnergyPerOperation() {
+        return ThrEngConfig.processing.aggregatorEnergyCostBase;
+    }
+
+    @Override
+    protected int getUpgradeEnergyCost() {
+        return ThrEngConfig.processing.aggregatorEnergyCostUpgrade * getUpgradeCount();
+    }
+
+    @Override
+    protected int getBaseMaxWork() {
+        return ThrEngConfig.processing.aggregatorWorkTicksBase;
+    }
+
+    @Override
+    protected int getUpgradeReducedWork() {
+        return ThrEngConfig.processing.aggregatorWorkTicksUpgrade * getUpgradeCount();
     }
 
     @Override

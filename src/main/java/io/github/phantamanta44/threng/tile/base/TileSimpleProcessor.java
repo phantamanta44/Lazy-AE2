@@ -80,7 +80,7 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
     @Override
     protected int getMaxWork() {
         if (maxWork == -1) {
-            maxWork = 150 - 18 * getUpgradeCount();
+            maxWork = getBaseMaxWork() - getUpgradeReducedWork();
         }
         return maxWork;
     }
@@ -93,7 +93,7 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
         return energyCost;
     }
 
-    private int getUpgradeCount() {
+    protected int getUpgradeCount() {
         ItemStack stack = slotUpgrade.getStackInSlot();
         return stack.isEmpty() ? 0 : stack.getCount();
     }
@@ -109,13 +109,13 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
         canWork = TriBool.NONE;
     }
 
-    protected int getBaseEnergyPerOperation() {
-        return 8100;
-    }
+    protected abstract int getBaseEnergyPerOperation();
 
-    protected int getUpgradeEnergyCost() {
-        return 863 * getUpgradeCount();
-    }
+    protected abstract int getUpgradeEnergyCost();
+
+    protected abstract int getBaseMaxWork();
+
+    protected abstract int getUpgradeReducedWork();
 
     protected abstract IT getInput();
 

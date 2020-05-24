@@ -25,6 +25,7 @@ import io.github.phantamanta44.libnine.util.world.BlockSide;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
 import io.github.phantamanta44.libnine.util.world.WorldUtils;
+import io.github.phantamanta44.threng.ThrEngConfig;
 import io.github.phantamanta44.threng.block.BlockMachine;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.tile.base.IDroppableInventory;
@@ -74,7 +75,6 @@ public class TileFastCraftingBus extends TileNetworkDevice
         for (int i = 0; i < 9; i++) {
             patternInventory.withPredicate(i, patternPred);
         }
-        getProxy().setFlags(GridFlags.REQUIRE_CHANNEL);
     }
 
     @Override
@@ -92,7 +92,10 @@ public class TileFastCraftingBus extends TileNetworkDevice
 
     @Override
     protected void initProxy(AENetworkProxy proxy) {
-        proxy.setIdlePowerUsage(6D);
+        if (ThrEngConfig.networkDevices.fastCrafterIdlePower > 0D) {
+            proxy.setIdlePowerUsage(ThrEngConfig.networkDevices.fastCrafterIdlePower);
+        }
+        proxy.setFlags(GridFlags.REQUIRE_CHANNEL);
     }
 
     public IItemHandlerModifiable getPatternInventory() {

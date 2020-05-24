@@ -9,6 +9,7 @@ import io.github.phantamanta44.libnine.util.collection.Accrue;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
+import io.github.phantamanta44.threng.ThrEngConfig;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.recipe.PurifyRecipe;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
@@ -21,8 +22,6 @@ import net.minecraftforge.items.IItemHandler;
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileCentrifuge extends TileSimpleProcessor<ItemStack, ItemStack, ItemStackInput, ItemStackOutput, PurifyRecipe> {
 
-    private static final int ENERGY_MAX = 100000;
-
     @AutoSerialize(sync = false)
     private final L9AspectSlot slotInput = new L9AspectSlot.Observable((s, o, n) -> markWorkStateDirty());
     @AutoSerialize(sync = false)
@@ -31,7 +30,7 @@ public class TileCentrifuge extends TileSimpleProcessor<ItemStack, ItemStack, It
     private final SideAlloc<SlotType.BasicIO> sides = new SideAlloc<>(SlotType.BasicIO.NONE, this::getFrontFace);
 
     public TileCentrifuge() {
-        super(PurifyRecipe.class, ENERGY_MAX);
+        super(PurifyRecipe.class, ThrEngConfig.processing.centrifugeEnergyBuffer);
         setInitialized();
     }
 
@@ -45,6 +44,26 @@ public class TileCentrifuge extends TileSimpleProcessor<ItemStack, ItemStack, It
     @Override
     public IAllocableSides<SlotType.BasicIO> getSidedIo() {
         return sides;
+    }
+
+    @Override
+    protected int getBaseEnergyPerOperation() {
+        return ThrEngConfig.processing.centrifugeEnergyCostBase;
+    }
+
+    @Override
+    protected int getUpgradeEnergyCost() {
+        return ThrEngConfig.processing.centrifugeEnergyCostUpgrade * getUpgradeCount();
+    }
+
+    @Override
+    protected int getBaseMaxWork() {
+        return ThrEngConfig.processing.centrifugeWorkTicksBase;
+    }
+
+    @Override
+    protected int getUpgradeReducedWork() {
+        return ThrEngConfig.processing.centrifugeWorkTicksUpgrade * getUpgradeCount();
     }
 
     @Override

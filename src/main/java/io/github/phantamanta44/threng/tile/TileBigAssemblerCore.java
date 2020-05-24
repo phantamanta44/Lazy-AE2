@@ -30,6 +30,7 @@ import io.github.phantamanta44.libnine.util.data.ISerializable;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
 import io.github.phantamanta44.libnine.util.data.serialization.IDatum;
 import io.github.phantamanta44.libnine.util.nbt.ChainingTagCompound;
+import io.github.phantamanta44.threng.ThrEngConfig;
 import io.github.phantamanta44.threng.block.BlockBigAssembler;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
@@ -43,7 +44,6 @@ import io.github.phantamanta44.threng.util.ThrEngTextStyles;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.ITextComponent;
@@ -59,19 +59,16 @@ import java.util.stream.IntStream;
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileBigAssemblerCore extends TileAENetworked implements IBigAssemblerUnit, ICraftingProvider, IDroppableInventory {
 
-    public static final int MAX_JOB_QUEUE = 64;
-    private static final double ENERGY_PER_WORK = 16D;
-    public static final int WORK_PER_JOB = 16;
-    public static final int MAX_EFFECTIVE_CPUS = (MAX_JOB_QUEUE * WORK_PER_JOB - 1) / 3;
-
     @AutoSerialize
     private final MultiBlockCore<IBigAssemblerUnit> multiBlock = new MultiBlockCore<>(this, ThrEngMultiBlocks.BIG_ASSEMBLER);
     @AutoSerialize
     private final IDatum.OfInt cpuCount = IDatum.ofInt(0);
     @AutoSerialize
-    private final L9AspectInventory craftingBuffer = new L9AspectInventory.Observable(MAX_JOB_QUEUE * 9, (i, o, n) -> setDirty());
+    private final L9AspectInventory craftingBuffer
+            = new L9AspectInventory.Observable(ThrEngConfig.massAssembler.jobQueueSize * 9, (i, o, n) -> setDirty());
     @AutoSerialize(sync = false)
-    private final L9AspectInventory outputBuffer = new L9AspectInventory.Observable(MAX_JOB_QUEUE * 10, (i, o, n) -> setDirty());
+    private final L9AspectInventory outputBuffer
+            = new L9AspectInventory.Observable(ThrEngConfig.massAssembler.jobQueueSize * 10, (i, o, n) -> setDirty());
     @AutoSerialize
     private final JobQueue jobQueue = new JobQueue();
     @AutoSerialize
@@ -106,7 +103,9 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
 
     @Override
     protected void initProxy(AENetworkProxy proxy) {
-        proxy.setIdlePowerUsage(3D);
+        if (ThrEngConfig.massAssembler.idlePower > 0D) {
+            proxy.setIdlePowerUsage(ThrEngConfig.massAssembler.idlePower);
+        }
         proxy.setFlags(GridFlags.REQUIRE_CHANNEL);
     }
 
@@ -123,11 +122,23 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
     }
 
     public double getEnergyCost() {
-        return ENERGY_PER_WORK + cpuCount.getInt();
+        return ThrEngConfig.massAssembler.energyPerWorkBase
+                + ThrEngConfig.massAssembler.energyPerWorkUpgrade * cpuCount.getInt();
     }
 
     public int getWorkRate() {
-        return cpuCount.getInt() * 3 + 1;
+        return ThrEngConfig.massAssembler.workPerTickBase
+                + ThrEngConfig.massAssembler.workPerTickUpgrade * cpuCount.getInt();
+    }
+
+    public int getWorkPerJob() {
+        return ThrEngConfig.massAssembler.workPerJob;
+    }
+
+    public int getMaxEffectiveCpus() {
+        return (int)Math.ceil(
+                (getWorkPerJob() * ThrEngConfig.massAssembler.jobQueueSize - ThrEngConfig.massAssembler.workPerTickBase)
+                        / (float)ThrEngConfig.massAssembler.workPerTickUpgrade);
     }
 
     @Nullable
@@ -227,15 +238,21 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
                     int jobs = jobQueue.getOutstandingJobCount();
                     if (jobs > 0) {
                         int currentWork = work.getInt();
+                        int workPerJob = getWorkPerJob();
+                        int workDone;
                         double energyUnitCost = getEnergyCost();
-                        double extracted = energy.extractAEPower(
-                                energyUnitCost * Math.min(getWorkRate(), jobs * WORK_PER_JOB - currentWork),
-                                Actionable.MODULATE, PowerMultiplier.CONFIG);
-                        int workDone = (int)Math.ceil(extracted / energyUnitCost);
+                        if (energyUnitCost > 0D) {
+                            double extracted = energy.extractAEPower(
+                                    energyUnitCost * Math.min(getWorkRate(), jobs * workPerJob - currentWork),
+                                    Actionable.MODULATE, PowerMultiplier.CONFIG);
+                            workDone = (int)Math.ceil(extracted / energyUnitCost);
+                        } else {
+                            workDone = Math.min(getWorkRate(), jobs * workPerJob - currentWork);
+                        }
                         if (workDone > 0) {
                             currentWork += workDone;
-                            while (currentWork >= WORK_PER_JOB) {
-                                currentWork -= WORK_PER_JOB;
+                            while (currentWork >= workPerJob) {
+                                currentWork -= workPerJob;
                                 jobQueue.dispatchJob();
                             }
                             work.setInt(currentWork);
@@ -296,7 +313,7 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
 
     private class JobQueue implements ISerializable {
 
-        private BitSet jobSlots = new BitSet(MAX_JOB_QUEUE);
+        private BitSet jobSlots = new BitSet(ThrEngConfig.massAssembler.jobQueueSize);
         private final Deque<CraftingJob> queue = new ArrayDeque<>();
 
         int getOutstandingJobCount() {
@@ -304,7 +321,7 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
         }
 
         boolean isFull() {
-            return queue.size() == MAX_JOB_QUEUE;
+            return queue.size() >= ThrEngConfig.massAssembler.jobQueueSize;
         }
 
         @Nullable
@@ -388,14 +405,17 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
         public void deserNBT(NBTTagCompound tag) {
             jobSlots = BitSet.valueOf(tag.getByteArray("JobSlots"));
             queue.clear();
-            for (NBTBase jobTag0 : tag.getTagList("Queue", Constants.NBT.TAG_COMPOUND)) {
-                NBTTagCompound jobTag = (NBTTagCompound)jobTag0;
+            // have to be careful here, in case job queue size has changed since serialization
+            NBTTagList queueTag = tag.getTagList("Queue", Constants.NBT.TAG_COMPOUND);
+            int jobDeserCount = Math.min(queueTag.tagCount(), ThrEngConfig.massAssembler.jobQueueSize);
+            for (int i = 0; i < jobDeserCount; i++) {
+                NBTTagCompound jobTag = queueTag.getCompoundTagAt(i);
                 NBTTagList remTag = jobTag.getTagList("Remaining", Constants.NBT.TAG_COMPOUND);
                 ItemStack[] rem = new ItemStack[9];
-                for (int i = 0; i < remTag.tagCount(); i++) {
-                    rem[i] = new ItemStack(remTag.getCompoundTagAt(i));
+                for (int j = 0; j < remTag.tagCount(); j++) {
+                    rem[j] = new ItemStack(remTag.getCompoundTagAt(j));
                 }
-                queue.offer(new CraftingJob(jobTag.getInteger("Index"), rem, new ItemStack(jobTag.getCompoundTag("Result"))));
+                this.queue.offer(new CraftingJob(jobTag.getInteger("Index"), rem, new ItemStack(jobTag.getCompoundTag("Result"))));
             }
         }
 

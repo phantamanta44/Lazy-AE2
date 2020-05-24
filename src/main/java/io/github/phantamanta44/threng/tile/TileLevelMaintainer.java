@@ -16,6 +16,7 @@ import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
+import appeng.me.helpers.AENetworkProxy;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import com.google.common.collect.ImmutableSet;
@@ -24,6 +25,7 @@ import io.github.phantamanta44.libnine.util.data.ByteUtils;
 import io.github.phantamanta44.libnine.util.data.ISerializable;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
 import io.github.phantamanta44.libnine.util.math.MathUtils;
+import io.github.phantamanta44.threng.ThrEngConfig;
 import io.github.phantamanta44.threng.block.BlockMachine;
 import io.github.phantamanta44.threng.client.gui.GuiLevelMaintainer;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
@@ -54,14 +56,13 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
 
     @Nullable
     private IStackWatcher watcher;
-    private long[] knownCounts = new long[REQ_COUNT];
+    private final long[] knownCounts = new long[REQ_COUNT];
 
     private int sleepTicks = 0;
 
     public TileLevelMaintainer() {
         markRequiresSync();
         Arrays.fill(knownCounts, -1);
-        getProxy().setFlags(GridFlags.REQUIRE_CHANNEL);
     }
 
     public InventoryRequest getRequestInventory() {
@@ -72,6 +73,14 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
     @Override
     protected ItemStack getNetworkRepresentation() {
         return BlockMachine.Type.LEVEL_MAINTAINER.newStack(1);
+    }
+
+    @Override
+    protected void initProxy(AENetworkProxy proxy) {
+        if (ThrEngConfig.networkDevices.levelMaintainerIdlePower > 0D) {
+            proxy.setIdlePowerUsage(ThrEngConfig.networkDevices.levelMaintainerIdlePower);
+        }
+        proxy.setFlags(GridFlags.REQUIRE_CHANNEL);
     }
 
     @Override
@@ -102,9 +111,9 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
                     }
                     if (workDone) {
                         setDirty();
-                        sleepTicks = 16;
+                        sleepTicks = ThrEngConfig.networkDevices.levelMaintainerSleepActive;
                     } else {
-                        sleepTicks = 64;
+                        sleepTicks = ThrEngConfig.networkDevices.levelMaintainerSleepPassive;
                     }
                 } else {
                     --sleepTicks;
