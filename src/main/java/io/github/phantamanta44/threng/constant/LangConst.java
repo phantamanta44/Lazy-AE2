@@ -35,6 +35,7 @@ public class LangConst {
     public static final String TT_JOB_COUNT = TT_KEY + "job_count";
     public static final String TT_CPU_COUNT = TT_KEY + "cpu_count";
     public static final String TT_WORK_RATE = TT_KEY + "work_rate";
+    public static final String TT_PAGE_NUM = TT_KEY + "page_num";
 
     public static final String NOTIF_KEY = MISC_KEY + "notif.";
     public static final String NOTIF_MULTIBLOCK_FORMED = NOTIF_KEY + "multiblock_formed";

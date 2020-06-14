@@ -4,20 +4,26 @@ import io.github.phantamanta44.libnine.client.gui.L9GuiContainer;
 import io.github.phantamanta44.libnine.util.render.GuiUtils;
 import io.github.phantamanta44.threng.ThrEngConfig;
 import io.github.phantamanta44.threng.client.gui.component.GuiComponentPageNav;
+import io.github.phantamanta44.threng.client.gui.component.GuiComponentSearchBar;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ResConst;
 import io.github.phantamanta44.threng.inventory.ContainerBigAssembler;
+import io.github.phantamanta44.threng.inventory.slot.IDisplayModeSlot;
 import io.github.phantamanta44.threng.tile.TileBigAssemblerCore;
 import io.github.phantamanta44.threng.util.IPaginated;
+import io.github.phantamanta44.threng.util.ISearchHost;
+import io.github.phantamanta44.threng.util.ISearchable;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 
-public class GuiBigAssembler extends L9GuiContainer implements IPaginated {
+public class GuiBigAssembler extends L9GuiContainer implements IPaginated, ISearchHost {
 
     private final ContainerBigAssembler cont;
 
@@ -34,7 +40,8 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated {
     @Override
     public void initGui() {
         super.initGui();
-        addComponent(new GuiComponentPageNav(132, 93, this));
+        addComponent(new GuiComponentSearchBar(79, 4, 90, 12, this));
+        addComponent(new GuiComponentPageNav(108, 93, this));
     }
 
     @Override
@@ -52,6 +59,15 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated {
         cont.getPage(currentPage).setActive(false);
         currentPage = pageNum;
         cont.getPage(currentPage).setActive(true);
+    }
+
+    @Override
+    public void setSearchQuery(@Nullable String query) {
+        for (Slot slot : cont.inventorySlots) {
+            if (slot instanceof ISearchable) {
+                ((ISearchable)slot).updateSearchQuery(query);
+            }
+        }
     }
 
     @Override
@@ -102,6 +118,8 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated {
             itemRender.zLevel = 0.0F;
             zLevel = 0.0F;
         }
+
+        fontRenderer.drawString(I18n.format(LangConst.TT_PAGE_NUM, currentPage + 1, getPageCount()), 108, 108, DEF_TEXT_COL);
     }
 
     private void drawStack(ItemStack stack, int x, int y) {
@@ -120,6 +138,22 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated {
             drawTooltip(Arrays.asList(
                     I18n.format(LangConst.TT_CPU_COUNT, tile.getCpuCount()), I18n.format(LangConst.TT_WORK_RATE, tile.getWorkRate())),
                     mX, mY);
+        }
+    }
+
+    @Override
+    public void drawSlot(Slot slot) {
+        if (slot instanceof IDisplayModeSlot) {
+            ((IDisplayModeSlot)slot).prepareDisplayMode();
+        }
+        super.drawSlot(slot);
+        if (slot instanceof ISearchable && !((ISearchable)slot).matchesQuery()) {
+            GlStateManager.disableDepth();
+            GlStateManager.disableLighting();
+            drawRect(slot.xPos, slot.yPos, slot.xPos + 16, slot.yPos + 16, 0x7f000000);
+            GlStateManager.color(1F, 1F, 1F, 1F);
+            GlStateManager.enableLighting();
+            GlStateManager.enableDepth();
         }
     }
 

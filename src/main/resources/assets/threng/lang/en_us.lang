@@ -32,7 +32,7 @@ threng.container.centrifuge=Pulse Centrifuge
 threng.container.etcher=ME Circuit Etcher
 threng.container.fast_crafter=PA Unit
 threng.container.level_maintainer=ME Level Maintainer
-threng.container.big_assembler=Mass Assembly Chamber
+threng.container.big_assembler=MA Chamber
 
 threng.misc.tooltip.request_size=Amount to Maintain
 threng.misc.tooltip.batch_size=Crafting Batch Size
@@ -40,6 +40,7 @@ threng.misc.tooltip.work_fraction=%d/%d work
 threng.misc.tooltip.job_count=%d/%d queued tasks
 threng.misc.tooltip.cpu_count=%d coprocessors
 threng.misc.tooltip.work_rate=%d work/tick
+threng.misc.tooltip.page_num=Page %d/%d
 
 threng.misc.notif.multiblock_formed=Multi-block assembled.
 threng.misc.notif.multiblock_failed=Could not assemble multi-block!

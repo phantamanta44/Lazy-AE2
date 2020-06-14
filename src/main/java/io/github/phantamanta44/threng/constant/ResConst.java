@@ -3,6 +3,7 @@ package io.github.phantamanta44.threng.constant;
 import io.github.phantamanta44.libnine.util.render.TextureRegion;
 import io.github.phantamanta44.libnine.util.render.TextureResource;
 import io.github.phantamanta44.threng.ThrEng;
+import io.github.phantamanta44.threng.util.ButtonRender;
 
 public class ResConst {
 
@@ -48,13 +49,11 @@ public class ResConst {
     public static final TextureRegion GUI_COMP_SUBMIT_DISABLED = GUI_COMP_SUBMIT.getRegion(13, 0, 13, 13);
     public static final TextureRegion GUI_COMP_SUBMIT_HOVERED = GUI_COMP_SUBMIT.getRegion(26, 0, 13, 13);
 
-    private static final TextureResource GUI_COMP_NEXT_PREV = getTextureGuiComp("next_prev", 36, 33);
-    public static final TextureRegion GUI_COMP_NEXT_PREV_PREV_NORMAL = GUI_COMP_NEXT_PREV.getRegion(0, 0, 18, 11);
-    public static final TextureRegion GUI_COMP_NEXT_PREV_PREV_DISABLED = GUI_COMP_NEXT_PREV.getRegion(0, 11, 18, 11);
-    public static final TextureRegion GUI_COMP_NEXT_PREV_PREV_HOVERED = GUI_COMP_NEXT_PREV.getRegion(0, 22, 18, 11);
-    public static final TextureRegion GUI_COMP_NEXT_PREV_NEXT_NORMAL = GUI_COMP_NEXT_PREV.getRegion(18, 0, 18, 11);
-    public static final TextureRegion GUI_COMP_NEXT_PREV_NEXT_DISABLED = GUI_COMP_NEXT_PREV.getRegion(18, 11, 18, 11);
-    public static final TextureRegion GUI_COMP_NEXT_PREV_NEXT_HOVERED = GUI_COMP_NEXT_PREV.getRegion(18, 22, 18, 11);
+    private static final TextureResource GUI_COMP_NEXT_PREV = getTextureGuiComp("next_prev", 58, 33);
+    public static final ButtonRender GUI_COMP_NEXT_PREV_PREV = new ButtonRender(GUI_COMP_NEXT_PREV, 0, 0, 18, 11);
+    public static final ButtonRender GUI_COMP_NEXT_PREV_NEXT = new ButtonRender(GUI_COMP_NEXT_PREV, 18, 0, 18, 11);
+    public static final ButtonRender GUI_COMP_NEXT_PREV_FIRST = new ButtonRender(GUI_COMP_NEXT_PREV, 36, 0, 11, 11);
+    public static final ButtonRender GUI_COMP_NEXT_PREV_LAST = new ButtonRender(GUI_COMP_NEXT_PREV, 47, 0, 11, 11);
 
     private static TextureResource getTextureGuiComp(String path, int width, int height) {
         return getTextureGui("component/" + path, width, height);
