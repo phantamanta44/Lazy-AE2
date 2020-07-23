@@ -60,13 +60,13 @@ public class ResConst {
     }
 
     private static final TextureResource INT_JEI_CAT_AGG = getTextureJeiInt("aggregator", 256, 256);
-    public static final TextureRegion INT_JEI_CAT_AGG_BG = INT_JEI_CAT_AGG.getRegion(0, 0, 162, 72);
+    public static final TextureRegion INT_JEI_CAT_AGG_BG = INT_JEI_CAT_AGG.getRegion(0, 0, 130, 34);
 
     private static final TextureResource INT_JEI_CAT_PURIFY = getTextureJeiInt("centrifuge", 256, 256);
-    public static final TextureRegion INT_JEI_CAT_PURIFY_BG = INT_JEI_CAT_PURIFY.getRegion(0, 0, 162, 72);
+    public static final TextureRegion INT_JEI_CAT_PURIFY_BG = INT_JEI_CAT_PURIFY.getRegion(0, 0, 90, 34);
 
     private static final TextureResource INT_JEI_CAT_ETCH = getTextureJeiInt("etcher", 256, 256);
-    public static final TextureRegion INT_JEI_CAT_ETCH_BG = INT_JEI_CAT_ETCH.getRegion(0, 0, 162, 72);
+    public static final TextureRegion INT_JEI_CAT_ETCH_BG = INT_JEI_CAT_ETCH.getRegion(0, 0, 113, 62);
 
     private static TextureResource getTextureJeiInt(String path, int width, int height) {
         return getTexture("jei/" + path, width, height);

@@ -16,7 +16,11 @@ public class GuiAggregator extends GuiSimpleProcessor<ContainerAggregator> {
     public void drawForeground(float partialTicks, int mX, int mY) {
         super.drawForeground(partialTicks, mX, mY);
         drawContainerName(I18n.format(LangConst.CONTAINER_AGGREGATOR));
-        ResConst.GUI_AGGREGATOR_PROGRESS.drawPartial(92, 36, 0F, 0F, cont.getWorkFraction(), 1F);
+        drawProgressBar(92, 36, cont.getWorkFraction());
+    }
+
+    public static void drawProgressBar(int x, int y, float frac) {
+        ResConst.GUI_AGGREGATOR_PROGRESS.drawPartial(x, y, 0F, 0F, frac, 1F);
     }
 
 }

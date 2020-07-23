@@ -16,14 +16,18 @@ public class GuiEtcher extends GuiSimpleProcessor<ContainerEtcher> {
     public void drawForeground(float partialTicks, int mX, int mY) {
         super.drawForeground(partialTicks, mX, mY);
         drawContainerName(I18n.format(LangConst.CONTAINER_ETCHER));
-        if (cont.getWorkFraction() < 0.5F) {
-            float progress = cont.getWorkFraction() * 2F;
-            ResConst.GUI_ETCHER_PRESS_TOP.drawPartial(55, 22, 0F, 0F, 1F, progress);
-            ResConst.GUI_ETCHER_PRESS_BOTTOM.drawPartial(55, 54, 0F, 1F - progress, 1F, 1F);
+        drawProgressBar(55, 22, cont.getWorkFraction());
+    }
+
+    public static void drawProgressBar(int x, int y, float frac) {
+        if (frac < 0.5F) {
+            float progress = frac * 2F;
+            ResConst.GUI_ETCHER_PRESS_TOP.drawPartial(x, y, 0F, 0F, 1F, progress);
+            ResConst.GUI_ETCHER_PRESS_BOTTOM.drawPartial(x, y + 32, 0F, 1F - progress, 1F, 1F);
         } else {
-            ResConst.GUI_ETCHER_PRESS_TOP.draw(55, 22);
-            ResConst.GUI_ETCHER_PRESS_BOTTOM.draw(55, 54);
-            ResConst.GUI_ETCHER_PROGRESS.drawPartial(84, 36, 0F, 0F, (cont.getWorkFraction() - 0.5F) * 2F, 1F);
+            ResConst.GUI_ETCHER_PRESS_TOP.draw(x, y);
+            ResConst.GUI_ETCHER_PRESS_BOTTOM.draw(x, y + 32);
+            ResConst.GUI_ETCHER_PROGRESS.drawPartial(x + 29, y + 14, 0F, 0F, (frac - 0.5F) * 2F, 1F);
         }
     }
 
