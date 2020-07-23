@@ -7,7 +7,6 @@ import io.github.phantamanta44.libnine.recipe.output.ItemStackOutput;
 import io.github.phantamanta44.libnine.tile.RegisterTile;
 import io.github.phantamanta44.libnine.util.collection.Accrue;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
-import io.github.phantamanta44.libnine.util.helper.OreDictUtils;
 import io.github.phantamanta44.libnine.util.tuple.ITriple;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
@@ -22,20 +21,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import java.util.function.Predicate;
-
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileEtcher
         extends TileSimpleProcessor<ITriple<ItemStack, ItemStack, ItemStack>, ItemStack, TriItemInput, ItemStackOutput, EtchRecipe> {
-    
-    private static final Predicate<ItemStack> MATCH_REDSTONE = OreDictUtils.matchesOredict("dustRedstone");
-    private static final Predicate<ItemStack> MATCH_SILICON = OreDictUtils.matchesOredict("itemSilicon");
 
     @AutoSerialize(sync = false)
     private final L9AspectInventory invInput = new L9AspectInventory.Observable(3, (s, o, n) -> markWorkStateDirty())
-            .withPredicate(0, MATCH_REDSTONE)
-            .withPredicate(1, MATCH_SILICON)
-            .withPredicate(2, MATCH_REDSTONE.or(MATCH_SILICON).negate());
+            .withPredicate(0, s -> EtchRecipe.isInputValidForSlot(s, 0))
+            .withPredicate(1, s -> EtchRecipe.isInputValidForSlot(s, 1))
+            .withPredicate(2, s -> !(EtchRecipe.isInputValidForSlot(s, 0) || EtchRecipe.isInputValidForSlot(s, 1)));
     @AutoSerialize(sync = false)
     private final L9AspectSlot slotOutput = new L9AspectSlot.Observable(is -> false, (s, o, n) -> markWorkStateDirty());
     @AutoSerialize

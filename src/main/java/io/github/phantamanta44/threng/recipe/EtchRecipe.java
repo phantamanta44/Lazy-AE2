@@ -1,5 +1,6 @@
 package io.github.phantamanta44.threng.recipe;
 
+import io.github.phantamanta44.libnine.LibNine;
 import io.github.phantamanta44.libnine.util.IDisplayableMatcher;
 import io.github.phantamanta44.libnine.util.helper.OreDictUtils;
 import io.github.phantamanta44.libnine.util.tuple.ITriple;
@@ -42,6 +43,15 @@ public class EtchRecipe extends TriItemRecipe {
                     && inputs.get(2).test(input.getC());
         }
 
+    }
+
+    public static boolean isInputValidForSlot(ItemStack stack, int slot) {
+        for (EtchRecipe recipe : LibNine.PROXY.getRecipeManager().getRecipeList(EtchRecipe.class).recipes()) {
+            if (recipe.input().getInputs().get(slot).test(stack)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -47,9 +47,12 @@ mods.threng.Centrifuge.addRecipe(<minecraft:diamond>, <minecraft:diamond_ore>);
 // removeRecipe(ItemStack output)
 mods.threng.Centrifuge.removeRecipe(<appliedenergistics2:material:10>);
 
-// add etcher recipe; redstone and silicon ingredients are fixed
-// addRecipe(ItemStack output, ItemMatcher input)
-mods.threng.Etcher.addRecipe(<minecraft:diamond>, <minecraft:dirt>);
+// add etcher recipe
+// if top and bottom inputs aren't specified, redstone and silicon are used
+// note that the items that are allowed in each slot is determined by the recipes
+// DO NOT USE ANY ITEM IN MORE THAN ONE DIFFERENT SLOT OR THIS WILL BREAK!
+// addRecipe(ItemStack output, ItemMatcher input, [ItemMatcher topInput, ItemMatcher bottomInput])
+mods.threng.Etcher.addRecipe(<minecraft:diamond>, <minecraft:dirt>, <minecraft:stick>, <minecraft:cobblestone>);
 
 // remove etcher recipe
 // removeRecipe(ItemStack output)
