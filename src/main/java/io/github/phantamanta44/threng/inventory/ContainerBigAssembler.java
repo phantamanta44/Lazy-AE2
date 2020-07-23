@@ -153,6 +153,14 @@ public class ContainerBigAssembler extends L9Container {
                 updateSearchState(stack);
             }
 
+            @Nonnull
+            @Override
+            public ItemStack decrStackSize(int amount) {
+                ItemStack extracted = super.decrStackSize(amount);
+                updateSearchState(super.getStack());
+                return extracted;
+            }
+
         }
 
     }
