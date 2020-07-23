@@ -32,8 +32,16 @@ public class GuiComponentSearchBar extends GuiComponent implements GuiPageButton
 
     @Override
     public boolean onClick(int mX, int mY, int button, boolean mouseOver) {
-        textField.mouseClicked(mX, mY, button); // always returns true for some reason
-        return mouseOver;
+        if (mouseOver) {
+            if (button == 1) {
+                textField.setText("");
+                searchHost.setSearchQuery(null);
+            } else {
+                textField.mouseClicked(mX, mY, button); // always returns true for some reason
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -54,7 +62,7 @@ public class GuiComponentSearchBar extends GuiComponent implements GuiPageButton
     @Override
     public void setEntryValue(int id, String value) {
         value = value.trim().toLowerCase();
-        searchHost.setSearchQuery(value.isEmpty() ? "" : value);
+        searchHost.setSearchQuery(value.isEmpty() ? null : value);
     }
 
 }
