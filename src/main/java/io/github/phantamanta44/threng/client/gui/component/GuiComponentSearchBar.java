@@ -6,6 +6,7 @@ import io.github.phantamanta44.threng.util.ISearchHost;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.input.Keyboard;
 
 public class GuiComponentSearchBar extends GuiComponent implements GuiPageButtonList.GuiResponder {
 
@@ -20,7 +21,6 @@ public class GuiComponentSearchBar extends GuiComponent implements GuiPageButton
         textField.setEnableBackgroundDrawing(false);
         textField.setMaxStringLength(25);
         textField.setTextColor(0xFFFFFF);
-        textField.setFocused(true);
         textField.setGuiResponder(this);
     }
 
@@ -46,7 +46,12 @@ public class GuiComponentSearchBar extends GuiComponent implements GuiPageButton
 
     @Override
     public boolean onKeyPress(int keyCode, char typed) {
-        return textField.textboxKeyTyped(typed, keyCode);
+        if (keyCode == Keyboard.KEY_TAB && !textField.isFocused()) {
+            textField.setFocused(true);
+            return true;
+        } else {
+            return textField.textboxKeyTyped(typed, keyCode);
+        }
     }
 
     @Override

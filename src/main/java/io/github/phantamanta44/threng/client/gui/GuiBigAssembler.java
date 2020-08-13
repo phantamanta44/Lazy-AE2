@@ -19,8 +19,10 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
+import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class GuiBigAssembler extends L9GuiContainer implements IPaginated, ISearchHost {
@@ -154,6 +156,21 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated, ISear
             GlStateManager.color(1F, 1F, 1F, 1F);
             GlStateManager.enableLighting();
             GlStateManager.enableDepth();
+        }
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+        int scroll = Mouse.getEventDWheel();
+        if (scroll < 0) {
+            if (currentPage < cont.getPageCount() - 1) {
+                setPage(currentPage + 1);
+            }
+        } else if (scroll > 0) {
+            if (currentPage > 0) {
+                setPage(currentPage - 1);
+            }
         }
     }
 

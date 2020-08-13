@@ -1,8 +1,8 @@
 itemGroup.threng=Lazy AE2
 
-item.threng:material0.name=Fluix Steel
+item.threng:material0.name=Fluix Steel Ingot
 item.threng:material1.name=Carbonic Fluix Complex
-item.threng:material2.name=Fluix-Plated Iron
+item.threng:material2.name=Fluix-Plated Iron Ingot
 item.threng:material3.name=Coal Dust
 item.threng:material4.name=Fluix Logic Unit
 item.threng:material5.name=Resonating Crystal
