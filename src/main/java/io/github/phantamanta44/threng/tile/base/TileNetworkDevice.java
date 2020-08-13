@@ -55,15 +55,19 @@ public abstract class TileNetworkDevice extends TileAENetworked implements IDire
     @Override
     public void deserBytes(ByteUtils.Reader data) {
         super.deserBytes(data);
+        boolean needsRenderUpdate = false;
         EnumFacing front = frontFace.get();
         if (clientFace != front) {
-            world.markBlockRangeForRenderUpdate(pos, pos);
             clientFace = front;
+            needsRenderUpdate = true;
         }
         boolean isActive = active.isTrue();
         if (clientActive != isActive) {
-            world.markBlockRangeForRenderUpdate(pos, pos);
             clientActive = isActive;
+            needsRenderUpdate = true;
+        }
+        if (needsRenderUpdate) {
+            world.markBlockRangeForRenderUpdate(pos, pos);
         }
     }
 

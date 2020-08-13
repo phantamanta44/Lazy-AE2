@@ -22,31 +22,27 @@ public abstract class TileMachine extends TilePowered implements IActivable, IDi
 
     @Override
     protected void tick() {
-        boolean wasWorking = working;
-        if (canWork()) {
-            int energyCost = getEnergyCost();
-            if (energy.getQuantity() > energyCost) {
-                if (!world.isRemote) {
+        if (!world.isRemote) {
+            if (canWork()) {
+                int energyCost = getEnergyCost();
+                if (energy.getQuantity() > energyCost) {
                     energy.draw(energyCost, true);
                     if (work.preincrement(getDeltaWork()) > getMaxWork()) {
                         work.setInt(0);
                         onWorkFinished();
                     }
+                    working = true;
+                    setDirty();
+                } else {
+                    working = false;
                 }
-                working = true;
-                setDirty();
-            } else {
+                couldWorkLastTick = true;
+            } else if (couldWorkLastTick) {
+                couldWorkLastTick = false;
+                if (!world.isRemote) work.setInt(0);
                 working = false;
+                setDirty();
             }
-            couldWorkLastTick = true;
-        } else if (couldWorkLastTick) {
-            couldWorkLastTick = false;
-            if (!world.isRemote) work.setInt(0);
-            working = false;
-            setDirty();
-        }
-        if (working != wasWorking) {
-            world.markBlockRangeForRenderUpdate(pos, pos);
         }
     }
 
@@ -89,12 +85,27 @@ public abstract class TileMachine extends TilePowered implements IActivable, IDi
     }
 
     @Override
+    public void serBytes(ByteUtils.Writer data) {
+        super.serBytes(data);
+        data.writeBool(working);
+    }
+
+    @Override
     public void deserBytes(ByteUtils.Reader data) {
         super.deserBytes(data);
+        boolean needsRenderUpdate = false;
+        boolean nowWorking = data.readBool();
+        if (working != nowWorking) {
+            working = nowWorking;
+            needsRenderUpdate = true;
+        }
         EnumFacing front = frontFace.get();
         if (clientFace != front) {
-            world.markBlockRangeForRenderUpdate(pos, pos);
             clientFace = front;
+            needsRenderUpdate = true;
+        }
+        if (needsRenderUpdate) {
+            world.markBlockRangeForRenderUpdate(pos, pos);
         }
     }
 
