@@ -133,7 +133,8 @@ public class BlockMachine extends L9BlockStated {
         CENTRIFUGE(TileCentrifuge::new, ThrEngGuis.CENTRIFUGE),
         ETCHER(TileEtcher::new, ThrEngGuis.ETCHER),
         FAST_CRAFTER(TileFastCraftingBus::new, ThrEngGuis.FAST_CRAFTER),
-        LEVEL_MAINTAINER(TileLevelMaintainer::new, ThrEngGuis.LEVEL_MAINTAINER);
+        LEVEL_MAINTAINER(TileLevelMaintainer::new, ThrEngGuis.LEVEL_MAINTAINER),
+        ENERGIZER(TileEnergizer::new, ThrEngGuis.ENERGIZER);
 
         public final GuiIdentity<?, ?> gui;
 

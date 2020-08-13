@@ -13,6 +13,7 @@
 * **Fluix Aggregator** - Performs the in-world fluix crystal crafting operation
 * **Pulse Centrifuge** - Performs the in-world crystal seed growing operation
 * **ME Circuit Etcher** - Etches circuits without needing to waste time pressing the components
+* **Crystal Energizer** - Charges certus quartz more efficiently than the AE2 charger
 * **Preemptive Assembly Unit** - Alternative to the ME interface that dispatches crafting operations eagerly
     *   Instead of dispatching a recipe one-at-a-time, as much of the recipe's inputs are dumped into the processing machine as possible
     *   Useful for when you're late-game and your processing machines process faster than ME interfaces can provide ingredients
@@ -57,4 +58,12 @@ mods.threng.Etcher.addRecipe(<minecraft:diamond>, <minecraft:dirt>, <minecraft:s
 // remove etcher recipe
 // removeRecipe(ItemStack output)
 mods.threng.Etcher.removeRecipe(<appliedenergistics2:material:22>);
+
+// add energizer recipe
+// addRecipe(ItemStack output, ItemMatcher input, int energyCost)
+mods.threng.Energizer.addRecipe(<minecraft:gold_ingot>, <minecraft:iron_ingot>, 24000);
+
+// remove energizer recipe
+// removeRecipe(ItemStack output)
+mods.threng.Energizer.removeRecipe(<appliedenergistics2:material:10>);
 ```

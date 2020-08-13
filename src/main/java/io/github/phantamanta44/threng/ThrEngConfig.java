@@ -85,6 +85,26 @@ public class ThrEngConfig {
         @Config.RequiresWorldRestart
         public int etcherWorkTicksUpgrade = 18;
 
+        @Config.Comment("The size of the crystal energizer's energy buffer.")
+        @Config.RangeInt(min = 1)
+        @Config.RequiresWorldRestart
+        public int energizerEnergyBuffer = 100000;
+
+        @Config.Comment("The additional energy cost for crystal energization incurred by each acceleration card.")
+        @Config.RangeInt(min = 0)
+        @Config.RequiresWorldRestart
+        public int energizerEnergyCostUpgrade = 1625;
+
+        @Config.Comment("The base number of ticks needed to complete one crystal energization operation.")
+        @Config.RangeInt(min = 1)
+        @Config.RequiresWorldRestart
+        public int energizerWorkTicksBase = 150;
+
+        @Config.Comment("The number of ticks by which each acceleration card hastens a crystal energization operation.")
+        @Config.RangeInt(min = 1)
+        @Config.RequiresWorldRestart
+        public int energizerWorkTicksUpgrade = 18;
+        
     }
 
     public static final NetworkDeviceConfig networkDevices = new NetworkDeviceConfig();

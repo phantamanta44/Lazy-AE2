@@ -39,6 +39,11 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
         this.recipeType = recipeType;
     }
 
+    @Nullable
+    public R getActiveRecipe() {
+        return activeRecipe;
+    }
+
     protected abstract IAllocableSides<SlotType.BasicIO> getSidedIo();
 
     @Override

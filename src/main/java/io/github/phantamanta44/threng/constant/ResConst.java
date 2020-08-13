@@ -31,6 +31,9 @@ public class ResConst {
     public static final TextureRegion GUI_BIG_ASSEMBLER_CPUS = GUI_BIG_ASSEMBLER.getRegion(179, 0, 3, 25);
     public static final TextureRegion GUI_BIG_ASSEMBLER_PROGRESS = GUI_BIG_ASSEMBLER.getRegion(182, 0, 16, 2);
 
+    public static final TextureResource GUI_ENERGIZER = getTextureGui("energizer", 256, 256);
+    public static final TextureRegion GUI_ENERGIZER_PROGRESS = GUI_ENERGIZER.getRegion(176, 0, 22, 29);
+
     private static TextureResource getTextureGui(String path, int width, int height) {
         return getTexture("gui/" + path, width, height);
     }
@@ -67,6 +70,9 @@ public class ResConst {
 
     private static final TextureResource INT_JEI_CAT_ETCH = getTextureJeiInt("etcher", 256, 256);
     public static final TextureRegion INT_JEI_CAT_ETCH_BG = INT_JEI_CAT_ETCH.getRegion(0, 0, 113, 62);
+
+    private static final TextureResource INT_JEI_CAT_ENERGIZE = getTextureJeiInt("energizer", 256, 256);
+    public static final TextureRegion INT_JEI_CAT_ENERGIZE_BG = INT_JEI_CAT_ENERGIZE.getRegion(0, 0, 90, 47);
 
     private static TextureResource getTextureJeiInt(String path, int width, int height) {
         return getTexture("jei/" + path, width, height);

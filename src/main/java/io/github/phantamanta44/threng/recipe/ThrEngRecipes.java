@@ -7,12 +7,15 @@ import appeng.api.features.InscriberProcessType;
 import io.github.phantamanta44.libnine.InitMe;
 import io.github.phantamanta44.libnine.LibNine;
 import io.github.phantamanta44.libnine.recipe.IRecipeList;
+import io.github.phantamanta44.libnine.recipe.IRecipeManager;
 import io.github.phantamanta44.libnine.recipe.input.ItemStackInput;
 import io.github.phantamanta44.libnine.recipe.output.ItemStackOutput;
 import io.github.phantamanta44.libnine.util.helper.ItemUtils;
 import io.github.phantamanta44.libnine.util.helper.OreDictUtils;
+import io.github.phantamanta44.libnine.util.tuple.IPair;
 import io.github.phantamanta44.libnine.util.tuple.ITriple;
 import io.github.phantamanta44.threng.item.ItemMaterial;
+import io.github.phantamanta44.threng.recipe.component.ItemEnergyInput;
 import io.github.phantamanta44.threng.recipe.component.TriItemInput;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -27,18 +30,23 @@ public class ThrEngRecipes {
 
     @InitMe
     public static void registerRecipeTypes() {
-        LibNine.PROXY.getRecipeManager().addType(AggRecipe.class);
-        LibNine.PROXY.getRecipeManager().addType(PurifyRecipe.class);
-        LibNine.PROXY.getRecipeManager().addType(EtchRecipe.class);
+        IRecipeManager recipeManager = LibNine.PROXY.getRecipeManager();
+        recipeManager.addType(AggRecipe.class);
+        recipeManager.addType(PurifyRecipe.class);
+        recipeManager.addType(EtchRecipe.class);
+        recipeManager.addType(EnergizeRecipe.class);
     }
 
     public static void addRecipes() {
+        IRecipeManager recipeManager = LibNine.PROXY.getRecipeManager();
         IRecipeList<ITriple<ItemStack, ItemStack, ItemStack>, TriItemInput, ItemStackOutput, AggRecipe> aggRecipes
-                = LibNine.PROXY.getRecipeManager().getRecipeList(AggRecipe.class);
+                = recipeManager.getRecipeList(AggRecipe.class);
         IRecipeList<ItemStack, ItemStackInput, ItemStackOutput, PurifyRecipe> purifyRecipes
-                = LibNine.PROXY.getRecipeManager().getRecipeList(PurifyRecipe.class);
+                = recipeManager.getRecipeList(PurifyRecipe.class);
         IRecipeList<ITriple<ItemStack, ItemStack, ItemStack>, TriItemInput, ItemStackOutput, EtchRecipe> etchRecipes
-                = LibNine.PROXY.getRecipeManager().getRecipeList(EtchRecipe.class);
+                = recipeManager.getRecipeList(EtchRecipe.class);
+        IRecipeList<IPair<ItemStack, Integer>, ItemEnergyInput, ItemStackOutput, EnergizeRecipe> energizeRecipes
+                = recipeManager.getRecipeList(EnergizeRecipe.class);
         IInscriberRegistry inscriber = AEApi.instance().registries().inscriber();
         IDefinitions defs = AEApi.instance().definitions();
 
@@ -107,6 +115,10 @@ public class ThrEngRecipes {
         etchRecipes.add(new EtchRecipe(
                 ItemUtils.matchesWithWildcard(ItemMaterial.Type.SPEC_CORE_64.newStack(1)),
                 ItemMaterial.Type.SPEC_PROCESSOR.newStack(1)));
+
+        // crystal charging
+        defs.materials().certusQuartzCrystalCharged().maybeStack(1).ifPresent(ccq ->
+                energizeRecipes.add(new EnergizeRecipe(OreDictUtils.matchesOredict("crystalCertusQuartz"), 12000, ccq)));
 
         // misc recipes
         defs.materials().skyDust().maybeStack(1).ifPresent(sd ->

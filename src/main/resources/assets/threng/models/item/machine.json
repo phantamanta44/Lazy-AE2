@@ -29,6 +29,11 @@
         "textures": {
           "face": "threng:blocks/machine/level_maintainer"
         }
+      },
+      "energizer": {
+        "textures": {
+          "face": "threng:blocks/machine/energizer"
+        }
       }
     }
   }

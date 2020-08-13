@@ -1,0 +1,32 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "sis",
+    "fcf",
+    "sbs"
+  ],
+  "key": {
+    "s": {
+      "type": "forge:ore_dict",
+      "ore": "ingotFluixSteel"
+    },
+    "i": {
+      "item": "appliedenergistics2:charger"
+    },
+    "f": {
+      "item": "appliedenergistics2:part",
+      "data": 140
+    },
+    "c": {
+      "item": "threng:material",
+      "data": 4
+    },
+    "b": {
+      "item": "appliedenergistics2:dense_energy_cell"
+    }
+  },
+  "result": {
+    "item": "threng:machine",
+    "data": 5
+  }
+}

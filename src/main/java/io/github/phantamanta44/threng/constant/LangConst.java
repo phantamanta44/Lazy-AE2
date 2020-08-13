@@ -17,6 +17,7 @@ public class LangConst {
     public static final String GUI_FAST_CRAFTER = "fast_crafter";
     public static final String GUI_LEVEL_MAINTAINER = "level_maintainer";
     public static final String GUI_BIG_ASSEMBLER = "big_assembler";
+    public static final String GUI_ENERGIZER = "energizer";
 
     public static final String CONTAINER_KEY = ThrEngConst.MOD_ID + ".container.";
     public static final String CONTAINER_AGGREGATOR = CONTAINER_KEY + GUI_AGGREGATOR;
@@ -25,6 +26,7 @@ public class LangConst {
     public static final String CONTAINER_FAST_CRAFTER = CONTAINER_KEY + GUI_FAST_CRAFTER;
     public static final String CONTAINER_LEVEL_MAINTAINER = CONTAINER_KEY + GUI_LEVEL_MAINTAINER;
     public static final String CONTAINER_BIG_ASSEMBLER = CONTAINER_KEY + GUI_BIG_ASSEMBLER;
+    public static final String CONTAINER_ENERGIZER = CONTAINER_KEY + GUI_ENERGIZER;
 
     public static final String MISC_KEY = ThrEngConst.MOD_ID + ".misc.";
 
@@ -57,5 +59,6 @@ public class LangConst {
     public static final String INT_JEI_CAT_AGG = INT_JEI_CAT_KEY + "aggregator";
     public static final String INT_JEI_CAT_PURIFY = INT_JEI_CAT_KEY + "centrifuge";
     public static final String INT_JEI_CAT_ETCH = INT_JEI_CAT_KEY + "etcher";
+    public static final String INT_JEI_CAT_ENERGIZE = INT_JEI_CAT_KEY + "energizer";
 
 }
