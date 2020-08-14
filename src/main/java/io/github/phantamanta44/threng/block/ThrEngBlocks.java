@@ -5,7 +5,6 @@ import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@SuppressWarnings("NotNullFieldNotInitialized")
 public class ThrEngBlocks {
 
     @GameRegistry.ObjectHolder(ThrEngConst.MOD_ID + ":" + LangConst.BLOCK_MACHINE)

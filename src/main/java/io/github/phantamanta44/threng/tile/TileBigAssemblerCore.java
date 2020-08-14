@@ -29,6 +29,7 @@ import io.github.phantamanta44.libnine.util.data.ByteUtils;
 import io.github.phantamanta44.libnine.util.data.ISerializable;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
 import io.github.phantamanta44.libnine.util.data.serialization.IDatum;
+import io.github.phantamanta44.libnine.util.helper.InventoryUtils;
 import io.github.phantamanta44.libnine.util.nbt.ChainingTagCompound;
 import io.github.phantamanta44.threng.ThrEngConfig;
 import io.github.phantamanta44.threng.block.BlockBigAssembler;
@@ -39,7 +40,6 @@ import io.github.phantamanta44.threng.tile.base.IBigAssemblerUnit;
 import io.github.phantamanta44.threng.tile.base.IDroppableInventory;
 import io.github.phantamanta44.threng.tile.base.TileAENetworked;
 import io.github.phantamanta44.threng.util.AppEngUtils;
-import io.github.phantamanta44.threng.util.InvUtils;
 import io.github.phantamanta44.threng.util.ThrEngTextStyles;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
@@ -216,7 +216,7 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
 
     @Override
     public void collectDrops(Accrue<ItemStack> drops) {
-        InvUtils.accrue(drops, craftingBuffer);
+        InventoryUtils.accrue(drops, craftingBuffer);
     }
 
     @Override

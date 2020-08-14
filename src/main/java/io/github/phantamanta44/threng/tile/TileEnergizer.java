@@ -6,6 +6,7 @@ import io.github.phantamanta44.libnine.recipe.output.ItemStackOutput;
 import io.github.phantamanta44.libnine.tile.RegisterTile;
 import io.github.phantamanta44.libnine.util.collection.Accrue;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
+import io.github.phantamanta44.libnine.util.helper.InventoryUtils;
 import io.github.phantamanta44.libnine.util.tuple.IPair;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
@@ -14,7 +15,6 @@ import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.recipe.EnergizeRecipe;
 import io.github.phantamanta44.threng.recipe.component.ItemEnergyInput;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
-import io.github.phantamanta44.threng.util.InvUtils;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -100,7 +100,7 @@ public class TileEnergizer
     @Override
     public void collectDrops(Accrue<ItemStack> drops) {
         super.collectDrops(drops);
-        InvUtils.accrue(drops, slotInput, slotOutput);
+        InventoryUtils.accrue(drops, slotInput, slotOutput);
     }
 
 }

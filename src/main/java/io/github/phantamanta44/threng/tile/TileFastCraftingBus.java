@@ -21,6 +21,7 @@ import io.github.phantamanta44.libnine.capability.provider.CapabilityBrokerDirPr
 import io.github.phantamanta44.libnine.tile.RegisterTile;
 import io.github.phantamanta44.libnine.util.collection.Accrue;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
+import io.github.phantamanta44.libnine.util.helper.InventoryUtils;
 import io.github.phantamanta44.libnine.util.world.BlockSide;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.libnine.util.world.SideAlloc;
@@ -32,7 +33,6 @@ import io.github.phantamanta44.threng.tile.base.IDroppableInventory;
 import io.github.phantamanta44.threng.tile.base.TileNetworkDevice;
 import io.github.phantamanta44.threng.util.AppEngUtils;
 import io.github.phantamanta44.threng.util.ConjoinedItemHandler;
-import io.github.phantamanta44.threng.util.InvUtils;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -112,7 +112,7 @@ public class TileFastCraftingBus extends TileNetworkDevice
 
     @Override
     public void collectDrops(Accrue<ItemStack> drops) {
-        InvUtils.accrue(drops, importInventory, exportInventory, patternInventory);
+        InventoryUtils.accrue(drops, importInventory, exportInventory, patternInventory);
     }
 
     @Override

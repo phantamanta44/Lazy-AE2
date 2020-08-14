@@ -9,10 +9,10 @@ import io.github.phantamanta44.libnine.component.multiblock.MultiBlockCore;
 import io.github.phantamanta44.libnine.tile.RegisterTile;
 import io.github.phantamanta44.libnine.util.collection.Accrue;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
+import io.github.phantamanta44.libnine.util.helper.InventoryUtils;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.tile.base.IBigAssemblerUnit;
 import io.github.phantamanta44.threng.tile.base.IDroppableInventory;
-import io.github.phantamanta44.threng.util.InvUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -75,7 +75,7 @@ public class TileBigAssemblerPatternStore extends TileBigAssemblerPart implement
 
     @Override
     public void collectDrops(Accrue<ItemStack> drops) {
-        InvUtils.accrue(drops, patternInv);
+        InventoryUtils.accrue(drops, patternInv);
     }
 
 }

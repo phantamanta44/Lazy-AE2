@@ -8,10 +8,10 @@ import io.github.phantamanta44.libnine.recipe.output.IRcpOut;
 import io.github.phantamanta44.libnine.util.TriBool;
 import io.github.phantamanta44.libnine.util.collection.Accrue;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
+import io.github.phantamanta44.libnine.util.helper.InventoryUtils;
 import io.github.phantamanta44.libnine.util.world.BlockSide;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
 import io.github.phantamanta44.threng.util.AppEngUtils;
-import io.github.phantamanta44.threng.util.InvUtils;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
 
@@ -134,7 +134,7 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
 
     @Override
     public void collectDrops(Accrue<ItemStack> drops) {
-        InvUtils.accrue(drops, slotUpgrade);
+        InventoryUtils.accrue(drops, slotUpgrade);
     }
 
     private static class UpgradeSlot extends L9AspectSlot.Observable {
