@@ -29,41 +29,4 @@ Everything is JEI-integrated, so you won't have to waste time guessing at recipe
 
 ## CraftTweaker Support
 
-Recipes for the processing machines can be modified as follows:
-
-```zenscript
-// add aggregator recipe
-// addRecipe(ItemStack output, ItemMatcher input1, ItemMatcher input2, [ItemMatcher input3])
-mods.threng.Aggregator.addRecipe(<minecraft:diamond>, <minecraft:dirt>, <ore:dustGlowstone>, <minecraft:coal:1>);
-
-// remove aggregator recipe
-// removeRecipe(ItemStack output)
-mods.threng.Aggregator.removeRecipe(<threng:material:0>);
-
-// add centrifuge recipe
-// addRecipe(ItemStack output, ItemMatcher input)
-mods.threng.Centrifuge.addRecipe(<minecraft:diamond>, <minecraft:diamond_ore>);
-
-// remove centrifuge recipe
-// removeRecipe(ItemStack output)
-mods.threng.Centrifuge.removeRecipe(<appliedenergistics2:material:10>);
-
-// add etcher recipe
-// if top and bottom inputs aren't specified, redstone and silicon are used
-// note that the items that are allowed in each slot is determined by the recipes
-// DO NOT USE ANY ITEM IN MORE THAN ONE DIFFERENT SLOT OR THIS WILL BREAK!
-// addRecipe(ItemStack output, ItemMatcher input, [ItemMatcher topInput, ItemMatcher bottomInput])
-mods.threng.Etcher.addRecipe(<minecraft:diamond>, <minecraft:dirt>, <minecraft:stick>, <minecraft:cobblestone>);
-
-// remove etcher recipe
-// removeRecipe(ItemStack output)
-mods.threng.Etcher.removeRecipe(<appliedenergistics2:material:22>);
-
-// add energizer recipe
-// addRecipe(ItemStack output, ItemMatcher input, int energyCost)
-mods.threng.Energizer.addRecipe(<minecraft:gold_ingot>, <minecraft:iron_ingot>, 24000);
-
-// remove energizer recipe
-// removeRecipe(ItemStack output)
-mods.threng.Energizer.removeRecipe(<appliedenergistics2:material:10>);
-```
+Lazy AE2 has full CraftTweaker support for its processing recipes. Check out the documentation [in the wiki](https://github.com/phantamanta44/Lazy-AE2/wiki/CraftTweaker-API).
