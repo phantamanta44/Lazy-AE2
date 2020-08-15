@@ -25,7 +25,7 @@ public class ItemEnergyInput implements IRcpIn<IPair<ItemStack, Integer>> {
 
     @Override
     public boolean matches(IPair<ItemStack, Integer> input) {
-        return itemMatcher.test(input.getA()) && input.getB() >= energy;
+        return itemMatcher.test(input.getA()); // don't match on energy; it's reflected in consumption
     }
 
     @Override
