@@ -15,6 +15,7 @@ import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.recipe.PurifyRecipe;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
 import io.github.phantamanta44.threng.util.ConjoinedItemHandler;
+import io.github.phantamanta44.threng.util.InsertOnlyItemHandler;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -37,11 +38,12 @@ public class TileCentrifuge extends TileSimpleProcessor<ItemStack, ItemStack, It
 
     @Override
     protected CapabilityBrokerDirPredicated initCapabilities() {
+        InsertOnlyItemHandler inputs = new InsertOnlyItemHandler(slotInput);
         return super.initCapabilities()
-                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, slotInput, sides.getPredicate(SlotType.BasicIO.INPUT))
+                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inputs, sides.getPredicate(SlotType.BasicIO.INPUT))
                 .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, slotOutput, sides.getPredicate(SlotType.BasicIO.OUTPUT))
                 .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-                        new ConjoinedItemHandler(slotInput, slotOutput), sides.getPredicate(SlotType.BasicIO.OMNI));
+                        new ConjoinedItemHandler(inputs, slotOutput), sides.getPredicate(SlotType.BasicIO.OMNI));
     }
 
     @Override

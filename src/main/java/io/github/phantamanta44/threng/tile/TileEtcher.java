@@ -17,6 +17,7 @@ import io.github.phantamanta44.threng.recipe.EtchRecipe;
 import io.github.phantamanta44.threng.recipe.component.TriItemInput;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
 import io.github.phantamanta44.threng.util.ConjoinedItemHandler;
+import io.github.phantamanta44.threng.util.InsertOnlyItemHandler;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -43,11 +44,12 @@ public class TileEtcher
 
     @Override
     protected CapabilityBrokerDirPredicated initCapabilities() {
+        InsertOnlyItemHandler inputs = new InsertOnlyItemHandler(invInput);
         return super.initCapabilities()
-                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, invInput, sides.getPredicate(SlotType.BasicIO.INPUT))
+                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inputs, sides.getPredicate(SlotType.BasicIO.INPUT))
                 .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, slotOutput, sides.getPredicate(SlotType.BasicIO.OUTPUT))
                 .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-                        new ConjoinedItemHandler(invInput, slotOutput), sides.getPredicate(SlotType.BasicIO.OMNI));
+                        new ConjoinedItemHandler(inputs, slotOutput), sides.getPredicate(SlotType.BasicIO.OMNI));
     }
 
     @Override

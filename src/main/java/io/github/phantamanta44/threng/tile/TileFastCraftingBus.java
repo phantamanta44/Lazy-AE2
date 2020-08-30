@@ -33,6 +33,7 @@ import io.github.phantamanta44.threng.tile.base.IDroppableInventory;
 import io.github.phantamanta44.threng.tile.base.TileNetworkDevice;
 import io.github.phantamanta44.threng.util.AppEngUtils;
 import io.github.phantamanta44.threng.util.ConjoinedItemHandler;
+import io.github.phantamanta44.threng.util.InsertOnlyItemHandler;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -79,11 +80,12 @@ public class TileFastCraftingBus extends TileNetworkDevice
 
     @Override
     protected ICapabilityProvider initCapabilities() {
+        InsertOnlyItemHandler imports = new InsertOnlyItemHandler(importInventory);
         return new CapabilityBrokerDirPredicated()
                 .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-                        importInventory, sides.getPredicate(SlotType.BasicIO.INPUT))
+                        imports, sides.getPredicate(SlotType.BasicIO.INPUT))
                 .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-                        importInventory, sides.getPredicate(SlotType.BasicIO.OMNI));
+                        imports, sides.getPredicate(SlotType.BasicIO.OMNI));
     }
 
     @Nullable

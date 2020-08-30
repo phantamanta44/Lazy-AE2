@@ -2,12 +2,12 @@ package io.github.phantamanta44.threng.util;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
 
-public class ConjoinedItemHandler implements IItemHandler {
+public class ConjoinedItemHandler implements IItemHandlerModifiable {
 
     private final List<IItemHandler> delegates;
     private final int[] thresholds;
@@ -32,21 +32,27 @@ public class ConjoinedItemHandler implements IItemHandler {
         return delegates.stream().mapToInt(IItemHandler::getSlots).sum();
     }
 
-    @Nonnull
     @Override
     public ItemStack getStackInSlot(int slot) {
         int ihIndex = getItemHandler(slot);
         return delegates.get(ihIndex).getStackInSlot(slot - getBaseSlot(ihIndex));
     }
 
-    @Nonnull
     @Override
-    public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+    public void setStackInSlot(int slot, ItemStack stack) {
+        int ihIndex = getItemHandler(slot);
+        IItemHandler inv = delegates.get(ihIndex);
+        if (inv instanceof IItemHandlerModifiable) {
+            ((IItemHandlerModifiable)inv).setStackInSlot(slot - getBaseSlot(ihIndex), stack);
+        }
+    }
+
+    @Override
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
         int ihIndex = getItemHandler(slot);
         return delegates.get(ihIndex).insertItem(slot - getBaseSlot(ihIndex), stack, simulate);
     }
 
-    @Nonnull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
         int ihIndex = getItemHandler(slot);
