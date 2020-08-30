@@ -27,6 +27,7 @@ tile.threng:big_assembler1.name=Mass Assembler Vent
 tile.threng:big_assembler2.name=Mass Assembler Controller
 tile.threng:big_assembler3.name=MA Pattern Provider
 tile.threng:big_assembler4.name=MA Crafting Coprocessor
+tile.threng:big_assembler5.name=Mass Assembler IO Port
 
 threng.container.aggregator=Fluix Aggregator
 threng.container.centrifuge=Pulse Centrifuge

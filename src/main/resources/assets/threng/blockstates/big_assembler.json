@@ -34,6 +34,12 @@
           "face": "threng:blocks/big_assembler/module_cpu",
           "face_active": "threng:blocks/big_assembler/module_cpu_active"
         }
+      },
+      "io_port": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/io_port",
+          "face_active": "threng:blocks/big_assembler/io_port_active"
+        }
       }
     },
     "active": {

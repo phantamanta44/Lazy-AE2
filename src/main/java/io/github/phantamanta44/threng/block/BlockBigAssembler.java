@@ -11,6 +11,7 @@ import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.inventory.ThrEngGuis;
 import io.github.phantamanta44.threng.item.block.ItemBlockBigAssembler;
 import io.github.phantamanta44.threng.tile.TileBigAssemblerCore;
+import io.github.phantamanta44.threng.tile.TileBigAssemblerIoPort;
 import io.github.phantamanta44.threng.tile.TileBigAssemblerPart;
 import io.github.phantamanta44.threng.tile.TileBigAssemblerPatternStore;
 import io.github.phantamanta44.threng.tile.base.IActivable;
@@ -140,7 +141,8 @@ public class BlockBigAssembler extends L9BlockStated {
         VENT(TileBigAssemblerPart::new),
         CONTROLLER(TileBigAssemblerCore::new),
         MODULE_PATTERN(TileBigAssemblerPatternStore::new),
-        MODULE_CPU(TileBigAssemblerPart::new);
+        MODULE_CPU(TileBigAssemblerPart::new),
+        IO_PORT(TileBigAssemblerIoPort::new);
 
         private static final Type[] VALUES = values();
 

@@ -1,0 +1,33 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "FHF",
+    "CPC",
+    "FBF"
+  ],
+  "key": {
+    "F": {
+      "item": "threng:big_assembler",
+      "data": 0
+    },
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "C": {
+      "item": "appliedenergistics2:part",
+      "data": 16
+    },
+    "P": {
+      "item": "appliedenergistics2:io_port"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "chestWood"
+    }
+  },
+  "result": {
+    "item": "threng:big_assembler",
+    "count": 1,
+    "data": 5
+  }
+}

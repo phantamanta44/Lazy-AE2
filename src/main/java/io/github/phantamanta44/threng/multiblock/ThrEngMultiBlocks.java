@@ -27,6 +27,7 @@ public class ThrEngMultiBlocks {
                     switch (s.getValue(BlockBigAssembler.TYPE)) {
                         case VENT:
                         case CONTROLLER:
+                        case IO_PORT:
                             return true;
                         default:
                             return false;

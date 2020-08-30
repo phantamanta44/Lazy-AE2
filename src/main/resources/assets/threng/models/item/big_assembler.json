@@ -29,6 +29,11 @@
         "textures": {
           "face": "threng:blocks/big_assembler/module_cpu"
         }
+      },
+      "io_port": {
+        "textures": {
+          "face": "threng:blocks/big_assembler/io_port"
+        }
       }
     }
   }

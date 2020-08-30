@@ -65,6 +65,12 @@ public class ConjoinedItemHandler implements IItemHandlerModifiable {
         return delegates.get(ihIndex).getSlotLimit(slot - getBaseSlot(ihIndex));
     }
 
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack) {
+        int ihIndex = getItemHandler(slot);
+        return delegates.get(ihIndex).isItemValid(slot - getBaseSlot(ihIndex), stack);
+    }
+
     private int getItemHandler(int index) {
         for (int i = 0; i < thresholds.length; i++) {
             if (index < thresholds[i]) {
