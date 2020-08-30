@@ -8,7 +8,7 @@ import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerSimpleProcessor<T extends TileSimpleProcessor<?, ?, ?, ?, ?>> extends ContainerEnergized<T>
+public abstract class ContainerSimpleProcessor<T extends TileSimpleProcessor<?, ?, ?, ?, ?>> extends ContainerEnergized<T>
         implements IAllocableSides<SlotType.BasicIO> {
 
     public ContainerSimpleProcessor(T tile, InventoryPlayer ipl) {
@@ -35,7 +35,7 @@ public class ContainerSimpleProcessor<T extends TileSimpleProcessor<?, ?, ?, ?, 
         byte opcode = data.readByte();
         if (opcode == 0) {
             tile.setFace(
-                    BlockSide.values()[data.readByte()], SlotType.BasicIO.values()[data.readByte()]);
+                    BlockSide.values()[data.readByte()], SlotType.BasicIO.get(data.readByte()));
         } else {
             throw new IllegalStateException("Unknown opcode: " + opcode);
         }

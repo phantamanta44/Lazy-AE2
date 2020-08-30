@@ -46,6 +46,7 @@ public class ResConst {
     public static final TextureRegion GUI_COMP_SIDE_IO_BG = GUI_COMP_SIDE_IO.getRegion(0, 0, 17, 17);
     public static final TextureRegion GUI_COMP_SIDE_IO_IN = GUI_COMP_SIDE_IO.getRegion(17, 0, 5, 5);
     public static final TextureRegion GUI_COMP_SIDE_IO_OUT = GUI_COMP_SIDE_IO.getRegion(17, 5, 5, 5);
+    public static final TextureRegion GUI_COMP_SIDE_IO_OMNI = GUI_COMP_SIDE_IO.getRegion(17, 10, 5, 5);
 
     private static final TextureResource GUI_COMP_SUBMIT = getTextureGuiComp("submit", 39, 13);
     public static final TextureRegion GUI_COMP_SUBMIT_NORMAL = GUI_COMP_SUBMIT.getRegion(0, 0, 13, 13);

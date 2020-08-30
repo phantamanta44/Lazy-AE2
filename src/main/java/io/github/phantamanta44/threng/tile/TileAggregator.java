@@ -16,6 +16,7 @@ import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.recipe.AggRecipe;
 import io.github.phantamanta44.threng.recipe.component.TriItemInput;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
+import io.github.phantamanta44.threng.util.ConjoinedItemHandler;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -41,7 +42,9 @@ public class TileAggregator
     protected CapabilityBrokerDirPredicated initCapabilities() {
         return super.initCapabilities()
                 .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, invInput, sides.getPredicate(SlotType.BasicIO.INPUT))
-                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, slotOutput, sides.getPredicate(SlotType.BasicIO.OUTPUT));
+                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, slotOutput, sides.getPredicate(SlotType.BasicIO.OUTPUT))
+                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+                        new ConjoinedItemHandler(invInput, slotOutput), sides.getPredicate(SlotType.BasicIO.OMNI));
     }
 
     public IAllocableSides<SlotType.BasicIO> getSidedIo() {

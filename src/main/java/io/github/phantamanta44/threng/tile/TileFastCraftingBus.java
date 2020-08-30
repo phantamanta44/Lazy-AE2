@@ -80,8 +80,10 @@ public class TileFastCraftingBus extends TileNetworkDevice
     @Override
     protected ICapabilityProvider initCapabilities() {
         return new CapabilityBrokerDirPredicated()
-                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, importInventory,
-                        sides.getPredicate(SlotType.BasicIO.INPUT));
+                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+                        importInventory, sides.getPredicate(SlotType.BasicIO.INPUT))
+                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+                        importInventory, sides.getPredicate(SlotType.BasicIO.OMNI));
     }
 
     @Nullable
@@ -232,7 +234,7 @@ public class TileFastCraftingBus extends TileNetworkDevice
     private IItemHandler computeAdjInvs() {
         List<IItemHandler> adjInvs = new ArrayList<>();
         for (BlockSide side : BlockSide.values()) {
-            if (sides.getFace(side) == SlotType.BasicIO.OUTPUT) {
+            if (sides.getFace(side).allowsOutput) {
                 EnumFacing dir = side.getDirection(getFrontFace());
                 EnumFacing fromDir = dir.getOpposite();
                 TileEntity adj = WorldUtils.getAdjacentTile(this, dir);

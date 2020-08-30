@@ -24,7 +24,7 @@ public class ThrEngGuis {
     public static final GuiIdentity<ContainerBigAssembler, GuiBigAssembler> BIG_ASSEMBLER
             = new GuiIdentity<>(LangConst.GUI_BIG_ASSEMBLER, ContainerBigAssembler.class);
     public static final GuiIdentity<ContainerEnergizer, GuiEnergizer> ENERGIZER
-            = new GuiIdentity<>(LangConst.GUI_ENERGIZER, ContainerEtcher.class);
+            = new GuiIdentity<>(LangConst.GUI_ENERGIZER, ContainerEnergizer.class);
 
     @InitMe(ThrEngConst.MOD_ID)
     public static void registerCommon() {

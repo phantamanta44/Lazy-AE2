@@ -41,6 +41,9 @@ public class GuiComponentSidedIo extends GuiComponent {
                 case OUTPUT:
                     ResConst.GUI_COMP_SIDE_IO_OUT.draw(x + FACE_X_COORDS[i], y + FACE_Y_COORDS[i]);
                     break;
+                case OMNI:
+                    ResConst.GUI_COMP_SIDE_IO_OMNI.draw(x + FACE_X_COORDS[i], y + FACE_Y_COORDS[i]);
+                    break;
             }
         }
     }
@@ -64,15 +67,9 @@ public class GuiComponentSidedIo extends GuiComponent {
             for (int i = 0; i < FACE_SIDES.length; i++) {
                 if (GuiUtils.isMouseOver(x + FACE_X_COORDS[i], y + FACE_Y_COORDS[i], 5, 5, mX, mY)) {
                     if (button == 0) {
-                        SlotType.BasicIO[] ioTypes = SlotType.BasicIO.values();
-                        sides.setFace(FACE_SIDES[i], ioTypes[(sides.getFace(FACE_SIDES[i]).ordinal() + 1) % ioTypes.length]);
+                        sides.setFace(FACE_SIDES[i], sides.getFace(FACE_SIDES[i]).next());
                     } else if (button == 1) {
-                        SlotType.BasicIO[] ioTypes = SlotType.BasicIO.values();
-                        int newOrdinal = sides.getFace(FACE_SIDES[i]).ordinal() - 1;
-                        if (newOrdinal == -1) {
-                            newOrdinal = ioTypes.length - 1;
-                        }
-                        sides.setFace(FACE_SIDES[i], ioTypes[newOrdinal]);
+                        sides.setFace(FACE_SIDES[i], sides.getFace(FACE_SIDES[i]).prev());
                     }
                     playClickSound();
                     return true;

@@ -15,6 +15,7 @@ import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.recipe.EnergizeRecipe;
 import io.github.phantamanta44.threng.recipe.component.ItemEnergyInput;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
+import io.github.phantamanta44.threng.util.ConjoinedItemHandler;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -40,7 +41,9 @@ public class TileEnergizer
     protected CapabilityBrokerDirPredicated initCapabilities() {
         return super.initCapabilities()
                 .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, slotInput, sides.getPredicate(SlotType.BasicIO.INPUT))
-                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, slotOutput, sides.getPredicate(SlotType.BasicIO.OUTPUT));
+                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, slotOutput, sides.getPredicate(SlotType.BasicIO.OUTPUT))
+                .with(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+                        new ConjoinedItemHandler(slotInput, slotOutput), sides.getPredicate(SlotType.BasicIO.OMNI));
     }
 
     @Override

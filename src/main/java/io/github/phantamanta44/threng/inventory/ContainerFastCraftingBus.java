@@ -57,7 +57,7 @@ public class ContainerFastCraftingBus extends L9Container implements IAllocableS
     public void onClientInteraction(ByteUtils.Reader data) {
         byte opcode = data.readByte();
         if (opcode == 0) {
-            tile.setFace(BlockSide.values()[data.readByte()], SlotType.BasicIO.values()[data.readByte()]);
+            tile.setFace(BlockSide.values()[data.readByte()], SlotType.BasicIO.get(data.readByte()));
         } else {
             throw new IllegalStateException("Unknown opcode: " + opcode);
         }

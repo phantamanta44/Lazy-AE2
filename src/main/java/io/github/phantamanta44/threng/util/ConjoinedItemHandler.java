@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.List;
 
 public class ConjoinedItemHandler implements IItemHandler {
@@ -20,6 +21,10 @@ public class ConjoinedItemHandler implements IItemHandler {
                 thresholds[i] = thresholds[i - 1] + delegates.get(i).getSlots();
             }
         }
+    }
+
+    public ConjoinedItemHandler(IItemHandler... delegates) {
+        this(Arrays.asList(delegates));
     }
 
     @Override
