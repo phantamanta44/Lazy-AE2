@@ -2,10 +2,10 @@ package io.github.phantamanta44.threng.inventory;
 
 import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
-import appeng.api.storage.data.IAEItemStack;
 import appeng.items.misc.ItemEncodedPattern;
 import appeng.util.Platform;
 import io.github.phantamanta44.libnine.gui.L9Container;
+import io.github.phantamanta44.libnine.util.TriBool;
 import io.github.phantamanta44.threng.inventory.slot.IDisplayModeSlot;
 import io.github.phantamanta44.threng.tile.TileBigAssemblerCore;
 import io.github.phantamanta44.threng.tile.TileBigAssemblerPatternStore;
@@ -20,8 +20,11 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ContainerBigAssembler extends L9Container {
 
@@ -81,7 +84,9 @@ public class ContainerBigAssembler extends L9Container {
             private boolean displayMode = false;
             @Nullable
             private String searchQuery = null;
-            private boolean matchesQuery = true;
+            private TriBool matchesQuery = TriBool.NONE;
+            @Nullable
+            private List<String> resultNames = null;
 
             public SlotPage(IItemHandlerModifiable patternInv, int index, int posX, int posY) {
                 super(patternInv, index, posX, posY);
@@ -100,34 +105,47 @@ public class ContainerBigAssembler extends L9Container {
             @Override
             public void updateSearchQuery(@Nullable String query) {
                 this.searchQuery = query;
-                updateSearchState(getStack());
-            }
-
-            private void updateSearchState(ItemStack stack) {
-                if (searchQuery == null || searchQuery.isEmpty()) {
-                    matchesQuery = true;
-                } else if (stack.isEmpty()) {
-                    matchesQuery = false;
-                } else {
-                    if (stack.getItem() instanceof ICraftingPatternItem) {
-                        ICraftingPatternDetails pattern = ((ICraftingPatternItem)stack.getItem())
-                                .getPatternForItem(stack, tile.getWorld());
-                        if (pattern != null) {
-                            for (IAEItemStack output : pattern.getCondensedOutputs()) {
-                                if (Platform.getItemDisplayName(output).toLowerCase().contains(searchQuery)) {
-                                    matchesQuery = true;
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                    matchesQuery = stack.getDisplayName().toLowerCase().contains(searchQuery);
-                }
+                matchesQuery = TriBool.NONE;
             }
 
             @Override
             public boolean matchesQuery() {
-                return matchesQuery;
+                if (matchesQuery == TriBool.NONE) {
+                    if (searchQuery == null || searchQuery.isEmpty()) {
+                        matchesQuery = TriBool.TRUE;
+                        return true;
+                    }
+                    ItemStack stack = getStack();
+                    if (stack.isEmpty()) {
+                        matchesQuery = TriBool.FALSE;
+                        return false;
+                    }
+                    if (resultNames == null) {
+                        get_names:
+                        {
+                            if (stack.getItem() instanceof ICraftingPatternItem) {
+                                ICraftingPatternDetails pattern = ((ICraftingPatternItem)stack.getItem())
+                                        .getPatternForItem(stack, tile.getWorld());
+                                if (pattern != null) {
+                                    resultNames = Arrays.stream(pattern.getCondensedOutputs())
+                                            .map(o -> Platform.getItemDisplayName(o).toLowerCase())
+                                            .collect(Collectors.toList());
+                                    break get_names;
+                                }
+                            }
+                            resultNames = Collections.emptyList();
+                        }
+                    }
+                    for (String name : resultNames) {
+                        if (name.contains(searchQuery)) {
+                            matchesQuery = TriBool.TRUE;
+                            return true;
+                        }
+                    }
+                    matchesQuery = TriBool.FALSE;
+                    return false;
+                }
+                return matchesQuery.value;
             }
 
             @Override
@@ -150,14 +168,16 @@ public class ContainerBigAssembler extends L9Container {
             @Override
             public void putStack(@Nonnull ItemStack stack) {
                 super.putStack(stack);
-                updateSearchState(stack);
+                resultNames = null;
+                matchesQuery = TriBool.NONE;
             }
 
             @Nonnull
             @Override
             public ItemStack decrStackSize(int amount) {
                 ItemStack extracted = super.decrStackSize(amount);
-                updateSearchState(super.getStack());
+                resultNames = null;
+                matchesQuery = TriBool.NONE;
                 return extracted;
             }
 
