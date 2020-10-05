@@ -81,7 +81,7 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated, ISear
         int work = tile.getWork();
         if (work > 0) {
             ResConst.GUI_BIG_ASSEMBLER_PROGRESS
-                    .drawPartial(36, 113, 0F, 0F, work / (float)tile.getWorkPerJob(), 1F);
+                    .drawPartial(36, 113, 0F, 0F, Math.min(work / (float)tile.getWorkPerJob(), 1F), 1F);
         }
         int jobCount = tile.getJobCount();
         if (jobCount > 0) {

@@ -238,23 +238,29 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
                     int jobs = jobQueue.getOutstandingJobCount();
                     if (jobs > 0) {
                         int currentWork = work.getInt();
+                        int previousWork = currentWork;
                         int workPerJob = getWorkPerJob();
-                        int workDone;
-                        double energyUnitCost = getEnergyCost();
-                        if (energyUnitCost > 0D) {
-                            double extracted = energy.extractAEPower(
-                                    energyUnitCost * Math.min(getWorkRate(), jobs * workPerJob - currentWork),
-                                    Actionable.MODULATE, PowerMultiplier.CONFIG);
-                            workDone = (int)Math.ceil(extracted / energyUnitCost);
-                        } else {
-                            workDone = Math.min(getWorkRate(), jobs * workPerJob - currentWork);
-                        }
-                        if (workDone > 0) {
-                            currentWork += workDone;
-                            while (currentWork >= workPerJob) {
-                                currentWork -= workPerJob;
-                                jobQueue.dispatchJob();
+                        int workToDo = Math.min(getWorkRate(), jobs * workPerJob - currentWork);
+                        if (workToDo > 0) {
+                            double energyUnitCost = getEnergyCost();
+                            if (energyUnitCost > 0D) {
+                                double extracted = energy.extractAEPower(
+                                        energyUnitCost * workToDo, Actionable.MODULATE, PowerMultiplier.CONFIG);
+                                if (extracted > 0D) {
+                                    currentWork += (int)Math.ceil(extracted / energyUnitCost);
+                                }
+                            } else {
+                                currentWork += workToDo;
                             }
+                        }
+                        while (currentWork >= workPerJob) {
+                            if (jobQueue.dispatchJob()) {
+                                currentWork -= workPerJob;
+                            } else {
+                                break;
+                            }
+                        }
+                        if (previousWork != currentWork) {
                             work.setInt(currentWork);
                             setDirty();
                         }
@@ -338,12 +344,12 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
             }
         }
 
-        void dispatchJob() {
+        boolean dispatchJob() {
             CraftingJob job = queue.peek();
             if (job != null) {
                 for (int i = 0; i < 10; i++) {
                     if (!outputBuffer.getStackInSlot(job.index * 10 + i).isEmpty()) {
-                        return;
+                        return false;
                     }
                 }
                 for (int i = 0; i < 9; i++) {
@@ -356,7 +362,9 @@ public class TileBigAssemblerCore extends TileAENetworked implements IBigAssembl
                 outputBuffer.setStackInSlot(job.index * 10 + 9, job.result);
                 queue.pop();
                 jobSlots.clear(job.index);
+                return true;
             }
+            return false;
         }
 
         @Override
