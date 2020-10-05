@@ -36,18 +36,17 @@ public class GuiComponentSearchBar extends GuiComponent implements GuiPageButton
             if (button == 1) {
                 textField.setText("");
                 searchHost.setSearchQuery(null);
-            } else {
-                textField.mouseClicked(mX, mY, button); // always returns true for some reason
             }
-            return true;
+            return textField.mouseClicked(mX, mY, button);
         }
+        textField.mouseClicked(mX, mY, button); // deals with defocusing if we click outside the text field
         return false;
     }
 
     @Override
     public boolean onKeyPress(int keyCode, char typed) {
-        if (keyCode == Keyboard.KEY_TAB && !textField.isFocused()) {
-            textField.setFocused(true);
+        if (keyCode == Keyboard.KEY_TAB) {
+            textField.setFocused(!textField.isFocused());
             return true;
         } else {
             return textField.textboxKeyTyped(typed, keyCode);
