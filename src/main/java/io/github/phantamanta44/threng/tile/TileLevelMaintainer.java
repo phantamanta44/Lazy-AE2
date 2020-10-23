@@ -59,6 +59,7 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
     private final long[] knownCounts = new long[REQ_COUNT];
 
     private int sleepTicks = 0;
+    private int sleepIncrement = ThrEngConfig.networkDevices.levelMaintainerSleepMax;
 
     public TileLevelMaintainer() {
         markRequiresSync();
@@ -111,10 +112,13 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
                     }
                     if (workDone) {
                         setDirty();
-                        sleepTicks = ThrEngConfig.networkDevices.levelMaintainerSleepActive;
-                    } else {
-                        sleepTicks = ThrEngConfig.networkDevices.levelMaintainerSleepPassive;
+                        if (sleepIncrement > ThrEngConfig.networkDevices.levelMaintainerSleepMin) {
+                            sleepIncrement = Math.max(sleepIncrement - 20, ThrEngConfig.networkDevices.levelMaintainerSleepMin);
+                        }
+                    } else if (sleepIncrement < ThrEngConfig.networkDevices.levelMaintainerSleepMax) {
+                        sleepIncrement = Math.min(sleepIncrement + 30, ThrEngConfig.networkDevices.levelMaintainerSleepMax);
                     }
+                    sleepTicks = sleepIncrement;
                 } else {
                     --sleepTicks;
                 }

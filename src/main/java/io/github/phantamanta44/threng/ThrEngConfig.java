@@ -122,20 +122,22 @@ public class ThrEngConfig {
         public double levelMaintainerIdlePower = 3D;
 
         @Config.Comment({
-                "The interval between work ticks for the level maintainer while active.",
+                "The minimum interval between work ticks for the level maintainer.",
+                "The level maintainer will gradually increase its work rate while running without obstruction.",
                 "Setting this too low may cause lag!"
         })
         @Config.RangeInt(min = 0)
         @Config.RequiresWorldRestart
-        public int levelMaintainerSleepActive = 16;
+        public int levelMaintainerSleepMin = 12;
 
         @Config.Comment({
-                "The interval between work ticks for the level maintainer while not active.",
+                "The maximum interval between work ticks for the level maintainer.",
+                "The level maintainer will gradually reduce its work rate when something prevents it from progressing.",
                 "Setting this too low may cause lag!"
         })
         @Config.RangeInt(min = 0)
         @Config.RequiresWorldRestart
-        public int levelMaintainerSleepPassive = 64;
+        public int levelMaintainerSleepMax = 200;
 
     }
 
