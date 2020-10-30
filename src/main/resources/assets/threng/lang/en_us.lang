@@ -61,6 +61,9 @@ threng.misc.io.output=Output
 threng.misc.io.omni=All
 threng.misc.io.none=None
 
+threng.misc.auto_export.off=Auto-Export Disabled
+threng.misc.auto_export.on=Auto-Export Enabled
+
 threng.int.jei.category.aggregator=Fluix Aggregation
 threng.int.jei.category.centrifuge=Pulse Centrifuge
 threng.int.jei.category.etcher=ME Circuit Etching

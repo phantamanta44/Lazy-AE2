@@ -3,13 +3,14 @@ package io.github.phantamanta44.threng.inventory.base;
 import io.github.phantamanta44.libnine.util.data.ByteUtils;
 import io.github.phantamanta44.libnine.util.world.BlockSide;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
+import io.github.phantamanta44.threng.tile.base.IAutoExporting;
 import io.github.phantamanta44.threng.tile.base.TileSimpleProcessor;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.SlotItemHandler;
 
 public abstract class ContainerSimpleProcessor<T extends TileSimpleProcessor<?, ?, ?, ?, ?>> extends ContainerEnergized<T>
-        implements IAllocableSides<SlotType.BasicIO> {
+        implements IAllocableSides<SlotType.BasicIO>, IAutoExporting {
 
     public ContainerSimpleProcessor(T tile, InventoryPlayer ipl) {
         super(tile, ipl);
@@ -31,13 +32,27 @@ public abstract class ContainerSimpleProcessor<T extends TileSimpleProcessor<?, 
     }
 
     @Override
+    public boolean isAutoExporting() {
+        return tile.isAutoExporting();
+    }
+
+    @Override
+    public void setAutoExporting(boolean exporting) {
+        sendInteraction(new byte[] { 1, exporting ? (byte)1 : (byte)0 });
+    }
+
+    @Override
     public void onClientInteraction(ByteUtils.Reader data) {
         byte opcode = data.readByte();
-        if (opcode == 0) {
-            tile.setFace(
-                    BlockSide.values()[data.readByte()], SlotType.BasicIO.get(data.readByte()));
-        } else {
-            throw new IllegalStateException("Unknown opcode: " + opcode);
+        switch (opcode) {
+            case 0: // setFace
+                tile.setFace(BlockSide.values()[data.readByte()], SlotType.BasicIO.get(data.readByte()));
+                break;
+            case 1: // setAutoExporting
+                tile.setAutoExporting(data.readByte() != 0);
+                break;
+            default:
+                throw new IllegalStateException("Unknown opcode: " + opcode);
         }
     }
 

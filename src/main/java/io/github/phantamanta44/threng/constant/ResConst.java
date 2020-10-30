@@ -59,6 +59,10 @@ public class ResConst {
     public static final ButtonRender GUI_COMP_NEXT_PREV_FIRST = new ButtonRender(GUI_COMP_NEXT_PREV, 36, 0, 11, 11);
     public static final ButtonRender GUI_COMP_NEXT_PREV_LAST = new ButtonRender(GUI_COMP_NEXT_PREV, 47, 0, 11, 11);
 
+    private static final TextureResource GUI_COMP_AUTO_EXPORT = getTextureGuiComp("auto_export", 34, 17);
+    public static final TextureRegion GUI_COMP_AUTO_EXPORT_OFF = GUI_COMP_AUTO_EXPORT.getRegion(0, 0, 17, 17);
+    public static final TextureRegion GUI_COMP_AUTO_EXPORT_ON = GUI_COMP_AUTO_EXPORT.getRegion(17, 0, 17, 17);
+
     private static TextureResource getTextureGuiComp(String path, int width, int height) {
         return getTextureGui("component/" + path, width, height);
     }

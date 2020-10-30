@@ -44,6 +44,10 @@ public class LangConst {
     public static final String NOTIF_MULTIBLOCK_FAILED = NOTIF_KEY + "multiblock_failed";
     public static final String NOTIF_MULTIBLOCK_UNFORMED = NOTIF_KEY + "multiblock_unformed";
 
+    public static final String AUTO_EXPORT_KEY = MISC_KEY + "auto_export.";
+    public static final String AUTO_EXPORT_OFF = AUTO_EXPORT_KEY + "off";
+    public static final String AUTO_EXPORT_ON = AUTO_EXPORT_KEY + "on";
+
     public static String getSideName(BlockSide side) {
         return I18n.format(MISC_KEY + "side." + side.name().toLowerCase());
     }

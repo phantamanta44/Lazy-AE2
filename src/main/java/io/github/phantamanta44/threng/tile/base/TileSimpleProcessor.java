@@ -8,23 +8,34 @@ import io.github.phantamanta44.libnine.recipe.output.IRcpOut;
 import io.github.phantamanta44.libnine.util.TriBool;
 import io.github.phantamanta44.libnine.util.collection.Accrue;
 import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
+import io.github.phantamanta44.libnine.util.data.serialization.IDatum;
 import io.github.phantamanta44.libnine.util.helper.InventoryUtils;
 import io.github.phantamanta44.libnine.util.world.BlockSide;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
+import io.github.phantamanta44.libnine.util.world.WorldUtils;
 import io.github.phantamanta44.threng.util.AppEngUtils;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extends IRcpOut<OT>, R extends IRcp<IT, I, O>>
-        extends TileMachine implements IAllocableSides<SlotType.BasicIO>, IDroppableInventory {
+        extends TileMachine implements IAllocableSides<SlotType.BasicIO>, IDroppableInventory, IAutoExporting {
 
     private final Class<R> recipeType;
 
     @AutoSerialize(sync = false)
     private final L9AspectSlot slotUpgrade = new TileSimpleProcessor.UpgradeSlot(this);
+    @AutoSerialize
+    private final IDatum.OfBool autoExporting = IDatum.ofBool(false);
 
     private TriBool canWork = TriBool.NONE;
     @Nullable
@@ -55,6 +66,67 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
     @Override
     public SlotType.BasicIO getFace(BlockSide face) {
         return getSidedIo().getFace(face);
+    }
+
+    @Override
+    public boolean isAutoExporting() {
+        return autoExporting.isTrue();
+    }
+
+    @Override
+    public void setAutoExporting(boolean exporting) {
+        if (autoExporting.isTrue() != exporting) {
+            autoExporting.setBool(exporting);
+            setDirty();
+        }
+    }
+
+    @Override
+    protected void tick() {
+        super.tick();
+        if (!world.isRemote && autoExporting.isTrue() && world.getTotalWorldTime() % 16 == 0) {
+            doAutoExporting();
+        }
+    }
+
+    private void doAutoExporting() {
+        boolean somethingChanged = false;
+        IItemHandlerModifiable outputs = getOutputInventory();
+        if (outputs.getSlots() <= 0) {
+            return;
+        }
+        int slotIndex = 0;
+        while (outputs.getStackInSlot(slotIndex).isEmpty()) {
+            if (++slotIndex >= outputs.getSlots()) {
+                return;
+            }
+        }
+        EnumFacing front = getFrontFace();
+        IAllocableSides<SlotType.BasicIO> sides = getSidedIo();
+        for (BlockSide side : BlockSide.values()) {
+            if (!sides.getFace(side).allowsOutput) {
+                continue;
+            }
+            EnumFacing dir = side.getDirection(front);
+            TileEntity adjTile = WorldUtils.getAdjacentTile(this, dir);
+            if (adjTile == null || !adjTile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite())) {
+                continue;
+            }
+            ItemStack toExport = outputs.getStackInSlot(slotIndex);
+            IItemHandler adjInv = Objects.requireNonNull(
+                    adjTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite()));
+            ItemStack remaining = ItemHandlerHelper.insertItem(adjInv, toExport, false);
+            if (toExport.getCount() != remaining.getCount()) {
+                outputs.setStackInSlot(slotIndex, remaining);
+                somethingChanged = true;
+                if (remaining.isEmpty() && ++slotIndex >= outputs.getSlots()) {
+                    break;
+                }
+            }
+        }
+        if (somethingChanged) {
+            setDirty();
+        }
     }
 
     @Override
@@ -127,6 +199,8 @@ public abstract class TileSimpleProcessor<IT, OT, I extends IRcpIn<IT>, O extend
     protected abstract OT getOutputEnvironment();
 
     protected abstract void acceptOutput(IT newInputs, O output);
+
+    protected abstract IItemHandlerModifiable getOutputInventory();
 
     public L9AspectSlot getUpgradeSlot() {
         return slotUpgrade;

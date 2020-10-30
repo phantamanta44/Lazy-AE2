@@ -21,6 +21,7 @@ import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 @RegisterTile(ThrEngConst.MOD_ID)
 public class TileEnergizer
@@ -99,6 +100,11 @@ public class TileEnergizer
     }
 
     public IItemHandler getOutputSlot() {
+        return slotOutput;
+    }
+
+    @Override
+    protected IItemHandlerModifiable getOutputInventory() {
         return slotOutput;
     }
 
