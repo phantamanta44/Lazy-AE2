@@ -31,9 +31,9 @@ public class ThrEngCraftingTracker implements ISerializable {
     private final Future<ICraftingJob>[] jobs;
     private final ICraftingLink[] links;
 
+    @SuppressWarnings("unchecked")
     public ThrEngCraftingTracker(ICraftingRequester owner, int size) {
         this.owner = owner;
-        //noinspection unchecked
         this.jobs = new Future[size];
         this.links = new ICraftingLink[size];
     }
