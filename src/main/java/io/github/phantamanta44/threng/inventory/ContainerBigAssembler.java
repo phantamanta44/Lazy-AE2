@@ -4,8 +4,8 @@ import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.items.misc.ItemEncodedPattern;
 import appeng.util.Platform;
-import io.github.phantamanta44.libnine.gui.L9Container;
 import io.github.phantamanta44.libnine.util.TriBool;
+import io.github.phantamanta44.threng.inventory.base.ContainerTile;
 import io.github.phantamanta44.threng.inventory.slot.IDisplayModeSlot;
 import io.github.phantamanta44.threng.tile.TileBigAssemblerCore;
 import io.github.phantamanta44.threng.tile.TileBigAssemblerPatternStore;
@@ -26,9 +26,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class ContainerBigAssembler extends L9Container {
+public class ContainerBigAssembler extends ContainerTile<TileBigAssemblerCore> {
 
-    private final TileBigAssemblerCore tile;
     private final Page[] pages;
 
     public ContainerBigAssembler(EntityPlayer player, World world, int x, int y, int z) {
@@ -36,8 +35,7 @@ public class ContainerBigAssembler extends L9Container {
     }
 
     public ContainerBigAssembler(InventoryPlayer ipl, TileBigAssemblerCore tile) {
-        super(ipl, 217);
-        this.tile = tile;
+        super(tile, ipl, 217);
         List<TileBigAssemblerPatternStore> patternStores = tile.getPatternStores();
         this.pages = new Page[patternStores.size()];
         for (int i = 0; i < pages.length; i++) {
@@ -59,7 +57,7 @@ public class ContainerBigAssembler extends L9Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return tile.isActive();
+        return super.canInteractWith(player) && tile.isActive();
     }
 
     public class Page {

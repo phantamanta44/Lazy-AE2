@@ -42,7 +42,7 @@ public abstract class ContainerSimpleProcessor<T extends TileSimpleProcessor<?, 
     }
 
     @Override
-    public void onClientInteraction(ByteUtils.Reader data) {
+    public void handleClientInteraction(ByteUtils.Reader data) {
         byte opcode = data.readByte();
         switch (opcode) {
             case 0: // setFace

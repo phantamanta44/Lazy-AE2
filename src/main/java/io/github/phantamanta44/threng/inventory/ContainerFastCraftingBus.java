@@ -1,9 +1,9 @@
 package io.github.phantamanta44.threng.inventory;
 
-import io.github.phantamanta44.libnine.gui.L9Container;
 import io.github.phantamanta44.libnine.util.data.ByteUtils;
 import io.github.phantamanta44.libnine.util.world.BlockSide;
 import io.github.phantamanta44.libnine.util.world.IAllocableSides;
+import io.github.phantamanta44.threng.inventory.base.ContainerTile;
 import io.github.phantamanta44.threng.tile.TileFastCraftingBus;
 import io.github.phantamanta44.threng.util.SlotType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,13 +13,10 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import java.util.Objects;
 
-public class ContainerFastCraftingBus extends L9Container implements IAllocableSides<SlotType.BasicIO> {
-
-    private final TileFastCraftingBus tile;
+public class ContainerFastCraftingBus extends ContainerTile<TileFastCraftingBus> implements IAllocableSides<SlotType.BasicIO> {
 
     ContainerFastCraftingBus(EntityPlayer player, World world, int x, int y, int z) {
-        super(player.inventory);
-        this.tile = (TileFastCraftingBus)Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)));
+        super((TileFastCraftingBus)Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))), player.inventory);
 
         // pattern slots
         for (int i = 0; i < 9; i++) {
@@ -54,7 +51,7 @@ public class ContainerFastCraftingBus extends L9Container implements IAllocableS
     }
 
     @Override
-    public void onClientInteraction(ByteUtils.Reader data) {
+    public void handleClientInteraction(ByteUtils.Reader data) {
         byte opcode = data.readByte();
         if (opcode == 0) {
             tile.setFace(BlockSide.values()[data.readByte()], SlotType.BasicIO.get(data.readByte()));

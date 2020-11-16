@@ -1,9 +1,9 @@
 package io.github.phantamanta44.threng.inventory;
 
 import appeng.container.slot.SlotFake;
-import io.github.phantamanta44.libnine.gui.L9Container;
 import io.github.phantamanta44.libnine.util.data.ByteUtils;
 import io.github.phantamanta44.threng.client.gui.GuiLevelMaintainer;
+import io.github.phantamanta44.threng.inventory.base.ContainerTile;
 import io.github.phantamanta44.threng.tile.TileLevelMaintainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
@@ -14,13 +14,11 @@ import net.minecraft.world.World;
 
 import java.util.Objects;
 
-public class ContainerLevelMaintainer extends L9Container {
-
-    private final TileLevelMaintainer tile;
+public class ContainerLevelMaintainer extends ContainerTile<TileLevelMaintainer> {
 
     ContainerLevelMaintainer(EntityPlayer player, World world, int x, int y, int z) {
-        super(player.inventory, GuiLevelMaintainer.GUI_HEIGHT);
-        this.tile = (TileLevelMaintainer)Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z)));
+        super((TileLevelMaintainer)Objects.requireNonNull(world.getTileEntity(new BlockPos(x, y, z))),
+                player.inventory, GuiLevelMaintainer.GUI_HEIGHT);
         TileLevelMaintainer.InventoryRequest reqInv = tile.getRequestInventory();
         for (int i = 0; i < TileLevelMaintainer.REQ_COUNT; i++) {
             addSlotToContainer(new SlotFake(reqInv, i, 17, 19 + 20 * i));
@@ -69,7 +67,7 @@ public class ContainerLevelMaintainer extends L9Container {
     }
 
     @Override
-    public void onClientInteraction(ByteUtils.Reader data) {
+    public void handleClientInteraction(ByteUtils.Reader data) {
         switch (data.readByte()) {
             case 0:
                 tile.getRequestInventory().updateQuantity(data.readInt(), data.readLong());
