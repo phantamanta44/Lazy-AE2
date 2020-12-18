@@ -57,7 +57,9 @@ public class ThrEngCraftingTracker implements ISerializable {
                         return true;
                     }
                 }
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (ExecutionException e) {
+                return false;
+            } catch (InterruptedException e) {
                 throw new ImpossibilityRealizedException(e);
             }
         }
