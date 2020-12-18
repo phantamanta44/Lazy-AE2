@@ -98,7 +98,11 @@ public class BlockMachine extends L9BlockStated {
 
     @Override
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
-        TileMachine tile = Objects.requireNonNull(getTileEntity(world, pos));
+        TileEntity tileUnchecked = Objects.requireNonNull(getTileEntity(world, pos));
+        if (!(tileUnchecked instanceof IDirectionable)) {
+            return false;
+        }
+        IDirectionable tile = (IDirectionable)tileUnchecked;
         if (axis == EnumFacing.UP) {
             tile.setFrontFace(tile.getFrontFace().rotateY());
         } else if (axis == EnumFacing.DOWN) {
