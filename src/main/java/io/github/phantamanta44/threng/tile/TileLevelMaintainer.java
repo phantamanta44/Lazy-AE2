@@ -11,6 +11,7 @@ import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IStackWatcher;
 import appeng.api.networking.storage.IStackWatcherHost;
 import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
@@ -20,6 +21,7 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import com.google.common.collect.ImmutableSet;
+import io.github.phantamanta44.libnine.capability.impl.L9AspectInventory;
 import io.github.phantamanta44.libnine.tile.RegisterTile;
 import io.github.phantamanta44.libnine.util.data.ByteUtils;
 import io.github.phantamanta44.libnine.util.data.ISerializable;
@@ -52,7 +54,9 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
     @AutoSerialize
     private final InventoryRequest requests = new InventoryRequest(this);
     @AutoSerialize
-    private final ThrEngCraftingTracker crafter = new ThrEngCraftingTracker(this, 5);
+    private final L9AspectInventory results = new L9AspectInventory.Observable(REQ_COUNT, (i, o, n) -> setDirty());
+    @AutoSerialize
+    private final ThrEngCraftingTracker crafter = new ThrEngCraftingTracker(this, REQ_COUNT);
 
     @Nullable
     private IStackWatcher watcher;
@@ -89,14 +93,31 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
         if (!world.isRemote) {
             aeGrid().ifPresent(grid -> {
                 if (sleepTicks <= 0) {
+                    IEnergyGrid energyGrid = grid.getCache(IEnergyGrid.class);
+                    IMEMonitor<IAEItemStack> storageGrid = grid.<IStorageGrid>getCache(IStorageGrid.class)
+                            .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
                     boolean workDone = false;
+
+                    // try pushing crafting results
+                    for (int i = 0; i < REQ_COUNT; i++) {
+                        ItemStack stack = results.getStackInSlot(i);
+                        if (stack.isEmpty()) {
+                            continue;
+                        }
+                        IAEItemStack aeStack = Objects.requireNonNull(AEItemStack.fromItemStack(stack));
+                        IAEItemStack rem = Platform.poweredInsert(energyGrid, storageGrid, aeStack, actionSource, Actionable.MODULATE);
+                        if (rem == null || rem.getStackSize() < aeStack.getStackSize()) {
+                            workDone = true;
+                            results.setStackInSlot(i, rem != null ? rem.createItemStack() : ItemStack.EMPTY);
+                        }
+                    }
+
+                    // try doing crafting work
                     ICraftingGrid crafting = grid.getCache(ICraftingGrid.class);
                     for (int i = 0; i < REQ_COUNT; i++) {
                         if (requests.isRequesting(i)) {
                             if (knownCounts[i] == -1) {
-                                IAEItemStack stack = grid.<IStorageGrid>getCache(IStorageGrid.class)
-                                        .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class))
-                                        .getStorageList()
+                                IAEItemStack stack = storageGrid.getStorageList()
                                         .findPrecise(AEItemStack.fromItemStack(requests.getStackInSlot(i)));
                                 knownCounts[i] = stack == null ? 0 : stack.getStackSize();
                                 workDone = true;
@@ -110,6 +131,8 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
                             }
                         }
                     }
+
+                    // did we get anything done?
                     if (workDone) {
                         setDirty();
                         if (sleepIncrement > ThrEngConfig.networkDevices.levelMaintainerSleepMin) {
@@ -159,16 +182,26 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
         return crafter.getRequestedJobs();
     }
 
+    @Nullable
     @Override
-    public IAEItemStack injectCraftedItems(ICraftingLink link, IAEItemStack stack, Actionable mode) {
-        return aeGrid()
-                .map(grid -> Platform.poweredInsert(
-                        grid.getCache(IEnergyGrid.class),
-                        grid.<IStorageGrid>getCache(IStorageGrid.class)
-                                .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)),
-                        stack,
-                        actionSource))
-                .orElse(stack);
+    public IAEItemStack injectCraftedItems(ICraftingLink link, @Nullable IAEItemStack stack, Actionable mode) {
+        if (stack == null) {
+            return null;
+        }
+        int slot = crafter.getSlotForJob(link);
+        if (slot == -1) {
+            return stack;
+        }
+        if (mode == Actionable.SIMULATE) {
+            return AEItemStack.fromItemStack(results.insertItem(slot, stack.createItemStack(), true));
+        } else {
+            IAEItemStack rem = AEItemStack.fromItemStack(results.insertItem(slot, stack.createItemStack(), false));
+            if (rem == null || rem.getStackSize() < stack.getStackSize()) {
+                sleepIncrement = ThrEngConfig.networkDevices.levelMaintainerSleepMin; // urgent!
+                sleepTicks = 0;
+            }
+            return rem;
+        }
     }
 
     @Override

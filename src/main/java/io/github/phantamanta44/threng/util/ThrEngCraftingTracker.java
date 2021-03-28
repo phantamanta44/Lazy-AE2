@@ -10,6 +10,8 @@ import appeng.api.networking.security.IActionSource;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.helpers.NonNullArrayIterator;
 import com.google.common.collect.ImmutableSet;
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 import io.github.phantamanta44.libnine.util.ImpossibilityRealizedException;
 import io.github.phantamanta44.libnine.util.data.ByteUtils;
 import io.github.phantamanta44.libnine.util.data.ISerializable;
@@ -30,12 +32,15 @@ public class ThrEngCraftingTracker implements ISerializable {
     private final ICraftingRequester owner;
     private final Future<ICraftingJob>[] jobs;
     private final ICraftingLink[] links;
+    // transient mapping just for efficient inverse lookup
+    private final TObjectIntMap<ICraftingLink> linksInv;
 
     @SuppressWarnings("unchecked")
     public ThrEngCraftingTracker(ICraftingRequester owner, int size) {
         this.owner = owner;
         this.jobs = new Future[size];
         this.links = new ICraftingLink[size];
+        this.linksInv = new TObjectIntHashMap<>(size * 2 + 1, 0.8F, -1);
     }
 
     public boolean requestCrafting(int slot, IAEItemStack item, World world, IGrid grid, ICraftingGrid crafting, IActionSource actionSrc) {
@@ -53,6 +58,7 @@ public class ThrEngCraftingTracker implements ISerializable {
                     jobs[slot] = null;
                     if (link != null) {
                         links[slot] = link;
+                        linksInv.put(link, slot);
                         updateLinks();
                         return true;
                     }
@@ -70,24 +76,28 @@ public class ThrEngCraftingTracker implements ISerializable {
         return ImmutableSet.copyOf(new NonNullArrayIterator<>(links));
     }
 
+    public int getSlotForJob(ICraftingLink link) {
+        return linksInv.get(link);
+    }
+
     public boolean isSlotOpen(int slot) {
         return links[slot] == null;
     }
 
     public boolean onJobStateChange(final ICraftingLink link) {
-        for (int i = 0; i < links.length; i++) {
-            if (links[i] == link) {
-                links[i] = null;
-                updateLinks();
-                return true;
-            }
+        int slot = linksInv.remove(link);
+        if (slot == -1) {
+            return false;
         }
-        return false;
+        links[slot] = null;
+        updateLinks();
+        return true;
     }
 
     private void updateLinks() {
         for (int i = 0; i < links.length; i++) {
             if (links[i] != null && (links[i].isCanceled() || links[i].isDone())) {
+                linksInv.remove(links[i]);
                 links[i] = null;
             }
         }
@@ -113,10 +123,13 @@ public class ThrEngCraftingTracker implements ISerializable {
 
     @Override
     public void deserBytes(ByteUtils.Reader data) {
+        linksInv.clear();
         int mask = data.readVarPrecision();
         for (int i = 0; i < links.length; i++) {
             if ((mask & (1 << i)) != 0) {
-                links[i] = AEApi.instance().storage().loadCraftingLink(data.readTagCompound(), owner);
+                ICraftingLink link = AEApi.instance().storage().loadCraftingLink(data.readTagCompound(), owner);
+                links[i] = link;
+                linksInv.put(link, i);
             } else {
                 links[i] = null;
             }
@@ -138,13 +151,16 @@ public class ThrEngCraftingTracker implements ISerializable {
 
     @Override
     public void deserNBT(NBTTagCompound tag) {
+        linksInv.clear();
         NBTTagList linksDto = tag.getTagList("Links", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < links.length; i++) {
             NBTTagCompound linkDto = linksDto.getCompoundTagAt(i);
             if (linkDto.isEmpty()) {
                 links[i] = null;
             } else {
-                links[i] = AEApi.instance().storage().loadCraftingLink(linkDto, owner);
+                ICraftingLink link = AEApi.instance().storage().loadCraftingLink(linkDto, owner);
+                links[i] = link;
+                linksInv.put(link, i);
             }
         }
     }
