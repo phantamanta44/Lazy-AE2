@@ -1,6 +1,7 @@
 package io.github.phantamanta44.threng.client.gui;
 
 import io.github.phantamanta44.libnine.client.gui.L9GuiContainer;
+import io.github.phantamanta44.libnine.client.gui.component.GuiComponent;
 import io.github.phantamanta44.libnine.client.gui.component.impl.GuiComponentTextInput;
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ResConst;
@@ -28,11 +29,21 @@ public class GuiLevelMaintainer extends L9GuiContainer {
             batchInputs[i] = createTextBox(101, 21 + 20 * i, cont.getBatchSize(i), LangConst.TT_BATCH_SIZE,
                     q -> cont.updateBatchSize(index, q));
         }
+
+        for (int i = 0; i < TileLevelMaintainer.REQ_COUNT; i++) {
+            boolean lastRow = i + 1 == TileLevelMaintainer.REQ_COUNT;
+            GuiComponent nextQty = !lastRow ? qtyInputs[i+1] : null;
+            GuiComponent nextBatch = !lastRow ? batchInputs[i+1] : null;
+            qtyInputs[i].setNextComponentOnEnter(nextQty);
+            qtyInputs[i].setNextComponentOnTab(batchInputs[i]);
+            batchInputs[i].setNextComponentOnEnter(nextBatch);
+            batchInputs[i].setNextComponentOnTab(nextQty);
+        }
     }
 
     private GuiComponentTextInput createTextBox(int x, int y, long initial, String tooltipKey, LongConsumer callback) {
-        GuiComponentTextInput comp = new GuiComponentTextInput(x, y, 41, 6,
-                ResConst.GUI_COMP_SUBMIT_NORMAL, ResConst.GUI_COMP_SUBMIT_HOVERED, ResConst.GUI_COMP_SUBMIT_DISABLED,
+        GuiComponentTextInput comp = new GuiComponentTextInput(x, y, 55, 8,
+                null, null, null,
                 0xFFFFFF, 0xDD1515,
                 s -> {
                     try {
