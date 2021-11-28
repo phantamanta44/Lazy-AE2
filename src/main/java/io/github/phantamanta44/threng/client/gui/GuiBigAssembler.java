@@ -8,7 +8,6 @@ import io.github.phantamanta44.threng.client.gui.component.GuiComponentSearchBar
 import io.github.phantamanta44.threng.constant.LangConst;
 import io.github.phantamanta44.threng.constant.ResConst;
 import io.github.phantamanta44.threng.inventory.ContainerBigAssembler;
-import io.github.phantamanta44.threng.inventory.slot.IDisplayModeSlot;
 import io.github.phantamanta44.threng.tile.TileBigAssemblerCore;
 import io.github.phantamanta44.threng.util.IPaginated;
 import io.github.phantamanta44.threng.util.ISearchHost;
@@ -67,7 +66,7 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated, ISear
     public void setSearchQuery(@Nullable String query) {
         for (Slot slot : cont.inventorySlots) {
             if (slot instanceof ISearchable) {
-                ((ISearchable)slot).updateSearchQuery(query);
+                ((ISearchable) slot).updateSearchQuery(query);
             }
         }
     }
@@ -81,12 +80,12 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated, ISear
         int work = tile.getWork();
         if (work > 0) {
             ResConst.GUI_BIG_ASSEMBLER_PROGRESS
-                    .drawPartial(36, 113, 0F, 0F, Math.min(work / (float)tile.getWorkPerJob(), 1F), 1F);
+                    .drawPartial(36, 113, 0F, 0F, Math.min(work / (float) tile.getWorkPerJob(), 1F), 1F);
         }
         int jobCount = tile.getJobCount();
         if (jobCount > 0) {
             ResConst.GUI_BIG_ASSEMBLER_QUEUE
-                    .drawPartial(58, 94, 0F, 1F - jobCount / (float)ThrEngConfig.massAssembler.jobQueueSize, 1F, 1F);
+                    .drawPartial(58, 94, 0F, 1F - jobCount / (float) ThrEngConfig.massAssembler.jobQueueSize, 1F, 1F);
         }
         int cpuCount = tile.getCpuCount();
         if (cpuCount > 0) {
@@ -95,7 +94,7 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated, ISear
             if (cpuCount >= maxEffectiveCpus) {
                 cpuBar = 1F;
             } else {
-                cpuBar = (float)(Math.log1p(cpuCount) / Math.log1p(maxEffectiveCpus));
+                cpuBar = (float) (Math.log1p(cpuCount) / Math.log1p(maxEffectiveCpus));
             }
             ResConst.GUI_BIG_ASSEMBLER_CPUS.drawPartial(64, 94, 0F, 1F - cpuBar, 1F, 1F);
         }
@@ -140,22 +139,6 @@ public class GuiBigAssembler extends L9GuiContainer implements IPaginated, ISear
             drawTooltip(Arrays.asList(
                     I18n.format(LangConst.TT_CPU_COUNT, tile.getCpuCount()), I18n.format(LangConst.TT_WORK_RATE, tile.getWorkRate())),
                     mX, mY);
-        }
-    }
-
-    @Override
-    public void drawSlot(Slot slot) {
-        if (slot instanceof IDisplayModeSlot) {
-            ((IDisplayModeSlot)slot).prepareDisplayMode();
-        }
-        super.drawSlot(slot);
-        if (slot instanceof ISearchable && !((ISearchable)slot).matchesQuery()) {
-            GlStateManager.disableDepth();
-            GlStateManager.disableLighting();
-            drawRect(slot.xPos, slot.yPos, slot.xPos + 16, slot.yPos + 16, 0x7f000000);
-            GlStateManager.color(1F, 1F, 1F, 1F);
-            GlStateManager.enableLighting();
-            GlStateManager.enableDepth();
         }
     }
 

@@ -48,11 +48,6 @@ public class ResConst {
     public static final TextureRegion GUI_COMP_SIDE_IO_OUT = GUI_COMP_SIDE_IO.getRegion(17, 5, 5, 5);
     public static final TextureRegion GUI_COMP_SIDE_IO_OMNI = GUI_COMP_SIDE_IO.getRegion(17, 10, 5, 5);
 
-    private static final TextureResource GUI_COMP_SUBMIT = getTextureGuiComp("submit", 39, 13);
-    public static final TextureRegion GUI_COMP_SUBMIT_NORMAL = GUI_COMP_SUBMIT.getRegion(0, 0, 13, 13);
-    public static final TextureRegion GUI_COMP_SUBMIT_DISABLED = GUI_COMP_SUBMIT.getRegion(13, 0, 13, 13);
-    public static final TextureRegion GUI_COMP_SUBMIT_HOVERED = GUI_COMP_SUBMIT.getRegion(26, 0, 13, 13);
-
     private static final TextureResource GUI_COMP_NEXT_PREV = getTextureGuiComp("next_prev", 58, 33);
     public static final ButtonRender GUI_COMP_NEXT_PREV_PREV = new ButtonRender(GUI_COMP_NEXT_PREV, 0, 0, 18, 11);
     public static final ButtonRender GUI_COMP_NEXT_PREV_NEXT = new ButtonRender(GUI_COMP_NEXT_PREV, 18, 0, 18, 11);
