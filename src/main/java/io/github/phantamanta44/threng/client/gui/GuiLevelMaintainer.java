@@ -53,6 +53,7 @@ public class GuiLevelMaintainer extends L9GuiContainer {
                     }
                 },
                 s -> callback.accept(Long.parseLong(s)), Long.toString(initial), tooltipKey);
+        comp.setFieldType(GuiComponentTextInput.FieldType.DIGITS_ONLY);
         addComponent(comp);
         return comp;
     }
