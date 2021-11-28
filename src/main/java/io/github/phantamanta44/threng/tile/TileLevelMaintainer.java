@@ -29,12 +29,9 @@ import io.github.phantamanta44.libnine.util.data.serialization.AutoSerialize;
 import io.github.phantamanta44.libnine.util.math.MathUtils;
 import io.github.phantamanta44.threng.ThrEngConfig;
 import io.github.phantamanta44.threng.block.BlockMachine;
-import io.github.phantamanta44.threng.client.gui.GuiLevelMaintainer;
 import io.github.phantamanta44.threng.constant.ThrEngConst;
 import io.github.phantamanta44.threng.tile.base.TileNetworkDevice;
 import io.github.phantamanta44.threng.util.ThrEngCraftingTracker;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -208,15 +205,6 @@ public class TileLevelMaintainer extends TileNetworkDevice implements IStackWatc
     public void jobStateChange(ICraftingLink link) {
         if (crafter.onJobStateChange(link)) {
             setDirty();
-        }
-    }
-
-    @Override
-    public void onTileSyncPacket(ByteUtils.Reader data) {
-        super.onTileSyncPacket(data);
-        GuiScreen gui = Minecraft.getMinecraft().currentScreen;
-        if (gui instanceof GuiLevelMaintainer) {
-            ((GuiLevelMaintainer)gui).updateTextBoxes(requests);
         }
     }
 

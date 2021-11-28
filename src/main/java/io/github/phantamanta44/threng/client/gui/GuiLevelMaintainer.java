@@ -46,17 +46,6 @@ public class GuiLevelMaintainer extends L9GuiContainer {
         return comp;
     }
 
-    public void updateTextBoxes(TileLevelMaintainer.InventoryRequest requests) {
-        for (int i = 0; i < TileLevelMaintainer.REQ_COUNT; i++) {
-            if (!qtyInputs[i].isFocused()) {
-                qtyInputs[i].setValue(Long.toString(requests.getQuantity(i)));
-            }
-            if (!batchInputs[i].isFocused()) {
-                batchInputs[i].setValue(Long.toString(requests.getBatchSize(i)));
-            }
-        }
-    }
-
     @Override
     public void drawForeground(float partialTicks, int mX, int mY) {
         super.drawForeground(partialTicks, mX, mY);
